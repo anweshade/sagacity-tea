@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sagacity Tea — Instructor</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600&display=swap');
+  :root {
+    --tea:#2D5016; --leaf:#4A7C2F; --gold:#C9A84C;
+    --cream:#F7F3EB; --dark:#1C1C1C; --mist:#E6EFD8;
+    --border:#DDD5C4; --soft:#F0EBE0; --accent:#8B3A3A;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html,body{width:100%;height:100%;overflow:hidden;}
+  body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--dark);display:flex;flex-direction:column;height:100vh;}
+
+  /* SCREENS */
+  .screen{display:none;flex:1;flex-direction:column;height:100%;}
+  .screen.active{display:flex;}
+
+  /* ── WELCOME ── */
+  #s-welcome{align-items:center;justify-content:center;text-align:center;padding:60px;}
+  .w-title{font-family:'Playfair Display',serif;font-size:clamp(40px,6vw,72px);color:var(--tea);line-height:1.05;margin-bottom:10px;}
+  .w-title span{color:var(--gold);}
+  .w-sub{font-size:18px;color:#999;margin-bottom:48px;}
+  .w-stats{display:flex;gap:24px;justify-content:center;margin-bottom:56px;}
+  .w-stat{background:white;border:1.5px solid var(--border);border-radius:10px;padding:20px 32px;text-align:center;}
+  .w-stat .n{font-family:'Playfair Display',serif;font-size:40px;color:var(--gold);font-weight:700;line-height:1;}
+  .w-stat .l{font-size:12px;color:#aaa;margin-top:3px;}
+  .btn{display:inline-block;padding:13px 32px;border:none;border-radius:6px;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:600;cursor:pointer;transition:all .18s;}
+  .btn-tea{background:var(--tea);color:var(--gold);}
+  .btn-tea:hover{background:var(--leaf);}
+  .btn-gold{background:var(--gold);color:var(--dark);}
+  .btn-gold:hover{background:#dbb85a;transform:translateY(-1px);}
+  .btn-soft{background:var(--soft);color:#666;border:1.5px solid var(--border);}
+  .btn-soft:hover{background:var(--mist);color:var(--tea);border-color:var(--leaf);}
+  .btn-sm{padding:7px 16px;font-size:12px;}
+  .btn-xs{padding:5px 10px;font-size:11px;border-radius:4px;}
+
+  /* ── SETUP ── */
+  #s-setup{align-items:center;justify-content:center;padding:40px;}
+  .setup-title{font-family:'Playfair Display',serif;font-size:36px;color:var(--tea);margin-bottom:6px;text-align:center;}
+  .setup-sub{font-size:14px;color:#aaa;margin-bottom:28px;text-align:center;}
+  .groups-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;width:100%;max-width:680px;margin-bottom:28px;}
+  .gc{background:white;border:1.5px solid var(--border);border-radius:8px;padding:13px 16px;}
+  .gc:focus-within{border-color:var(--leaf);}
+  .gc label{font-size:10px;text-transform:uppercase;letter-spacing:.12em;color:#bbb;display:block;margin-bottom:4px;}
+  .gc input{width:100%;border:none;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;color:var(--dark);background:transparent;outline:none;}
+  .gc input::placeholder{color:#ddd;}
+
+  /* ── MAIN GAME LAYOUT ── */
+  #s-game{flex-direction:row;}
+  .left-col{width:72px;background:#f0ebe0;border-right:1.5px solid var(--border);display:flex;flex-direction:column;align-items:center;padding:12px 0;gap:6px;flex-shrink:0;}
+  .round-dot{width:40px;height:40px;border-radius:50%;background:white;border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#aaa;cursor:pointer;transition:all .15s;font-family:'DM Sans',sans-serif;}
+  .round-dot:hover{border-color:var(--leaf);color:var(--tea);}
+  .round-dot.active{background:var(--tea);color:var(--gold);border-color:var(--tea);}
+  .round-dot.done{background:var(--mist);color:var(--leaf);border-color:var(--leaf);}
+
+  .main-col{flex:1;display:flex;flex-direction:column;overflow:hidden;}
+
+  /* Top bar */
+  .top-bar{display:flex;align-items:center;justify-content:space-between;padding:12px 20px;border-bottom:1.5px solid var(--border);background:white;flex-shrink:0;gap:12px;}
+  .tb-round{font-family:'Playfair Display',serif;font-size:18px;color:var(--tea);}
+  .tb-center{display:flex;align-items:center;gap:10px;}
+  .tb-right{display:flex;align-items:center;gap:8px;}
+
+  /* Timer */
+  .timer-big{font-family:'Playfair Display',serif;font-size:36px;font-weight:900;color:var(--tea);line-height:1;min-width:90px;text-align:center;}
+  .timer-big.warn{color:#cc3333;animation:tpulse .5s infinite alternate;}
+  @keyframes tpulse{from{opacity:1}to{opacity:.3}}
+  .timer-presets{display:flex;gap:4px;}
+  .tp{padding:4px 8px;background:var(--soft);border:1px solid var(--border);border-radius:4px;font-size:11px;font-weight:600;color:#666;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .12s;}
+  .tp:hover{background:var(--mist);border-color:var(--leaf);color:var(--tea);}
+  .timer-acts{display:flex;gap:4px;}
+  .ta{padding:5px 10px;border:none;border-radius:4px;font-size:12px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .15s;}
+  .ta-go{background:var(--tea);color:var(--gold);}
+  .ta-go:hover{background:var(--leaf);}
+  .ta-oth{background:var(--soft);color:#888;border:1px solid var(--border);}
+  .ta-oth:hover{background:var(--mist);}
+
+  /* Content area */
+  .content-area{flex:1;display:flex;overflow:hidden;}
+  .feed-col{flex:1;padding:16px 20px;overflow-y:auto;display:flex;flex-direction:column;gap:12px;}
+  .score-col{width:220px;border-left:1.5px solid var(--border);padding:14px;overflow-y:auto;display:flex;flex-direction:column;gap:10px;background:var(--soft);}
+
+  /* Round header card */
+  .round-card{background:white;border:1.5px solid var(--border);border-radius:10px;padding:18px 20px;}
+  .rc-tag{font-size:10px;text-transform:uppercase;letter-spacing:.14em;font-weight:700;margin-bottom:6px;}
+  .rc-title{font-family:'Playfair Display',serif;font-size:22px;color:var(--tea);margin-bottom:6px;}
+  .rc-task{font-size:14px;color:#666;line-height:1.6;}
+  .rc-actions{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;}
+
+  /* Submission cards */
+  .sub-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px;}
+  .sub-card{background:white;border:1.5px solid var(--border);border-radius:8px;padding:14px;transition:all .3s;animation:popIn .3s ease;}
+  @keyframes popIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+  .sub-card.highlight{border-color:var(--gold);background:#fffdf5;}
+  .sub-card.clash{border-color:var(--accent);background:#fff5f5;}
+  .sc-group{font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:#bbb;margin-bottom:4px;}
+  .sc-body{font-size:13.5px;color:var(--dark);line-height:1.6;margin-bottom:8px;}
+  .sc-meta{font-size:11px;color:#aaa;}
+  .sc-actions{display:flex;gap:5px;margin-top:8px;align-items:center;}
+  .sc-pts{font-family:'Playfair Display',serif;font-size:18px;color:var(--leaf);font-weight:700;margin-left:auto;}
+
+  /* Waiting state */
+  .waiting-state{display:flex;flex-direction:column;align-items:center;justify-content:center;flex:1;gap:12px;color:#ccc;}
+  .waiting-state .wi{font-size:40px;}
+  .waiting-state p{font-size:14px;}
+  .waiting-count{font-family:'Playfair Display',serif;font-size:48px;color:var(--tea);font-weight:700;}
+
+  /* Score col */
+  .sc-label{font-size:10px;text-transform:uppercase;letter-spacing:.12em;color:#bbb;margin-bottom:8px;}
+  .score-row{display:flex;align-items:center;gap:6px;padding:6px 0;border-bottom:1px solid var(--border);}
+  .score-row:last-child{border-bottom:none;}
+  .sr-name{flex:1;font-size:12px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .sr-pts{font-family:'Playfair Display',serif;font-size:16px;color:var(--leaf);font-weight:700;min-width:22px;text-align:right;}
+  .sr-btns{display:flex;gap:2px;}
+  .spt{width:20px;height:20px;border:none;border-radius:3px;font-size:12px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-weight:700;transition:all .12s;}
+  .spt.p{background:var(--mist);color:var(--tea);}
+  .spt.p:hover{background:var(--leaf);color:white;}
+  .spt.m{background:#f5efef;color:#ccc;}
+  .spt.m:hover{background:#f0d8d8;color:var(--accent);}
+
+  /* ── SCOREBOARD ── */
+  #s-score{align-items:center;justify-content:center;padding:40px;}
+  .sb-title{font-family:'Playfair Display',serif;font-size:clamp(28px,4vw,48px);color:var(--tea);margin-bottom:28px;text-align:center;}
+  .sb-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;width:100%;max-width:860px;}
+  .sbc{background:white;border:1.5px solid var(--border);border-radius:10px;padding:20px;text-align:center;position:relative;}
+  .sbc.lead{border-color:var(--gold);background:linear-gradient(155deg,#fffdf5,#fff8e0);box-shadow:0 4px 20px rgba(201,168,76,.15);}
+  .sbc .crown{position:absolute;top:-13px;left:50%;transform:translateX(-50%);font-size:20px;}
+  .sbc .gn{font-family:'Playfair Display',serif;font-size:16px;color:var(--tea);margin-bottom:4px;word-break:break-word;}
+  .sbc .pts{font-family:'Playfair Display',serif;font-size:48px;font-weight:900;color:var(--leaf);line-height:1;}
+  .sbc.lead .pts{color:var(--gold);}
+  .sbc .lbl{font-size:10px;color:#ccc;text-transform:uppercase;letter-spacing:.1em;}
+
+  /* ── WINNER ── */
+  #s-winner{align-items:center;justify-content:center;text-align:center;padding:40px;}
+  .win-trophy{font-size:72px;margin-bottom:12px;}
+  .win-lbl{font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:#bbb;margin-bottom:10px;}
+  .win-name{font-family:'Playfair Display',serif;font-size:clamp(48px,8vw,80px);color:var(--gold);font-weight:900;line-height:1;margin-bottom:6px;}
+  .win-pts{font-size:18px;color:#bbb;margin-bottom:44px;}
+  .podium{display:flex;gap:12px;justify-content:center;align-items:flex-end;margin-bottom:32px;}
+  .pod{text-align:center;}
+  .pod-bar{border-radius:6px 6px 0 0;min-width:100px;display:flex;flex-direction:column;justify-content:flex-start;align-items:center;padding:14px 10px 10px;background:#f0ece2;}
+  .pod-bar.p1{height:120px;background:linear-gradient(160deg,#fff8e0,#fdf0c0);border:2px solid var(--gold);}
+  .pod-bar.p2{height:88px;}
+  .pod-bar.p3{height:62px;}
+  .pod-medal{font-size:20px;}
+  .pod-pts{font-family:'Playfair Display',serif;font-size:22px;color:var(--gold);font-weight:700;}
+  .pod-name{color:#aaa;font-size:11px;margin-top:5px;}
+
+  /* Tags */
+  .tag-conflict{color:#8a5a00;background:#fff7e6;}
+  .tag-flip{color:var(--accent);background:#fff0f0;}
+  .tag-chain{color:#1a5a8a;background:#e6f0ff;}
+  .tag-twist{color:#5a1a8a;background:#f5e6ff;}
+  .tag-voice{color:var(--tea);background:var(--mist);}
+
+  /* Bottom action bar */
+  .action-bar{padding:10px 20px;border-top:1.5px solid var(--border);background:white;display:flex;gap:8px;align-items:center;flex-shrink:0;}
+
+  /* Notif */
+  .notif{position:fixed;top:16px;left:50%;transform:translateX(-50%) translateY(-60px);background:var(--tea);color:var(--gold);padding:10px 22px;border-radius:6px;font-size:13px;font-weight:500;z-index:1000;transition:transform .3s;box-shadow:0 4px 16px rgba(0,0,0,.12);white-space:nowrap;}
+  .notif.show{transform:translateX(-50%) translateY(0);}
+
+  /* Calculation display */
+  .calc-box{background:#f8f5f0;border:1.5px solid var(--border);border-radius:6px;padding:10px 13px;font-family:'DM Sans',sans-serif;font-size:13px;color:#555;margin-top:6px;}
+  .calc-correct{border-color:var(--leaf);background:#f0f7f0;}
+  .calc-wrong{border-color:var(--accent);background:#fff5f5;}
+  .calc-label{font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:#aaa;margin-bottom:3px;}
+
+  /* Vote bar */
+  .vote-bar{height:6px;background:var(--mist);border-radius:3px;margin-top:6px;overflow:hidden;}
+  .vote-fill{height:100%;background:var(--gold);border-radius:3px;transition:width .4s;}
+
+  /* Status pill */
+  .status-pill{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;padding:3px 10px;border-radius:20px;display:inline-block;}
+  .sp-waiting{background:#f5f5f5;color:#aaa;}
+  .sp-submitted{background:var(--mist);color:var(--leaf);}
+  .sp-scored{background:#fff8e0;color:var(--amber);}
+</style>
+</head>
+<body>
+<div class="notif" id="notif"></div>
+
+<!-- WELCOME -->
+<div class="screen active" id="s-welcome">
+  <div class="w-title">Sagacity Tea<br><span>Board of Directors Showdown</span></div>
+  <div class="w-sub">Instructor View · Live Game Controller</div>
+  <div class="w-stats">
+    <div class="w-stat"><div class="n">9</div><div class="l">Groups</div></div>
+    <div class="w-stat"><div class="n">5</div><div class="l">Rounds</div></div>
+    <div class="w-stat"><div class="n">75</div><div class="l">Minutes</div></div>
+  </div>
+  <div style="display:flex;gap:12px;">
+    <button class="btn btn-gold" onclick="showScreen('s-setup')">Set Up Groups →</button>
+  </div>
+</div>
+
+<!-- SETUP -->
+<div class="screen" id="s-setup">
+  <div class="setup-title">Name Your 9 Groups</div>
+  <div class="setup-sub">Students will select their group name when they join on their laptops.</div>
+  <div class="groups-grid" id="groups-grid"></div>
+  <button class="btn btn-gold" onclick="saveGroupsAndStart()">Start Game →</button>
+</div>
+
+<!-- GAME -->
+<div class="screen" id="s-game">
+  <div class="left-col" id="round-dots"></div>
+  <div class="main-col">
+    <div class="top-bar">
+      <div class="tb-round" id="tb-round">Round 1 · Tea Tank</div>
+      <div class="tb-center">
+        <div class="timer-presets">
+          <button class="tp" onclick="setTimer(30)">30s</button>
+          <button class="tp" onclick="setTimer(45)">45s</button>
+          <button class="tp" onclick="setTimer(60)">1m</button>
+          <button class="tp" onclick="setTimer(90)">90s</button>
+          <button class="tp" onclick="setTimer(120)">2m</button>
+          <button class="tp" onclick="setTimer(180)">3m</button>
+        </div>
+        <div class="timer-acts">
+          <button class="ta ta-go" onclick="startTimer()">▶</button>
+          <button class="ta ta-oth" onclick="pauseTimer()">⏸</button>
+          <button class="ta ta-oth" onclick="resetTimer()">↺</button>
+        </div>
+        <div class="timer-big" id="timer-display">—</div>
+      </div>
+      <div class="tb-right">
+        <span id="sub-count" style="font-size:12px;color:#aaa;"></span>
+        <button class="btn btn-soft btn-sm" onclick="showScore()">📊 Scoreboard</button>
+        <button class="btn btn-soft btn-sm" onclick="showScreen('s-winner');renderWinner()">🏆 Winner</button>
+      </div>
+    </div>
+
+    <div class="content-area">
+      <div class="feed-col" id="feed-col"></div>
+      <div class="score-col">
+        <div class="sc-label">Live Scores</div>
+        <div id="score-col-list"></div>
+      </div>
+    </div>
+
+    <div class="action-bar" id="action-bar"></div>
+  </div>
+</div>
+
+<!-- SCOREBOARD -->
+<div class="screen" id="s-score">
+  <div class="sb-title" id="sb-title">Scores</div>
+  <div class="sb-grid" id="sb-grid"></div>
+  <div style="display:flex;gap:10px;margin-top:24px;">
+    <button class="btn btn-tea" onclick="showScreen('s-game')">← Back to Game</button>
+    <button class="btn btn-gold" onclick="showScreen('s-winner');renderWinner()">🏆 Show Winner</button>
+  </div>
+</div>
+
+<!-- WINNER -->
+<div class="screen" id="s-winner">
+  <div class="win-trophy">🏆</div>
+  <div class="win-lbl">Consulting Contract Awarded To</div>
+  <div class="win-name" id="win-name">—</div>
+  <div class="win-pts" id="win-pts">—</div>
+  <div class="podium" id="podium"></div>
+  <button class="btn btn-tea" onclick="showScreen('s-game')">← Back to Game</button>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-app.js";
+import { getDatabase, ref, set, get, onValue, update, remove } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-database.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyBq8s0cZkAnE2d7OdlcUOtA-QYarhHVcqs",
+  authDomain: "sagacity-tea.firebaseapp.com",
+  databaseURL: "https://sagacity-tea-default-rtdb.firebaseio.com",
+  projectId: "sagacity-tea",
+  storageBucket: "sagacity-tea.firebasestorage.app",
+  messagingSenderId: "558874577393",
+  appId: "1:558874577393:web:334c4d894305b9020a5c50"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+
+// ── STATE ──
+let groups = Array.from({length:9},(_,i)=>({name:`Group ${i+1}`,points:0}));
+let curRound = 0;
+let timerSec = 0, timerRunning = false, timerInterval = null;
+let submissions = {}; // roundId -> { groupName -> submissionObj }
+let votes = {};
+
+const ROUNDS = [
+  {
+    id:'r1', num:1, name:'Tea Tank', tag:'CONFLICT', tagClass:'tag-conflict',
+    timerSec:120,
+    task:'Each group secretly picks Sagacity\'s deadliest threat and writes a 2-sentence argument. All revealed at once — matching groups clash.',
+    actionLabel:'Reveal All Submissions',
+    actionFn: ()=>revealAll('r1'),
+    fields:['threat','argument'],
+    correctAnswer: null,
+  },
+  {
+    id:'r2', num:2, name:'Flip It', tag:"DEVIL'S ADVOCATE", tagClass:'tag-flip',
+    timerSec:60,
+    task:'Groups argue against their own recommendation. You score each submission 1–3 pts live.',
+    actionLabel:'Lock Submissions',
+    actionFn: ()=>lockRound('r2'),
+    fields:['option','counter','evidence'],
+    correctAnswer: null,
+  },
+  {
+    id:'r3', num:3, name:'Hot Potato', tag:'CHAIN REACTION', tagClass:'tag-chain',
+    timerSec:45,
+    task:'Send a question — groups add a unique point. Duplicates are auto-flagged.',
+    actionLabel:null,
+    fields:['point'],
+    correctAnswer: null,
+  },
+  {
+    id:'r4', num:4, name:'Numbers Changed', tag:'TWIST', tagClass:'tag-twist',
+    timerSec:90,
+    task:'Groups calculate the impact of a changed assumption. Auto-scored on direction + accuracy.',
+    actionLabel:'Reveal Twist',
+    actionFn: ()=>revealTwist(),
+    fields:['direction','newProfit','reasoning'],
+    correctAnswer: { direction:'down', newProfit: 7447 }, // Twist A: 25% redemption → profit drops from ~20K to ~7.4K
+  },
+  {
+    id:'r5', num:5, name:"Kate's Voicemail", tag:'LIVE PITCH', tagClass:'tag-voice',
+    timerSec:30,
+    task:'Groups type their 30-second voicemail. All revealed simultaneously. Class votes on best.',
+    actionLabel:'Reveal All & Open Voting',
+    actionFn: ()=>openVoting('r5'),
+    fields:['voicemail'],
+    correctAnswer: null,
+  }
+];
+
+// ── SCREEN NAV ──
+window.showScreen = function(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+};
+
+// ── SETUP ──
+function renderSetupGrid(){
+  document.getElementById('groups-grid').innerHTML=groups.map((g,i)=>`
+    <div class="gc">
+      <label>Group ${i+1}</label>
+      <input type="text" value="${g.name}" placeholder="Team name…"
+             oninput="updateGroupName(${i},this.value)" />
+    </div>`).join('');
+}
+window.updateGroupName=(i,v)=>{ groups[i].name=v.trim()||`Group ${i+1}`; };
+
+window.saveGroupsAndStart = async function(){
+  // sync names from inputs
+  document.querySelectorAll('#groups-grid input').forEach((el,i)=>{
+    if(el.value.trim()) groups[i].name=el.value.trim();
+  });
+  // push groups to firebase
+  const gObj={};
+  groups.forEach((g,i)=>{ gObj[`g${i}`]={name:g.name,points:0}; });
+  await set(ref(db,'groups'), gObj);
+  await set(ref(db,'game'),{curRound:'r1',phase:'waiting',locked:false});
+  loadRound(0);
+  showScreen('s-game');
+  listenToGroups();
+  listenToSubmissions();
+};
+
+// ── LISTEN ──
+function listenToGroups(){
+  onValue(ref(db,'groups'), snap=>{
+    if(!snap.exists()) return;
+    const data=snap.val();
+    Object.keys(data).forEach((k,i)=>{
+      if(groups[i]) groups[i].points=data[k].points||0;
+    });
+    renderScoreCol();
+    renderScoreboard();
+  });
+}
+
+function listenToSubmissions(){
+  onValue(ref(db,'submissions'), snap=>{
+    submissions={};
+    if(snap.exists()) submissions=snap.val();
+    renderFeed();
+    updateSubCount();
+  });
+}
+
+// ── ROUND ──
+window.loadRound = function(idx){
+  curRound=idx;
+  const r=ROUNDS[idx];
+  document.getElementById('tb-round').textContent=`Round ${r.num} · ${r.name}`;
+  pauseTimer(); timerSec=r.timerSec; updateTimerDisplay();
+  // update dots
+  document.querySelectorAll('.round-dot').forEach((d,i)=>{
+    d.className='round-dot'+(i===idx?' active':i<idx?' done':'');
+  });
+  // push round to firebase
+  set(ref(db,'game'),{curRound:r.id,phase:'active',locked:false,twist:null});
+  renderFeed();
+  renderActionBar();
+};
+
+function renderRoundDots(){
+  document.getElementById('round-dots').innerHTML=ROUNDS.map((r,i)=>`
+    <div class="round-dot ${i===0?'active':''}" onclick="loadRound(${i})" title="Round ${r.num}: ${r.name}">${r.num}</div>`).join('');
+}
+
+// ── FEED ──
+function renderFeed(){
+  const r=ROUNDS[curRound];
+  const roundSubs=submissions[r.id]||{};
+  const subList=Object.values(roundSubs);
+  const feed=document.getElementById('feed-col');
+
+  let html=`<div class="round-card">
+    <div class="rc-tag ${r.tagClass}">${r.tag}</div>
+    <div class="rc-title">${r.name}</div>
+    <div class="rc-task">${r.task}</div>
+  </div>`;
+
+  if(subList.length===0){
+    html+=`<div class="waiting-state">
+      <div class="wi">⏳</div>
+      <div class="waiting-count">0 / 9</div>
+      <p>Waiting for group submissions…</p>
+    </div>`;
+  } else {
+    html+=`<div class="sub-grid">`;
+    subList.forEach(sub=>{
+      html+=renderSubCard(sub, r);
+    });
+    html+=`</div>`;
+  }
+
+  feed.innerHTML=html;
+  updateSubCount();
+}
+
+function renderSubCard(sub, r){
+  let bodyHtml='';
+  const pts=sub.points||0;
+  const gIdx=groups.findIndex(g=>g.name===sub.group);
+
+  if(r.id==='r1'){
+    bodyHtml=`<div class="sc-body"><strong>${sub.threat||''}</strong><br><span style="color:#666;font-size:13px;">${sub.argument||''}</span></div>`;
+    if(sub.votes){
+      const vCount=Object.keys(sub.votes).length;
+      bodyHtml+=`<div class="vote-bar"><div class="vote-fill" style="width:${Math.min(100,vCount*12)}%"></div></div>
+      <div style="font-size:11px;color:#aaa;margin-top:3px;">${vCount} vote${vCount!==1?'s':''}</div>`;
+    }
+  } else if(r.id==='r2'){
+    bodyHtml=`<div class="sc-body">
+      <span style="font-size:11px;color:#aaa;">Recommended:</span> <strong>${sub.option||''}</strong><br>
+      <span style="font-size:11px;color:#aaa;margin-top:4px;display:block;">Counter-argument:</span> ${sub.counter||''}
+      ${sub.evidence?`<br><span style="font-size:11px;color:var(--gold);">📌 ${sub.evidence}</span>`:''}
+    </div>`;
+  } else if(r.id==='r3'){
+    const isDupe=sub.duplicate;
+    bodyHtml=`<div class="sc-body">${sub.point||''}</div>
+    ${isDupe?'<div style="font-size:11px;color:var(--accent);">⚠ Flagged as duplicate</div>':''}`;
+  } else if(r.id==='r4'){
+    const correct=r.correctAnswer;
+    const dirOk=sub.direction&&sub.direction.toLowerCase()===correct.direction;
+    const profNum=parseFloat((sub.newProfit||'').toString().replace(/[^0-9.-]/g,''));
+    const profOk=!isNaN(profNum)&&Math.abs(profNum-correct.newProfit)/correct.newProfit<0.15;
+    bodyHtml=`<div class="sc-body">
+      Direction: <strong style="color:${dirOk?'var(--leaf)':'var(--accent)'}">${sub.direction||'—'}</strong>
+      ${dirOk?'✓':'✗'}<br>
+      New profit: <strong>$${sub.newProfit||'—'}</strong>
+      ${profOk?'<span style="color:var(--leaf)"> ✓ within range</span>':''}
+    </div>
+    <div class="calc-box ${dirOk&&profOk?'calc-correct':''}">${sub.reasoning||''}</div>`;
+  } else if(r.id==='r5'){
+    bodyHtml=`<div class="sc-body" style="font-style:italic;">"${sub.voicemail||''}"</div>`;
+    if(sub.votes){
+      const vCount=Object.keys(sub.votes).length;
+      bodyHtml+=`<div class="vote-bar"><div class="vote-fill" style="width:${Math.min(100,vCount*12)}%"></div></div>
+      <div style="font-size:11px;color:#aaa;margin-top:3px;">${vCount} vote${vCount!==1?'s':''}</div>`;
+    }
+  }
+
+  const hidden=sub.hidden;
+  return `<div class="sub-card ${sub.clash?'clash':pts>1?'highlight':''}">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
+      <div class="sc-group">${sub.group}</div>
+      <span class="status-pill ${pts>0?'sp-scored':'sp-submitted'}">${pts>0?pts+' pts':'submitted'}</span>
+    </div>
+    ${hidden?'<div style="color:#ccc;font-size:13px;font-style:italic;">Hidden until reveal…</div>':bodyHtml}
+    <div class="sc-actions">
+      <button class="btn btn-soft btn-xs" onclick="adjScore('${sub.group}',-1)">−</button>
+      <button class="btn btn-soft btn-xs" onclick="adjScore('${sub.group}',1)">+1 pt</button>
+      <button class="btn btn-soft btn-xs" onclick="adjScore('${sub.group}',2)">+2 pts</button>
+      <button class="btn btn-soft btn-xs" onclick="adjScore('${sub.group}',3)">+3 pts</button>
+      <span class="sc-pts" id="sp-${sub.group.replace(/\s/g,'_')}">${pts}</span>
+    </div>
+  </div>`;
+}
+
+// ── SCORE ──
+window.adjScore = async function(groupName, delta){
+  const idx=groups.findIndex(g=>g.name===groupName);
+  if(idx<0) return;
+  const newPts=Math.max(0,(groups[idx].points||0)+delta);
+  groups[idx].points=newPts;
+  await update(ref(db,`groups/g${idx}`),{points:newPts});
+
+  // also update the submission points display
+  const r=ROUNDS[curRound];
+  const subRef=ref(db,`submissions/${r.id}/${groupName.replace(/\s/g,'_')}`);
+  const snap=await get(subRef);
+  if(snap.exists()) await update(subRef,{points:newPts});
+
+  showNotif(`${groupName}: ${newPts} pts`);
+};
+
+function renderScoreCol(){
+  const sorted=[...groups].sort((a,b)=>b.points-a.points);
+  document.getElementById('score-col-list').innerHTML=sorted.map((g,i)=>{
+    const idx=groups.findIndex(gg=>gg.name===g.name);
+    return `<div class="score-row">
+      <span class="sr-name">${i===0&&g.points>0?'👑 ':''}${g.name}</span>
+      <div class="sr-btns">
+        <button class="spt m" onclick="adjScore('${g.name}',-1)">−</button>
+        <button class="spt p" onclick="adjScore('${g.name}',1)">+</button>
+      </div>
+      <span class="sr-pts" id="srp-${idx}">${g.points}</span>
+    </div>`;
+  }).join('');
+}
+
+// ── ACTION BAR ──
+function renderActionBar(){
+  const r=ROUNDS[curRound];
+  const bar=document.getElementById('action-bar');
+  let html='';
+
+  if(r.id==='r3'){
+    // Hot potato — send questions
+    html+=`<span style="font-size:12px;color:#aaa;margin-right:8px;">Send question:</span>`;
+    const qs=['Why have slotting fees grown?','How could Sagacity reduce SFs?','Reasons NOT to go online?'];
+    qs.forEach((q,i)=>{
+      html+=`<button class="btn btn-soft btn-sm" onclick="sendPotatoQ(${i})">Q${String.fromCharCode(65+i)}</button>`;
+    });
+  } else if(r.id==='r4'){
+    // Twist buttons
+    html+=`<span style="font-size:12px;color:#aaa;margin-right:8px;">Reveal twist:</span>`;
+    const tw=['A: 25% coupon redemption','B: 150 stores only','C: Amazon 30% cut'];
+    tw.forEach((t,i)=>{
+      html+=`<button class="btn btn-soft btn-sm" onclick="sendTwist(${i})" id="twbtn-${i}">🌀 ${t}</button>`;
+    });
+  }
+
+  if(r.actionLabel){
+    html+=`<button class="btn btn-gold btn-sm" style="margin-left:auto;" onclick="ROUNDS[${curRound}].actionFn()">${r.actionLabel}</button>`;
+  }
+
+  bar.innerHTML=html;
+}
+
+// ── ROUND ACTIONS ──
+window.revealAll = async function(roundId){
+  const subs=submissions[roundId]||{};
+  for(const key of Object.keys(subs)){
+    await update(ref(db,`submissions/${roundId}/${key}`),{hidden:false});
+  }
+  showNotif('All submissions revealed!');
+};
+
+window.lockRound = async function(roundId){
+  await update(ref(db,'game'),{locked:true});
+  showNotif('Round locked — no more submissions');
+};
+
+window.openVoting = async function(roundId){
+  await revealAll(roundId);
+  await update(ref(db,'game'),{phase:'voting',votingRound:roundId});
+  showNotif('Voting open! Students can now vote.');
+};
+
+window.sendPotatoQ = async function(idx){
+  const qs=[
+    'Why have slotting fees become so important in CPG? Add ONE new reason — or challenge the previous group\'s answer. No repeating. No passing.',
+    'What could Sagacity specifically do to reduce its slotting fees? Add a new tactic — or explain why the last one won\'t work for Sagacity. No repeating.',
+    'Name one reason Kate should NOT go with the online option. Or defend it against what was just said. No repeating.'
+  ];
+  await update(ref(db,'game'),{phase:'potato',potatoQ:qs[idx],potatoIdx:idx});
+  // Clear previous potato submissions
+  await remove(ref(db,`submissions/r3`));
+  showNotif(`Question ${String.fromCharCode(65+idx)} sent to students`);
+};
+
+window.sendTwist = async function(idx){
+  const twists=[
+    {label:'Twist A', text:'Kate\'s coupon vendor calls. Real redemption rates in her category run closer to 25%, not 12%. Same 100,000 coupons, same $1 face value. What happens to the broker plan\'s profit — does the deal still make sense?', correctProfit:7447, direction:'down'},
+    {label:'Twist B', text:'Shields calls back. He can only guarantee 150 stores, not 300. Slotting fees drop proportionally. Does the economics get better or worse — by roughly how much?', correctProfit:null, direction:'mixed'},
+    {label:'Twist C', text:'Amazon offers to carry Sagacity but demands a 30% cut of retail price. What does this do to the $110K online profit projection?', correctProfit:null, direction:'down'},
+  ];
+  const t=twists[idx];
+  await update(ref(db,'game'),{phase:'twist',twistIdx:idx,twist:t});
+  // update correct answer
+  ROUNDS[3].correctAnswer={direction:t.direction, newProfit:t.correctProfit||0};
+  // clear old submissions
+  await remove(ref(db,`submissions/r4`));
+  showNotif(`Twist ${t.label} revealed to students`);
+  document.querySelectorAll('[id^=twbtn-]').forEach(b=>b.classList.remove('btn-gold'));
+  const twbtn=document.getElementById(`twbtn-${idx}`);
+  if(twbtn) twbtn.classList.add('btn-gold');
+};
+
+// ── TIMER ──
+window.setTimer=function(sec){pauseTimer();timerSec=sec;updateTimerDisplay();update(ref(db,'game'),{timerSec:sec,timerRunning:false});};
+window.startTimer=function(){
+  if(timerRunning) return;
+  timerRunning=true;
+  timerInterval=setInterval(()=>{
+    timerSec=Math.max(0,timerSec-1);
+    updateTimerDisplay();
+    update(ref(db,'game'),{timerSec,timerRunning:true});
+    if(timerSec<=0){pauseTimer();showNotif("⏰ Time's up!");}
+  },1000);
+};
+window.pauseTimer=function(){timerRunning=false;clearInterval(timerInterval);update(ref(db,'game'),{timerRunning:false});};
+window.resetTimer=function(){pauseTimer();timerSec=ROUNDS[curRound].timerSec;updateTimerDisplay();};
+function updateTimerDisplay(){
+  const el=document.getElementById('timer-display');
+  if(timerSec<=0){el.textContent='—';el.className='timer-big';return;}
+  const m=Math.floor(timerSec/60),s=timerSec%60;
+  el.textContent=`${m}:${String(s).padStart(2,'0')}`;
+  el.className='timer-big'+(timerSec<=10?' warn':'');
+}
+
+// ── SCOREBOARD ──
+function renderScoreboard(){
+  const top=[...groups].sort((a,b)=>b.points-a.points)[0]?.points||0;
+  document.getElementById('sb-grid').innerHTML=groups.map(g=>{
+    const lead=g.points===top&&top>0;
+    return `<div class="sbc ${lead?'lead':''}">
+      ${lead?'<div class="crown">👑</div>':''}
+      <div class="gn">${g.name}</div>
+      <div class="pts">${g.points}</div>
+      <div class="lbl">points</div>
+    </div>`;}).join('');
+}
+window.showScore=function(){renderScoreboard();showScreen('s-score');document.getElementById('sb-title').textContent=`After Round ${curRound+1}`;};
+
+// ── WINNER ──
+window.renderWinner=function(){
+  const sorted=[...groups].sort((a,b)=>b.points-a.points);
+  document.getElementById('win-name').textContent=sorted[0]?.name||'—';
+  document.getElementById('win-pts').textContent=`${sorted[0]?.points||0} points`;
+  const med=['🥇','🥈','🥉'],bc=['p1','p2','p3'];
+  document.getElementById('podium').innerHTML=sorted.slice(0,3).map((g,i)=>`
+    <div class="pod">
+      <div class="pod-bar ${bc[i]}"><div class="pod-medal">${med[i]}</div><div class="pod-pts">${g.points}</div></div>
+      <div class="pod-name">${g.name}</div>
+    </div>`).join('');
+};
+
+// ── UTILS ──
+function updateSubCount(){
+  const r=ROUNDS[curRound];
+  const count=Object.keys(submissions[r.id]||{}).length;
+  document.getElementById('sub-count').textContent=`${count}/9 submitted`;
+}
+
+let nT;
+window.showNotif=function(msg){
+  const el=document.getElementById('notif');
+  el.textContent=msg;el.classList.add('show');
+  clearTimeout(nT);nT=setTimeout(()=>el.classList.remove('show'),2400);
+};
+
+// expose for inline onclick
+window.loadRound=loadRound;
+window.revealAll=revealAll;
+window.lockRound=lockRound;
+window.openVoting=openVoting;
+
+// ── INIT ──
+renderSetupGrid();
+renderRoundDots();
+</script>
+</body>
+</html>

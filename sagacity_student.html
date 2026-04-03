@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sagacity Tea — Join</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600&display=swap');
+  :root{
+    --tea:#2D5016;--leaf:#4A7C2F;--gold:#C9A84C;
+    --cream:#F7F3EB;--dark:#1C1C1C;--mist:#E6EFD8;
+    --border:#DDD5C4;--soft:#F0EBE0;--accent:#8B3A3A;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html,body{width:100%;min-height:100vh;}
+  body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--dark);}
+
+  .screen{display:none;min-height:100vh;flex-direction:column;align-items:center;justify-content:center;padding:32px 20px;}
+  .screen.active{display:flex;}
+
+  /* ── JOIN ── */
+  #s-join{text-align:center;}
+  .join-logo{font-family:'Playfair Display',serif;font-size:clamp(28px,5vw,52px);color:var(--tea);margin-bottom:6px;}
+  .join-logo span{color:var(--gold);}
+  .join-sub{font-size:15px;color:#aaa;margin-bottom:36px;}
+  .join-label{font-size:12px;text-transform:uppercase;letter-spacing:.12em;color:#aaa;margin-bottom:10px;}
+  .group-picker{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;width:100%;max-width:500px;margin-bottom:28px;}
+  .gp-btn{padding:14px 10px;background:white;border:1.5px solid var(--border);border-radius:8px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;cursor:pointer;transition:all .18s;text-align:center;}
+  .gp-btn:hover{border-color:var(--leaf);background:var(--mist);color:var(--tea);}
+  .gp-btn.selected{background:var(--tea);color:var(--gold);border-color:var(--tea);}
+  .gp-btn.taken{opacity:.4;cursor:not-allowed;background:#f5f5f5;}
+
+  /* ── WAITING ── */
+  #s-waiting{text-align:center;}
+  .w-group{font-family:'Playfair Display',serif;font-size:clamp(32px,5vw,56px);color:var(--tea);margin-bottom:6px;}
+  .w-status{font-size:15px;color:#aaa;margin-bottom:32px;}
+  .dots{display:flex;gap:8px;justify-content:center;}
+  .dot{width:10px;height:10px;border-radius:50%;background:var(--border);animation:dotpulse 1.4s infinite ease-in-out;}
+  .dot:nth-child(2){animation-delay:.2s;}
+  .dot:nth-child(3){animation-delay:.4s;}
+  @keyframes dotpulse{0%,80%,100%{transform:scale(.8);opacity:.4}40%{transform:scale(1.2);opacity:1}}
+
+  /* ── ACTIVE ROUND ── */
+  #s-round{max-width:640px;width:100%;}
+  .round-header{margin-bottom:20px;}
+  .rh-tag{font-size:10px;text-transform:uppercase;letter-spacing:.14em;font-weight:700;padding:3px 10px;border-radius:20px;display:inline-block;margin-bottom:8px;}
+  .tag-conflict{color:#8a5a00;background:#fff7e6;}
+  .tag-flip{color:var(--accent);background:#fff0f0;}
+  .tag-chain{color:#1a5a8a;background:#e6f0ff;}
+  .tag-twist{color:#5a1a8a;background:#f5e6ff;}
+  .tag-voice{color:var(--tea);background:var(--mist);}
+  .rh-title{font-family:'Playfair Display',serif;font-size:clamp(22px,4vw,34px);color:var(--tea);margin-bottom:6px;}
+  .rh-task{font-size:14px;color:#666;line-height:1.65;}
+
+  /* Timer strip */
+  .timer-strip{background:white;border:1.5px solid var(--border);border-radius:8px;padding:10px 16px;display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;}
+  .ts-label{font-size:12px;color:#aaa;text-transform:uppercase;letter-spacing:.08em;}
+  .ts-time{font-family:'Playfair Display',serif;font-size:28px;font-weight:700;color:var(--tea);}
+  .ts-time.warn{color:#cc3333;animation:tpulse .5s infinite alternate;}
+  @keyframes tpulse{from{opacity:1}to{opacity:.3}}
+
+  /* Form */
+  .form-card{background:white;border:1.5px solid var(--border);border-radius:10px;padding:20px;display:flex;flex-direction:column;gap:14px;}
+  .field{display:flex;flex-direction:column;gap:5px;}
+  .field label{font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:#aaa;font-weight:600;}
+  .field input,.field textarea,.field select{
+    width:100%;padding:10px 13px;border:1.5px solid var(--border);border-radius:6px;
+    font-family:'DM Sans',sans-serif;font-size:14px;color:var(--dark);
+    background:white;outline:none;transition:border-color .18s;
+    resize:vertical;
+  }
+  .field input:focus,.field textarea:focus,.field select:focus{border-color:var(--leaf);}
+  .field textarea{min-height:80px;}
+  .field .hint{font-size:11px;color:#bbb;margin-top:2px;}
+
+  .option-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+  .opt-btn{padding:10px;background:var(--soft);border:1.5px solid var(--border);border-radius:6px;font-family:'DM Sans',sans-serif;font-size:13px;cursor:pointer;transition:all .15s;text-align:center;}
+  .opt-btn:hover{border-color:var(--leaf);background:var(--mist);}
+  .opt-btn.selected{background:var(--tea);color:var(--gold);border-color:var(--tea);}
+
+  .threat-grid{display:grid;grid-template-columns:1fr;gap:6px;}
+  .threat-btn{padding:11px 14px;background:var(--soft);border:1.5px solid var(--border);border-radius:6px;font-family:'DM Sans',sans-serif;font-size:13px;cursor:pointer;transition:all .15s;text-align:left;}
+  .threat-btn:hover{border-color:var(--leaf);background:var(--mist);}
+  .threat-btn.selected{background:var(--tea);color:var(--gold);border-color:var(--tea);}
+
+  .submit-btn{width:100%;padding:13px;background:var(--tea);color:var(--gold);border:none;border-radius:6px;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:600;cursor:pointer;transition:all .18s;margin-top:4px;}
+  .submit-btn:hover{background:var(--leaf);}
+  .submit-btn:disabled{background:#ccc;color:#fff;cursor:not-allowed;}
+
+  /* ── SUBMITTED ── */
+  #s-submitted{text-align:center;}
+  .sub-check{font-size:64px;margin-bottom:16px;}
+  .sub-title{font-family:'Playfair Display',serif;font-size:32px;color:var(--tea);margin-bottom:8px;}
+  .sub-sub{font-size:15px;color:#aaa;margin-bottom:24px;}
+  .sub-summary{background:white;border:1.5px solid var(--border);border-radius:10px;padding:18px 20px;max-width:480px;width:100%;text-align:left;font-size:13.5px;color:#555;line-height:1.7;}
+
+  /* ── VOTING ── */
+  #s-voting{max-width:680px;width:100%;}
+  .vote-title{font-family:'Playfair Display',serif;font-size:28px;color:var(--tea);margin-bottom:6px;text-align:center;}
+  .vote-sub{font-size:14px;color:#aaa;margin-bottom:20px;text-align:center;}
+  .vote-cards{display:flex;flex-direction:column;gap:10px;}
+  .vote-card{background:white;border:1.5px solid var(--border);border-radius:8px;padding:16px;cursor:pointer;transition:all .18s;}
+  .vote-card:hover{border-color:var(--leaf);background:var(--mist);}
+  .vote-card.voted{border-color:var(--gold);background:#fffdf5;}
+  .vc-group{font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:#bbb;margin-bottom:5px;}
+  .vc-body{font-size:14px;color:var(--dark);line-height:1.6;}
+
+  /* ── SCORE REVEAL ── */
+  #s-scorereveal{text-align:center;}
+  .your-score{font-family:'Playfair Display',serif;font-size:clamp(60px,12vw,96px);color:var(--gold);font-weight:900;line-height:1;}
+  .ys-label{font-size:14px;color:#aaa;margin-bottom:8px;}
+  .ys-rank{font-size:16px;color:var(--tea);margin-top:8px;}
+
+  /* Notif */
+  .notif{position:fixed;top:16px;left:50%;transform:translateX(-50%) translateY(-60px);background:var(--tea);color:var(--gold);padding:10px 22px;border-radius:6px;font-size:13px;font-weight:500;z-index:1000;transition:transform .3s;box-shadow:0 4px 16px rgba(0,0,0,.12);white-space:nowrap;}
+  .notif.show{transform:translateX(-50%) translateY(0);}
+
+  /* Char counter */
+  .char-count{font-size:11px;color:#bbb;text-align:right;margin-top:2px;}
+  .char-count.near{color:var(--gold);}
+  .char-count.over{color:var(--accent);}
+
+  .calc-helper{background:#f8f5f0;border:1.5px solid var(--border);border-radius:6px;padding:12px;font-size:12.5px;color:#666;line-height:1.7;}
+  .calc-helper strong{color:var(--tea);}
+</style>
+</head>
+<body>
+<div class="notif" id="notif"></div>
+
+<!-- JOIN -->
+<div class="screen active" id="s-join">
+  <div class="join-logo">☕ Sagacity Tea<br><span>Showdown</span></div>
+  <div class="join-sub">Select your group to join</div>
+  <div class="join-label">Your Group</div>
+  <div class="group-picker" id="group-picker"></div>
+  <button class="submit-btn" style="max-width:300px;" onclick="joinGame()" id="join-btn" disabled>Join Game →</button>
+</div>
+
+<!-- WAITING -->
+<div class="screen" id="s-waiting">
+  <div class="w-group" id="w-group-name">Group 1</div>
+  <div class="w-status">You're in! Waiting for the instructor to start…</div>
+  <div class="dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
+</div>
+
+<!-- ACTIVE ROUND -->
+<div class="screen" id="s-round">
+  <div class="round-header">
+    <div class="rh-tag" id="rh-tag">CONFLICT</div>
+    <div class="rh-title" id="rh-title">Tea Tank</div>
+    <div class="rh-task" id="rh-task"></div>
+  </div>
+  <div class="timer-strip" id="timer-strip" style="display:none;">
+    <div class="ts-label">Time remaining</div>
+    <div class="ts-time" id="student-timer">—</div>
+  </div>
+  <div class="form-card" id="form-card"></div>
+</div>
+
+<!-- SUBMITTED -->
+<div class="screen" id="s-submitted">
+  <div class="sub-check">✅</div>
+  <div class="sub-title">Submitted!</div>
+  <div class="sub-sub" id="sub-sub-text">Your answer is locked in. Watch the instructor screen.</div>
+  <div class="sub-summary" id="sub-summary"></div>
+</div>
+
+<!-- VOTING -->
+<div class="screen" id="s-voting">
+  <div class="vote-title" id="vote-title">Vote for the Best</div>
+  <div class="vote-sub" id="vote-sub">Which answer would actually change Kate's mind?</div>
+  <div class="vote-cards" id="vote-cards"></div>
+</div>
+
+<!-- SCORE REVEAL -->
+<div class="screen" id="s-scorereveal">
+  <div class="ys-label">Your group's score</div>
+  <div class="your-score" id="your-score">0</div>
+  <div class="ys-rank" id="ys-rank"></div>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-app.js";
+import { getDatabase, ref, set, get, onValue, update, push } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-database.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyBq8s0cZkAnE2d7OdlcUOtA-QYarhHVcqs",
+  authDomain: "sagacity-tea.firebaseapp.com",
+  databaseURL: "https://sagacity-tea-default-rtdb.firebaseio.com",
+  projectId: "sagacity-tea",
+  storageBucket: "sagacity-tea.firebasestorage.app",
+  messagingSenderId: "558874577393",
+  appId: "1:558874577393:web:334c4d894305b9020a5c50"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+
+// ── STATE ──
+let myGroup = null;
+let myGroupKey = null;
+let currentRound = null;
+let gameState = {};
+let hasSubmitted = false;
+let hasVoted = false;
+let localTimer = 0;
+let localTimerInterval = null;
+
+// ── JOIN ──
+async function loadGroups(){
+  const snap = await get(ref(db,'groups'));
+  if(!snap.exists()){ showNotif('Game not started yet — wait for instructor'); return; }
+  const data = snap.val();
+  const picker = document.getElementById('group-picker');
+  picker.innerHTML = Object.entries(data).map(([key,g])=>`
+    <button class="gp-btn" id="gpbtn-${key}" onclick="selectGroup('${key}','${g.name}')">${g.name}</button>`).join('');
+
+  // listen for group changes (taken status)
+  onValue(ref(db,'groups'), snap2=>{
+    if(!snap2.exists()) return;
+    // (future: mark taken groups)
+  });
+}
+
+window.selectGroup = function(key, name){
+  myGroup = name;
+  myGroupKey = key;
+  document.querySelectorAll('.gp-btn').forEach(b=>b.classList.remove('selected'));
+  document.getElementById(`gpbtn-${key}`).classList.add('selected');
+  document.getElementById('join-btn').disabled = false;
+};
+
+window.joinGame = async function(){
+  if(!myGroup) return;
+  document.getElementById('w-group-name').textContent = myGroup;
+  showScreen('s-waiting');
+  listenToGame();
+};
+
+// ── LISTEN TO GAME STATE ──
+function listenToGame(){
+  onValue(ref(db,'game'), snap=>{
+    if(!snap.exists()) return;
+    gameState = snap.val();
+
+    // Sync timer
+    if(gameState.timerSec !== undefined){
+      localTimer = gameState.timerSec;
+      if(gameState.timerRunning && !localTimerInterval){
+        startLocalTimer();
+      } else if(!gameState.timerRunning){
+        clearInterval(localTimerInterval);
+        localTimerInterval = null;
+        updateStudentTimer();
+      }
+    }
+
+    const phase = gameState.phase;
+    const roundId = gameState.curRound;
+
+    if(phase === 'waiting'){
+      showScreen('s-waiting');
+      hasSubmitted = false;
+      return;
+    }
+
+    if(phase === 'voting'){
+      if(!hasVoted) loadVoting(gameState.votingRound);
+      return;
+    }
+
+    if(roundId && roundId !== currentRound){
+      currentRound = roundId;
+      hasSubmitted = false;
+      loadRoundUI(roundId, gameState);
+    } else if(roundId && phase === 'potato'){
+      // potato question changed
+      loadPotatoUI(gameState.potatoQ);
+    } else if(roundId && phase === 'twist'){
+      loadTwistUI(gameState.twist);
+    }
+  });
+}
+
+// ── ROUND UI ──
+function loadRoundUI(roundId, state){
+  const ROUND_META = {
+    r1:{ tag:'CONFLICT', tagClass:'tag-conflict', title:'Tea Tank',
+         task:'Your group has 2 minutes. Pick Sagacity\'s deadliest threat and write a short argument for why it\'s the most dangerous one — right now, for Kate\'s decision.' },
+    r2:{ tag:"DEVIL'S ADVOCATE", tagClass:'tag-flip', title:'Flip It',
+         task:'You have 60 seconds. Argue AGAINST the option your group recommended. You are Kate\'s most skeptical investor.' },
+    r3:{ tag:'CHAIN REACTION', tagClass:'tag-chain', title:'Hot Potato',
+         task:'The question is on the instructor screen. Add ONE new point — or challenge the previous group\'s answer. No repeating. No passing.' },
+    r4:{ tag:'TWIST', tagClass:'tag-twist', title:'Numbers Changed',
+         task:'A key assumption has changed — see the instructor screen. Calculate the new profit. Show your reasoning.' },
+    r5:{ tag:'LIVE PITCH', tagClass:'tag-voice', title:"Kate's Voicemail",
+         task:'You have 30 seconds. Type your voicemail to Kate before she walks in to sign the broker contract. Be specific — vague advice scores zero.' },
+  };
+  const meta = ROUND_META[roundId];
+  if(!meta) return;
+
+  document.getElementById('rh-tag').textContent = meta.tag;
+  document.getElementById('rh-tag').className = 'rh-tag ' + meta.tagClass;
+  document.getElementById('rh-title').textContent = meta.title;
+  document.getElementById('rh-task').textContent = meta.task;
+
+  // Timer strip
+  if(state.timerSec > 0){
+    document.getElementById('timer-strip').style.display = 'flex';
+    localTimer = state.timerSec;
+    updateStudentTimer();
+  }
+
+  // Build form
+  buildForm(roundId);
+  showScreen('s-round');
+}
+
+function buildForm(roundId){
+  const card = document.getElementById('form-card');
+  let html = '';
+
+  if(roundId === 'r1'){
+    const threats = [
+      '🏭 New regional competitors entering the market',
+      '🏪 National brands going all-natural / organic',
+      '💸 Cannot afford slotting fees to get shelf space',
+      '📦 Glass packaging limits cost competitiveness',
+      '🛒 Amazon / online competition undercuts margins',
+      '📉 Investor pressure forcing premature expansion',
+    ];
+    html += `<div class="field"><label>Select your deadliest threat</label>
+      <div class="threat-grid">${threats.map((t,i)=>`
+        <button class="threat-btn" id="threat-${i}" onclick="selectThreat(${i},'${t}')">${t}</button>`).join('')}
+      </div></div>
+      <div class="field">
+        <label>Your 2-sentence argument — why is this the most dangerous for Kate RIGHT NOW?</label>
+        <textarea id="f-argument" maxlength="300" placeholder="Be specific. Tie it to Kate's actual decision today…" oninput="updateChar('f-argument',300)"></textarea>
+        <div class="char-count" id="cc-f-argument">0 / 300</div>
+      </div>`;
+  } else if(roundId === 'r2'){
+    const opts=['Accept broker proposal','Focus on online sales','Find a new broker','Use a distributor','Continue regional / pop-up'];
+    html += `<div class="field"><label>Your group's original recommendation</label>
+      <div class="option-grid">${opts.map((o,i)=>`
+        <button class="opt-btn" id="opt-${i}" onclick="selectOpt(${i},'${o}')">${o}</button>`).join('')}
+      </div></div>
+      <div class="field">
+        <label>Your strongest counter-argument (why it could fail)</label>
+        <textarea id="f-counter" maxlength="250" placeholder="Don't hedge. Commit fully to the argument against your own recommendation…" oninput="updateChar('f-counter',250)"></textarea>
+        <div class="char-count" id="cc-f-counter">0 / 250</div>
+      </div>
+      <div class="field">
+        <label>One specific case fact or number that supports your counter-argument</label>
+        <input type="text" id="f-evidence" placeholder="e.g. '$45K sampling cost nearly wipes out $20K projected profit'" maxlength="150" />
+        <div class="hint">Citing a real number earns a bonus point</div>
+      </div>`;
+  } else if(roundId === 'r3'){
+    html += `<div class="field">
+        <label>Your unique point (one sentence — must be new, not already said)</label>
+        <textarea id="f-point" maxlength="200" placeholder="Make it specific. Generic statements score zero…" oninput="updateChar('f-point',200)"></textarea>
+        <div class="char-count" id="cc-f-point">0 / 200</div>
+        <div class="hint">⚠ The system auto-flags duplicates. If another group already said it, you score 0.</div>
+      </div>`;
+  } else if(roundId === 'r4'){
+    html += `<div class="calc-helper">
+        <strong>The numbers for the broker plan:</strong><br>
+        Gross sales (9,100 cases × $25.63) = $233,233<br>
+        COGS (40%) = $93,293 · Shipping = $8,008<br>
+        Broker fees (5%) = $11,662 · Slotting = $10,019<br>
+        Advertising = $18,000 · Sampling (150 stores) = $45,000<br>
+        <strong>Original coupons (12% × 100,000 × $1) = $12,000</strong><br>
+        Trade promo = $8,804 · Pioneering = $6,000<br>
+        <strong>Original profit ≈ $20,447</strong>
+      </div>
+      <div class="field">
+        <label>Does the profit go UP or DOWN with the new assumption?</label>
+        <div class="option-grid">
+          <button class="opt-btn" id="dir-up" onclick="selectDir('up')">📈 Goes UP</button>
+          <button class="opt-btn" id="dir-down" onclick="selectDir('down')">📉 Goes DOWN</button>
+        </div>
+      </div>
+      <div class="field">
+        <label>Your calculated new profit ($)</label>
+        <input type="number" id="f-newProfit" placeholder="e.g. 7447" />
+        <div class="hint">Show your work below — partial credit for correct reasoning</div>
+      </div>
+      <div class="field">
+        <label>Show your reasoning / calculation</label>
+        <textarea id="f-reasoning" maxlength="300" placeholder="e.g. New coupon cost = 25% × 100,000 × $1 = $25,000. Original was $12,000. Extra cost = $13,000. New profit = $20,447 − $13,000 = $7,447" oninput="updateChar('f-reasoning',300)"></textarea>
+        <div class="char-count" id="cc-f-reasoning">0 / 300</div>
+      </div>`;
+  } else if(roundId === 'r5'){
+    html += `<div class="field">
+        <label>Your 30-second voicemail to Kate (type it out)</label>
+        <textarea id="f-voicemail" maxlength="400" placeholder="Kate, don't sign yet — …" oninput="updateChar('f-voicemail',400)" style="min-height:120px;"></textarea>
+        <div class="char-count" id="cc-f-voicemail">0 / 400</div>
+        <div class="hint">Must include: recommendation · one reason · one risk · one specific number from the case</div>
+      </div>`;
+  }
+
+  html += `<button class="submit-btn" id="submit-btn" onclick="submitAnswer('${roundId}')">Submit Answer →</button>`;
+  card.innerHTML = html;
+}
+
+// ── FORM HELPERS ──
+let selectedThreat = '';
+let selectedOpt = '';
+let selectedDir = '';
+
+window.selectThreat = function(i, t){
+  document.querySelectorAll('.threat-btn').forEach(b=>b.classList.remove('selected'));
+  document.getElementById(`threat-${i}`).classList.add('selected');
+  selectedThreat = t;
+};
+window.selectOpt = function(i, o){
+  document.querySelectorAll('.opt-btn').forEach(b=>b.classList.remove('selected'));
+  document.getElementById(`opt-${i}`).classList.add('selected');
+  selectedOpt = o;
+};
+window.selectDir = function(d){
+  document.querySelectorAll('[id^=dir-]').forEach(b=>b.classList.remove('selected'));
+  document.getElementById(`dir-${d}`).classList.add('selected');
+  selectedDir = d;
+};
+window.updateChar = function(id, max){
+  const el = document.getElementById(id);
+  const cc = document.getElementById('cc-'+id);
+  if(!el||!cc) return;
+  const len = el.value.length;
+  cc.textContent = `${len} / ${max}`;
+  cc.className = 'char-count'+(len>max*.9?' near':'')+(len>=max?' over':'');
+};
+
+// ── SUBMIT ──
+window.submitAnswer = async function(roundId){
+  if(hasSubmitted) return;
+  const groupKey = myGroupKey;
+  const subRef = ref(db, `submissions/${roundId}/${myGroup.replace(/\s/g,'_')}`);
+
+  let data = { group: myGroup, hidden: true, points: 0, timestamp: Date.now() };
+
+  if(roundId === 'r1'){
+    if(!selectedThreat){ showNotif('Please select a threat first'); return; }
+    const arg = document.getElementById('f-argument')?.value?.trim();
+    if(!arg){ showNotif('Please write your argument'); return; }
+    data = {...data, threat: selectedThreat, argument: arg, hidden: true};
+  } else if(roundId === 'r2'){
+    if(!selectedOpt){ showNotif('Please select your original recommendation'); return; }
+    const counter = document.getElementById('f-counter')?.value?.trim();
+    if(!counter){ showNotif('Please write your counter-argument'); return; }
+    data = {...data, option:selectedOpt, counter, evidence: document.getElementById('f-evidence')?.value?.trim()||'', hidden:false};
+  } else if(roundId === 'r3'){
+    const point = document.getElementById('f-point')?.value?.trim();
+    if(!point){ showNotif('Please write your point'); return; }
+    // Check for duplicates
+    const allSnap = await get(ref(db,`submissions/r3`));
+    let isDupe = false;
+    if(allSnap.exists()){
+      const all = allSnap.val();
+      const pts = Object.values(all).map(s=>s.point?.toLowerCase()||'');
+      const pWords = new Set(point.toLowerCase().split(/\s+/).filter(w=>w.length>4));
+      isDupe = pts.some(p=>{
+        const pW = new Set(p.split(/\s+/).filter(w=>w.length>4));
+        let overlap=0;
+        pWords.forEach(w=>{ if(pW.has(w)) overlap++; });
+        return overlap >= 3;
+      });
+    }
+    data = {...data, point, duplicate:isDupe, hidden:false};
+  } else if(roundId === 'r4'){
+    if(!selectedDir){ showNotif('Please select a direction'); return; }
+    const np = document.getElementById('f-newProfit')?.value?.trim();
+    if(!np){ showNotif('Please enter your calculated profit'); return; }
+    const reasoning = document.getElementById('f-reasoning')?.value?.trim();
+    data = {...data, direction:selectedDir, newProfit:np, reasoning:reasoning||'', hidden:false};
+
+    // Auto-score
+    const correct = { direction:'down', newProfit:7447 };
+    let pts = 0;
+    if(selectedDir === correct.direction) pts += 1;
+    const profNum = parseFloat(np);
+    if(!isNaN(profNum) && Math.abs(profNum - correct.newProfit)/correct.newProfit < 0.15) pts += 2;
+    data.points = pts;
+    if(pts > 0) await update(ref(db,`groups/${groupKey}`),{points: (await get(ref(db,`groups/${groupKey}`))).val().points + pts});
+  } else if(roundId === 'r5'){
+    const vm = document.getElementById('f-voicemail')?.value?.trim();
+    if(!vm){ showNotif('Please type your voicemail'); return; }
+    data = {...data, voicemail:vm, hidden:true};
+  }
+
+  await set(subRef, data);
+  hasSubmitted = true;
+
+  // Summary
+  let summary = '';
+  if(roundId==='r1') summary = `Threat: ${selectedThreat}\n\n"${data.argument}"`;
+  else if(roundId==='r2') summary = `Option: ${selectedOpt}\n\nCounter: "${data.counter}"\n\nEvidence: ${data.evidence||'—'}`;
+  else if(roundId==='r3') summary = `Your point: "${data.point}"${data.duplicate?' ⚠ May be flagged as duplicate':''}`;
+  else if(roundId==='r4') summary = `Direction: ${selectedDir}\nNew profit: $${data.newProfit}\n\nReasoning: ${data.reasoning}`;
+  else if(roundId==='r5') summary = `"${data.voicemail}"`;
+
+  document.getElementById('sub-sub-text').textContent = roundId==='r1'||roundId==='r5' ? 'Your answer is hidden until the instructor reveals all submissions.' : 'Your answer is submitted. Watch the instructor screen.';
+  document.getElementById('sub-summary').textContent = summary;
+  showScreen('s-submitted');
+  showNotif('Answer submitted!');
+};
+
+// ── VOTING ──
+async function loadVoting(roundId){
+  const snap = await get(ref(db,`submissions/${roundId}`));
+  if(!snap.exists()) return;
+  const subs = snap.val();
+
+  const isVoicemail = roundId === 'r5';
+  document.getElementById('vote-title').textContent = isVoicemail ? 'Vote for the Best Voicemail' : 'Vote for the Most Compelling Argument';
+  document.getElementById('vote-sub').textContent = isVoicemail ? 'Which voicemail would actually change what Kate does this morning?' : 'Which threat argument is most convincing?';
+
+  const cards = Object.values(subs).filter(s=>s.group !== myGroup);
+  document.getElementById('vote-cards').innerHTML = cards.map(s=>`
+    <div class="vote-card" id="vc-${s.group.replace(/\s/g,'_')}" onclick="castVote('${roundId}','${s.group}')">
+      <div class="vc-group">${s.group}</div>
+      <div class="vc-body">${isVoicemail ? `"${s.voicemail||''}"` : `<strong>${s.threat||''}</strong><br>${s.argument||''}`}</div>
+    </div>`).join('');
+
+  showScreen('s-voting');
+}
+
+window.castVote = async function(roundId, groupName){
+  if(hasVoted) return;
+  hasVoted = true;
+  const voteRef = ref(db,`submissions/${roundId}/${groupName.replace(/\s/g,'_')}/votes/${myGroup.replace(/\s/g,'_')}`);
+  await set(voteRef, true);
+  // Give 1pt to voted group
+  const allGroups = (await get(ref(db,'groups'))).val();
+  const gEntry = Object.entries(allGroups).find(([,g])=>g.name===groupName);
+  if(gEntry){
+    const [gKey,gData] = gEntry;
+    await update(ref(db,`groups/${gKey}`),{points:(gData.points||0)+1});
+  }
+  document.querySelectorAll('.vote-card').forEach(c=>c.classList.remove('voted'));
+  document.getElementById(`vc-${groupName.replace(/\s/g,'_')}`)?.classList.add('voted');
+  showNotif('Vote cast!');
+};
+
+// ── TIMER ──
+function startLocalTimer(){
+  clearInterval(localTimerInterval);
+  localTimerInterval = setInterval(()=>{
+    localTimer = Math.max(0, localTimer-1);
+    updateStudentTimer();
+    if(localTimer<=0) clearInterval(localTimerInterval);
+  },1000);
+}
+function updateStudentTimer(){
+  const el = document.getElementById('student-timer');
+  if(!el) return;
+  if(localTimer<=0){ el.textContent='—'; el.className='ts-time'; return; }
+  const m=Math.floor(localTimer/60), s=localTimer%60;
+  el.textContent=`${m}:${String(s).padStart(2,'0')}`;
+  el.className='ts-time'+(localTimer<=10?' warn':'');
+  document.getElementById('timer-strip').style.display='flex';
+}
+
+// ── POTATO / TWIST SPECIAL UI ──
+function loadPotatoUI(question){
+  if(!question) return;
+  document.getElementById('rh-task').textContent = question;
+  if(!hasSubmitted) buildForm('r3');
+  showScreen('s-round');
+}
+function loadTwistUI(twist){
+  if(!twist) return;
+  document.getElementById('rh-task').textContent = twist.text;
+  if(!hasSubmitted) buildForm('r4');
+  showScreen('s-round');
+}
+
+// ── SCREEN NAV ──
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+// ── NOTIF ──
+let nT;
+function showNotif(msg){
+  const el=document.getElementById('notif');
+  el.textContent=msg;el.classList.add('show');
+  clearTimeout(nT);nT=setTimeout(()=>el.classList.remove('show'),2400);
+}
+window.showNotif=showNotif;
+
+// ── INIT ──
+loadGroups();
+</script>
+</body>
+</html>
