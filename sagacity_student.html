@@ -361,11 +361,15 @@ function showStandby(icon, title, sub){
 
 // ── FORM ──
 const META = {
-  r1:{tag:'CONFLICT',tagClass:'tag-c',title:'Tea Tank',task:"Pick Sagacity's single deadliest threat. Write a 2-sentence argument for why it's the most dangerous for Kate right now."},
-  r2:{tag:"DEVIL'S ADVOCATE",tagClass:'tag-f',title:'Flip It',task:"Argue against the option your group recommended. You are Kate's most skeptical investor. No hedging."},
+  r1:{tag:'CONFLICT',tagClass:'tag-c',title:'Tea Tank',
+      task:"Your group has been assigned a specific threat to argue is Sagacity's most dangerous. You cannot change it — your job is to make the strongest possible case for why THIS threat is the one Kate cannot afford to ignore right now. In 2 sentences: explain what makes it deadly, and why it matters specifically for the decision she faces today."},
+  r2:{tag:"DEVIL'S ADVOCATE",tagClass:'tag-f',title:'Flip It',
+      task:"Your group has been randomly assigned an expansion option to argue AGAINST. Even if you think this option is a good idea, your job right now is to be Kate's harshest critic. Write the most compelling case you can for why this option could fail — and back it up with at least one specific number or fact from the case. No hedging."},
   r3:{tag:'CHAIN REACTION',tagClass:'tag-h',title:'Hot Potato',task:''},
-  r4:{tag:'TWIST',tagClass:'tag-t',title:'Numbers Changed',task:'Use the changed assumption to calculate the new profit. Show your full reasoning.'},
-  r5:{tag:'LIVE PITCH',tagClass:'tag-v',title:"Kate's Voicemail",task:'Write your voicemail to Kate before she walks in to sign. Recommendation + reason + risk + one number from the case.'},
+  r4:{tag:'TWIST',tagClass:'tag-t',title:'Numbers Changed',
+      task:"A key assumption in the broker plan has just changed. Using the original numbers provided and the new assumption shown above, calculate what the new profit would be. Show every step — even if your final answer is slightly off, you can still earn points for correct reasoning and logic."},
+  r5:{tag:'LIVE PITCH',tagClass:'tag-v',title:"Kate's Voicemail",
+      task:"It's 8:58am. Kate walks into Shields' office at 9:00 to sign. She checks her phone one last time. You have 30 seconds on her voicemail. Tell her exactly what to do and why — name your recommendation, give one strong reason, flag one real risk, and cite at least one number from the case. Vague advice ('think carefully about your options') scores zero."},
 };
 
 function loadForm(roundId, opts){
@@ -390,11 +394,11 @@ function buildForm(roundId, opts){
     html += `<div style="background:var(--mist);border:2px solid var(--leaf);border-radius:10px;padding:16px 20px;margin-bottom:4px;">
       <div style="font-size:10px;text-transform:uppercase;letter-spacing:.14em;color:var(--leaf);font-weight:700;margin-bottom:6px;">Your assigned threat</div>
       <div style="font-size:17px;font-weight:600;color:var(--tea);">${assigned}</div>
-      <div style="font-size:12px;color:#777;margin-top:5px;">Argue that this is Sagacity's deadliest threat right now.</div>
+      <div style="font-size:12px;color:#777;margin-top:5px;">Argue that this is Sagacity's single deadliest threat — right now, for Kate's specific decision today.</div>
     </div>
-    <div class="field"><div class="field-label">Your 2-sentence argument</div>
-      <div class="field-hint">Why is this the most dangerous for Kate right now? Tie it to her actual decision.</div>
-      <textarea id="f-arg" maxlength="300" placeholder="e.g. This threat is most dangerous because…" oninput="cc('f-arg',300)"></textarea>
+    <div class="field"><div class="field-label">Write your 2-sentence argument</div>
+      <div class="field-hint">Sentence 1: what makes this threat dangerous. Sentence 2: why Kate cannot afford to ignore it right now specifically.</div>
+      <textarea id="f-arg" maxlength="300" placeholder="e.g. This threat is most dangerous because Kate is about to spend $80K on a broker deal, leaving zero cash to respond if a competitor moves in…" oninput="cc('f-arg',300)"></textarea>
       <div class="char-ct" id="cc-f-arg">0 / 300</div>
     </div>`;
 
@@ -402,16 +406,16 @@ function buildForm(roundId, opts){
     html += `<div style="background:#fff0f0;border:2px solid var(--accent);border-radius:10px;padding:16px 20px;margin-bottom:4px;">
       <div style="font-size:10px;text-transform:uppercase;letter-spacing:.14em;color:var(--accent);font-weight:700;margin-bottom:6px;">You must argue AGAINST this option</div>
       <div style="font-size:17px;font-weight:600;color:var(--dark);">${assigned}</div>
-      <div style="font-size:12px;color:#777;margin-top:5px;">You are Kate's most skeptical investor. Give the strongest reason this option could fail.</div>
+      <div style="font-size:12px;color:#777;margin-top:5px;">Even if you think this is a good idea — right now you are Kate's harshest critic. Find the strongest reason it could fail.</div>
     </div>
     <div class="field"><div class="field-label">Your counter-argument</div>
-      <div class="field-hint">Commit fully — no hedging, no "on balance it's still good."</div>
-      <textarea id="f-counter" maxlength="250" placeholder="e.g. Even if this works…" oninput="cc('f-counter',250)"></textarea>
+      <div class="field-hint">What is the single biggest reason this option could blow up for Kate? Be specific — don't just say "it's risky."</div>
+      <textarea id="f-counter" maxlength="250" placeholder="e.g. Even if the broker secures 300 stores, the $45K sampling cost alone nearly wipes out the entire $20K projected profit — leaving Kate no margin for error…" oninput="cc('f-counter',250)"></textarea>
       <div class="char-ct" id="cc-f-counter">0 / 250</div>
     </div>
-    <div class="field"><div class="field-label">One specific case fact or number</div>
-      <div class="field-hint">Citing a real number earns a bonus point.</div>
-      <input type="text" id="f-evid" placeholder="e.g. '$45K sampling nearly wipes out the $20K projected profit'" maxlength="150"/>
+    <div class="field"><div class="field-label">One specific number or fact from the case</div>
+      <div class="field-hint">Groups that cite real case data earn a bonus point. Don't leave this blank.</div>
+      <input type="text" id="f-evid" placeholder="e.g. Wholesale price is $25.63/case, so even at 10,000 cases profit is only ~$20K" maxlength="150"/>
     </div>`;
 
   } else if(roundId === 'r3'){
