@@ -317,13 +317,44 @@ let allSubs = {};
 let presenterIdx = 0, presenterOrder = [];
 let sessionCode = '';
 
+const THREATS = [
+  '🏭 New regional competitors entering the market',
+  '🏪 National brands going all-natural / organic',
+  '💸 Cannot afford slotting fees to get shelf space',
+  '📦 Glass packaging limits cost competitiveness',
+  '🛒 Amazon / online competition undercuts margins',
+  '📉 Investor pressure forcing premature expansion',
+];
+
+const OPTIONS = [
+  'Accept the broker proposal',
+  'Focus on online sales',
+  'Find a new broker',
+  'Use a distributor',
+  'Continue regional / pop-up',
+];
+
+// Randomly assign items to 9 groups, distributing as evenly as possible
+function assignRandomly(items, numGroups){
+  const assignments = [];
+  // Repeat items until we have enough for all groups
+  const pool = [];
+  while(pool.length < numGroups) pool.push(...items);
+  // Shuffle
+  for(let i=pool.length-1;i>0;i--){
+    const j=Math.floor(Math.random()*(i+1));
+    [pool[i],pool[j]]=[pool[j],pool[i]];
+  }
+  return pool.slice(0, numGroups);
+}
+
 const ROUNDS = [
   {id:'r1',num:1,name:'Tea Tank',tag:'CONFLICT',tagClass:'tag-c',writeSec:300,hidden:true,
-   desc:'Groups secretly pick a threat + write a 2-sentence argument. Timer ends → auto-reveal → argue in order.',
-   discussTask:'Argue your threat — why is it the most dangerous for Kate right now?'},
+   desc:'Each group is assigned a threat to argue is the deadliest. Timer ends → reveal → groups with the same threat debate each other.',
+   discussTask:'Argue your assigned threat — why is it the most dangerous for Kate right now?'},
   {id:'r2',num:2,name:'Flip It',tag:"DEVIL'S ADVOCATE",tagClass:'tag-f',writeSec:180,hidden:false,
-   desc:'Groups argue against their own recommendation. Submissions appear live. Timer ends → present in order.',
-   discussTask:'Read your counter-argument out loud. No hedging.'},
+   desc:'Each group is randomly assigned an expansion option to argue AGAINST. Groups assigned the same option debate each other.',
+   discussTask:'Read your counter-argument. No hedging.'},
   {id:'r3',num:3,name:'Hot Potato',tag:'CHAIN REACTION',tagClass:'tag-h',writeSec:90,hidden:false,
    desc:'You send a question. Groups submit one unique point. Go around the room — no repeating.',
    discussTask:'Read your point. Next group adds something new or challenges it.'},
@@ -410,11 +441,25 @@ window.gotoRound = async idx => {
   setPanels('write');
   pauseTimer(); timerSec = r.writeSec; updateTimerDisplay();
   await remove(ref(db,`${sessionCode}/submissions/${r.id}`));
+
+  // Generate random assignments for rounds 1 and 2
+  let assignments = null;
+  if(r.id === 'r1'){
+    const assigned = assignRandomly(THREATS, groups.length);
+    assignments = {};
+    groups.forEach((g,i)=>{ assignments[g.name] = assigned[i]; });
+  } else if(r.id === 'r2'){
+    const assigned = assignRandomly(OPTIONS, groups.length);
+    assignments = {};
+    groups.forEach((g,i)=>{ assignments[g.name] = assigned[i]; });
+  }
+
   await set(ref(db,`${sessionCode}/game`), {
     screen: 'write', curRound: r.id, phase: 'write',
     timerSec: r.writeSec, timerRunning: false,
     twist: null, potatoQ: null, potatoIdx: -1,
     correctDirection: null, correctProfit: 0,
+    assignments: assignments,
   });
   renderWriteFeed(); renderBottomBar();
 };
@@ -553,14 +598,39 @@ function renderWriteFeed(){
   const feed=document.getElementById('write-feed');
   let html=`<div class="round-info"><div class="ri-tag ${r.tagClass}">${r.tag}</div>
     <div class="ri-title">${r.name}</div><div class="ri-desc">${r.desc}</div></div>`;
+
   if(subs.length===0){
     html+=`<div class="empty"><div class="ei">⏳</div><div class="ec">0/9</div><p>Waiting for submissions…</p></div>`;
   } else {
     const pct=Math.round(subs.length/9*100);
-    html+=`<div class="sub-count-bar">${subs.length}/9 submitted<div class="progress"><div class="progress-fill" style="width:${pct}%"></div></div></div>`;
-    const hidden=subs.filter(s=>s.hidden), visible=subs.filter(s=>!s.hidden);
-    if(hidden.length) html+=`<div style="display:flex;gap:6px;flex-wrap:wrap;">${hidden.map(s=>`<div class="hidden-chip">🔒 ${s.group}</div>`).join('')}</div>`;
-    if(visible.length) html+=`<div class="sub-grid">${visible.map(s=>buildCard(s,r,false,false)).join('')}</div>`;
+    html+=`<div class="sub-count-bar">${subs.length}/9 submitted
+      <div class="progress"><div class="progress-fill" style="width:${pct}%"></div></div>
+      ${r.hidden?`<button class="btn btn-gold" style="padding:3px 10px;font-size:11px;" onclick="revealAll()">📢 Reveal All</button>`:''}
+    </div>`;
+
+    if(r.id==='r1'||r.id==='r2'){
+      // Group cards by assigned topic
+      const byTopic={};
+      subs.forEach(s=>{
+        const topic=s.assigned||'Unknown';
+        if(!byTopic[topic]) byTopic[topic]=[];
+        byTopic[topic].push(s);
+      });
+      Object.entries(byTopic).forEach(([topic,topicSubs])=>{
+        const clash = topicSubs.length > 1;
+        html+=`<div style="margin-top:10px;">
+          <div style="font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:#aaa;margin-bottom:6px;display:flex;align-items:center;gap:8px;">
+            ${r.id==='r1'?'Assigned threat':'Arguing against'}: <strong style="color:var(--tea)">${topic}</strong>
+            ${clash?`<span style="background:var(--accent);color:white;font-size:9px;padding:2px 7px;border-radius:10px;">⚔ Clash</span>`:''}
+          </div>
+          <div class="sub-grid">${topicSubs.map(s=>buildCard(s,r,true,false)).join('')}</div>
+        </div>`;
+      });
+    } else {
+      const hidden=subs.filter(s=>s.hidden), visible=subs.filter(s=>!s.hidden);
+      if(hidden.length) html+=`<div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;">${hidden.map(s=>`<div class="hidden-chip">🔒 ${s.group}</div>`).join('')}</div>`;
+      if(visible.length) html+=`<div class="sub-grid">${visible.map(s=>buildCard(s,r,true,false)).join('')}</div>`;
+    }
   }
   feed.innerHTML=html;
 }
@@ -575,11 +645,30 @@ function renderDiscussFeed(){
 function buildCard(s,r,showScore,isPresenting){
   const pts=s.points||0, safeKey=s.group.replace(/\s/g,'_');
   let body='';
-  if(r.id==='r1') body=`<div class="sc-body"><span class="lbl">Threat</span><strong>${s.threat||''}</strong><span class="lbl">Argument</span>${s.argument||''}</div>`;
-  else if(r.id==='r2') body=`<div class="sc-body"><span class="lbl">Recommended</span><strong>${s.option||''}</strong><span class="lbl">Counter</span>${s.counter||''}${s.evidence?`<span class="lbl">Evidence</span><span style="color:var(--gold)">📌 ${s.evidence}</span>`:''}</div>`;
-  else if(r.id==='r3') body=`<div class="sc-body">${s.point||''}${s.duplicate?'<br><span style="color:var(--accent);font-size:10px;">⚠ Possible duplicate</span>':''}</div>`;
-  else if(r.id==='r4'){const as=s.autoScore||{};body=`<div class="sc-body"><span class="lbl">Direction</span><strong style="color:${as.dirOk?'var(--leaf)':'var(--accent)'}">${s.direction||'—'} ${as.dirOk!==undefined?(as.dirOk?'✓':'✗'):''}</strong><span class="lbl">New profit</span>$${s.newProfit||'—'}${as.profOk?' <span style="color:var(--leaf);font-size:10px;">✓</span>':''}<span class="lbl">Reasoning</span>${s.reasoning||'—'}</div>`;}
-  else if(r.id==='r5') body=`<div class="sc-body" style="font-style:italic;">"${s.voicemail||''}"</div>${s.votes?`<div style="font-size:10px;color:var(--gold);margin-top:2px;">👍 ${Object.keys(s.votes).length} vote${Object.keys(s.votes).length!==1?'s':''}</div>`:''}`;
+  if(r.id==='r1'){
+    body=`<div class="sc-body">
+      <span class="lbl">Assigned threat</span><strong>${s.assigned||'—'}</strong>
+      <span class="lbl">Argument</span>${s.argument||'(hidden)'}
+    </div>`;
+  } else if(r.id==='r2'){
+    body=`<div class="sc-body">
+      <span class="lbl">Arguing against</span><strong>${s.assigned||'—'}</strong>
+      <span class="lbl">Counter</span>${s.counter||''}
+      ${s.evidence?`<span class="lbl">Evidence</span><span style="color:var(--gold)">📌 ${s.evidence}</span>`:''}
+    </div>`;
+  } else if(r.id==='r3'){
+    body=`<div class="sc-body">${s.point||''}${s.duplicate?'<br><span style="color:var(--accent);font-size:10px;">⚠ Possible duplicate</span>':''}</div>`;
+  } else if(r.id==='r4'){
+    const as=s.autoScore||{};
+    body=`<div class="sc-body">
+      <span class="lbl">Direction</span><strong style="color:${as.dirOk?'var(--leaf)':'var(--accent)'}">${s.direction||'—'} ${as.dirOk!==undefined?(as.dirOk?'✓':'✗'):''}</strong>
+      <span class="lbl">New profit</span>$${s.newProfit||'—'}${as.profOk?' <span style="color:var(--leaf);font-size:10px;">✓</span>':''}
+      <span class="lbl">Reasoning</span>${s.reasoning||'—'}
+    </div>`;
+  } else if(r.id==='r5'){
+    body=`<div class="sc-body" style="font-style:italic;">"${s.hidden?'(hidden)':s.voicemail||''}"</div>
+    ${s.votes?`<div style="font-size:10px;color:var(--gold);margin-top:2px;">👍 ${Object.keys(s.votes).length} vote${Object.keys(s.votes).length!==1?'s':''}</div>`:''}`;
+  }
   const scoreRow=showScore?`<div class="sc-score-row">
     <button class="ptb" onclick="givePoints('${s.group}','${r.id}',1)">+1</button>
     <button class="ptb" onclick="givePoints('${s.group}','${r.id}',2)">+2</button>

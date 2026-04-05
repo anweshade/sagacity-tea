@@ -318,7 +318,8 @@ function listenGame(){
           lastRoundKey = roundId;
           hasSubmitted = false; hasVoted = false; myPreview = '';
           selThreat=''; selOpt=''; selDir='';
-          loadForm(roundId, {});
+          const assigned = state.assignments?.[myGroup] || null;
+          loadForm(roundId, {assigned});
         } else if(hasSubmitted){
           showScreen('s-submitted');
         }
@@ -382,28 +383,36 @@ function loadForm(roundId, opts){
 
 function buildForm(roundId, opts){
   const card = document.getElementById('form-card');
+  const assigned = opts.assigned || '—';
   let html = '';
 
   if(roundId === 'r1'){
-    const threats = ['🏭 New regional competitors entering the market','🏪 National brands going all-natural / organic','💸 Cannot afford slotting fees to get shelf space','📦 Glass packaging limits cost competitiveness','🛒 Amazon / online competition undercuts margins','📉 Investor pressure forcing premature expansion'];
-    html += `<div class="field"><div class="field-label">Pick Sagacity's deadliest threat</div>
-      <div class="threat-list">${threats.map((t,i)=>`<button class="thr" id="thr${i}" onclick="pickThreat(${i},'${t.replace(/'/g,"\\'")}')"> ${t}</button>`).join('')}</div></div>
-      <div class="field"><div class="field-label">Your 2-sentence argument</div>
+    html += `<div style="background:var(--mist);border:2px solid var(--leaf);border-radius:10px;padding:16px 20px;margin-bottom:4px;">
+      <div style="font-size:10px;text-transform:uppercase;letter-spacing:.14em;color:var(--leaf);font-weight:700;margin-bottom:6px;">Your assigned threat</div>
+      <div style="font-size:17px;font-weight:600;color:var(--tea);">${assigned}</div>
+      <div style="font-size:12px;color:#777;margin-top:5px;">Argue that this is Sagacity's deadliest threat right now.</div>
+    </div>
+    <div class="field"><div class="field-label">Your 2-sentence argument</div>
       <div class="field-hint">Why is this the most dangerous for Kate right now? Tie it to her actual decision.</div>
       <textarea id="f-arg" maxlength="300" placeholder="e.g. This threat is most dangerous because…" oninput="cc('f-arg',300)"></textarea>
-      <div class="char-ct" id="cc-f-arg">0 / 300</div></div>`;
+      <div class="char-ct" id="cc-f-arg">0 / 300</div>
+    </div>`;
 
   } else if(roundId === 'r2'){
-    const opts2 = ['Accept the broker proposal','Focus on online sales','Find a new broker','Use a distributor','Continue regional / pop-up'];
-    html += `<div class="field"><div class="field-label">Your group's original recommendation</div>
-      <div class="opt-grid">${opts2.map((o,i)=>`<button class="opt" id="opt${i}" onclick="pickOpt(${i},'${o}')">${o}</button>`).join('')}</div></div>
-      <div class="field"><div class="field-label">Your counter-argument</div>
-      <div class="field-hint">The strongest reason your own recommendation could fail. Commit fully — no hedging.</div>
+    html += `<div style="background:#fff0f0;border:2px solid var(--accent);border-radius:10px;padding:16px 20px;margin-bottom:4px;">
+      <div style="font-size:10px;text-transform:uppercase;letter-spacing:.14em;color:var(--accent);font-weight:700;margin-bottom:6px;">You must argue AGAINST this option</div>
+      <div style="font-size:17px;font-weight:600;color:var(--dark);">${assigned}</div>
+      <div style="font-size:12px;color:#777;margin-top:5px;">You are Kate's most skeptical investor. Give the strongest reason this option could fail.</div>
+    </div>
+    <div class="field"><div class="field-label">Your counter-argument</div>
+      <div class="field-hint">Commit fully — no hedging, no "on balance it's still good."</div>
       <textarea id="f-counter" maxlength="250" placeholder="e.g. Even if this works…" oninput="cc('f-counter',250)"></textarea>
-      <div class="char-ct" id="cc-f-counter">0 / 250</div></div>
-      <div class="field"><div class="field-label">One specific case fact or number</div>
+      <div class="char-ct" id="cc-f-counter">0 / 250</div>
+    </div>
+    <div class="field"><div class="field-label">One specific case fact or number</div>
       <div class="field-hint">Citing a real number earns a bonus point.</div>
-      <input type="text" id="f-evid" placeholder="e.g. '$45K sampling nearly wipes out the $20K projected profit'" maxlength="150"/></div>`;
+      <input type="text" id="f-evid" placeholder="e.g. '$45K sampling nearly wipes out the $20K projected profit'" maxlength="150"/>
+    </div>`;
 
   } else if(roundId === 'r3'){
     html += `<div class="field"><div class="field-label">Your unique point</div>
@@ -460,19 +469,21 @@ window.submitAnswer = async roundId => {
   let preview = '';
 
   if(roundId==='r1'){
-    if(!selThreat){showNotif('Please pick a threat first');return;}
     const arg=document.getElementById('f-arg')?.value?.trim();
     if(!arg){showNotif('Please write your argument');return;}
-    data={...data,threat:selThreat,argument:arg,hidden:true};
-    preview=`${selThreat}\n\n"${arg}"`;
+    const gameSnap=await get(ref(db,`${sessionCode}/game`));
+    const assigned=gameSnap.val()?.assignments?.[myGroup]||'—';
+    data={...data,assigned,argument:arg,hidden:true};
+    preview=`Assigned: ${assigned}\n\n"${arg}"`;
     document.getElementById('sub-note').textContent='Hidden until the instructor reveals all.';
   } else if(roundId==='r2'){
-    if(!selOpt){showNotif('Please select your recommendation');return;}
     const counter=document.getElementById('f-counter')?.value?.trim();
     if(!counter){showNotif('Please write your counter-argument');return;}
     const evid=document.getElementById('f-evid')?.value?.trim()||'';
-    data={...data,option:selOpt,counter,evidence:evid,hidden:false};
-    preview=`Recommended: ${selOpt}\n\nCounter: "${counter}"${evid?'\n\nEvidence: '+evid:''}`;
+    const gameSnap=await get(ref(db,`${sessionCode}/game`));
+    const assigned=gameSnap.val()?.assignments?.[myGroup]||'—';
+    data={...data,assigned,counter,evidence:evid,hidden:false};
+    preview=`Arguing against: ${assigned}\n\nCounter: "${counter}"${evid?'\n\nEvidence: '+evid:''}`;
     document.getElementById('sub-note').textContent='Submitted. Watch the instructor screen.';
   } else if(roundId==='r3'){
     const point=document.getElementById('f-point')?.value?.trim();
