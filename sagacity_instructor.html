@@ -17,11 +17,7 @@
   #s-welcome{align-items:center;justify-content:center;text-align:center;padding:60px;}
   .w-title{font-family:'Playfair Display',serif;font-size:clamp(32px,5vw,60px);color:var(--tea);margin-bottom:6px;}
   .w-title span{color:var(--gold);}
-  .w-sub{font-size:15px;color:#aaa;margin-bottom:40px;}
-  .w-stats{display:flex;gap:16px;justify-content:center;margin-bottom:40px;}
-  .w-stat{background:white;border:1.5px solid var(--border);border-radius:10px;padding:16px 24px;text-align:center;}
-  .w-stat .n{font-family:'Playfair Display',serif;font-size:32px;color:var(--gold);font-weight:700;line-height:1;}
-  .w-stat .l{font-size:11px;color:#aaa;margin-top:2px;}
+  .w-sub{font-size:15px;color:#aaa;margin-bottom:48px;}
 
   /* SETUP */
   #s-setup{align-items:center;justify-content:center;padding:40px;}
@@ -33,6 +29,12 @@
   .gc label{font-size:9px;text-transform:uppercase;letter-spacing:.12em;color:#bbb;display:block;margin-bottom:3px;}
   .gc input{width:100%;border:none;font-family:'DM Sans',sans-serif;font-size:13.5px;font-weight:500;color:var(--dark);background:transparent;outline:none;}
   .gc input::placeholder{color:#ddd;}
+
+  /* SESSION CODE DISPLAY */
+  .code-display{background:var(--tea);color:white;border-radius:12px;padding:24px 40px;text-align:center;margin-bottom:20px;}
+  .cd-label{font-size:11px;text-transform:uppercase;letter-spacing:.16em;opacity:.6;margin-bottom:8px;}
+  .cd-code{font-family:'Playfair Display',serif;font-size:56px;font-weight:900;color:var(--gold);letter-spacing:.1em;line-height:1;}
+  .cd-url{font-size:12px;opacity:.5;margin-top:8px;}
 
   /* GAME */
   #s-game{flex-direction:row;}
@@ -51,8 +53,6 @@
   .pp-write{background:#e6f0ff;color:#1a5a8a;}
   .pp-discuss{background:var(--mist);color:var(--tea);}
   .pp-vote{background:#f5e6ff;color:var(--purple);}
-
-  /* TIMER */
   .timer-wrap{display:flex;align-items:center;gap:5px;}
   .timer-big{font-family:'Playfair Display',serif;font-size:28px;font-weight:900;color:var(--tea);min-width:68px;text-align:center;}
   .timer-big.warn{color:#cc3333;animation:tp .5s infinite alternate;}
@@ -66,16 +66,11 @@
   .ta .go:hover{background:var(--leaf);}
   .ta .oth{background:var(--soft);color:#888;border:1px solid var(--border);}
 
-  /* BODY */
   .body-area{flex:1;display:flex;overflow:hidden;}
-
-  /* WRITE PHASE */
   .write-panel{display:none;flex:1;overflow:hidden;}
   .write-panel.show{display:flex;}
   .write-feed{flex:1;padding:14px 16px;overflow-y:auto;display:flex;flex-direction:column;gap:10px;}
   .write-sidebar{width:190px;border-left:1.5px solid var(--border);padding:12px;background:var(--soft);display:flex;flex-direction:column;gap:8px;overflow-y:auto;}
-
-  /* DISCUSS PHASE */
   .discuss-panel{display:none;flex:1;flex-direction:column;overflow:hidden;}
   .discuss-panel.show{display:flex;}
   .presenter-bar{background:var(--tea);color:white;padding:14px 20px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
@@ -92,7 +87,6 @@
   .discuss-feed{flex:1;padding:14px 16px;overflow-y:auto;display:flex;flex-direction:column;gap:10px;}
   .discuss-sidebar{width:190px;border-left:1.5px solid var(--border);padding:12px;background:var(--soft);display:flex;flex-direction:column;gap:8px;overflow-y:auto;}
 
-  /* ROUND INFO */
   .round-info{background:white;border:1.5px solid var(--border);border-radius:8px;padding:14px 16px;}
   .ri-tag{font-size:9px;text-transform:uppercase;letter-spacing:.14em;font-weight:700;padding:2px 8px;border-radius:20px;display:inline-block;margin-bottom:5px;}
   .tag-c{color:#8a5a00;background:#fff7e6;}
@@ -103,7 +97,6 @@
   .ri-title{font-family:'Playfair Display',serif;font-size:18px;color:var(--tea);margin-bottom:3px;}
   .ri-desc{font-size:12.5px;color:#777;line-height:1.55;}
 
-  /* SUB CARDS */
   .sub-count-bar{font-size:12px;color:#aaa;font-weight:600;display:flex;align-items:center;gap:8px;}
   .progress{flex:1;height:4px;background:var(--border);border-radius:2px;overflow:hidden;}
   .progress-fill{height:100%;background:var(--leaf);border-radius:2px;transition:width .3s;}
@@ -122,13 +115,10 @@
   .ptb.neg{color:#ccc;}
   .ptb.neg:hover{background:var(--accent);color:white;border-color:var(--accent);}
   .hidden-chip{display:inline-flex;align-items:center;gap:5px;padding:5px 10px;background:var(--soft);border:1.5px dashed var(--border);border-radius:5px;font-size:11px;color:#bbb;}
-
-  /* EMPTY */
   .empty{display:flex;flex-direction:column;align-items:center;justify-content:center;flex:1;color:#ccc;gap:6px;text-align:center;padding:40px;}
   .empty .ei{font-size:32px;}
   .empty .ec{font-family:'Playfair Display',serif;font-size:40px;color:var(--tea);font-weight:700;}
 
-  /* SIDEBAR */
   .s-lbl{font-size:9px;text-transform:uppercase;letter-spacing:.12em;color:#bbb;margin-bottom:6px;}
   .score-list{display:flex;flex-direction:column;gap:3px;}
   .slr{display:flex;align-items:center;gap:4px;padding:4px 0;border-bottom:1px solid var(--border);}
@@ -142,11 +132,9 @@
   .spt.m{background:#f5efef;color:#ccc;}
   .spt.m:hover{background:#f0d8d8;color:var(--accent);}
 
-  /* BOTTOM BAR */
   .bottom-bar{padding:8px 16px;border-top:1.5px solid var(--border);background:white;display:flex;gap:6px;align-items:center;flex-shrink:0;flex-wrap:wrap;min-height:46px;}
   .bb-hint{font-size:11px;color:#999;flex:1;line-height:1.4;}
 
-  /* BUTTONS */
   .btn{display:inline-block;padding:6px 14px;border:none;border-radius:5px;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;cursor:pointer;transition:all .14s;}
   .btn-tea{background:var(--tea);color:var(--gold);}
   .btn-tea:hover{background:var(--leaf);}
@@ -158,7 +146,6 @@
   .btn-purple{background:var(--purple);color:white;}
   .btn-purple:hover{background:#7a2aaa;}
 
-  /* SCOREBOARD */
   #s-score{align-items:center;justify-content:center;padding:36px;}
   .sb-title{font-family:'Playfair Display',serif;font-size:clamp(24px,4vw,42px);color:var(--tea);margin-bottom:22px;text-align:center;}
   .sb-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:11px;width:100%;max-width:800px;}
@@ -170,7 +157,6 @@
   .sbc.lead .pts{color:var(--gold);}
   .sbc .lbl{font-size:9px;color:#ccc;text-transform:uppercase;letter-spacing:.1em;}
 
-  /* WINNER */
   #s-winner{align-items:center;justify-content:center;text-align:center;padding:40px;}
   .wt{font-size:60px;margin-bottom:10px;}
   .wl{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:#bbb;margin-bottom:8px;}
@@ -186,11 +172,8 @@
   .pod-pts{font-family:'Playfair Display',serif;font-size:19px;color:var(--gold);font-weight:700;}
   .pod-name{color:#aaa;font-size:10px;margin-top:4px;}
 
-  /* NOTIF */
   .notif{position:fixed;top:12px;left:50%;transform:translateX(-50%) translateY(-60px);background:var(--tea);color:var(--gold);padding:8px 18px;border-radius:6px;font-size:12.5px;font-weight:500;z-index:1000;transition:transform .3s;box-shadow:0 4px 14px rgba(0,0,0,.1);white-space:nowrap;}
   .notif.show{transform:translateX(-50%) translateY(0);}
-
-  /* COUNTDOWN BAR */
   .countdown-bar{display:none;background:linear-gradient(90deg,var(--tea),var(--leaf));color:white;text-align:center;padding:5px;font-size:12px;font-weight:600;flex-shrink:0;}
   .countdown-bar.show{display:block;}
 </style>
@@ -202,18 +185,13 @@
 <div class="screen active" id="s-welcome">
   <div class="w-title">Sagacity Tea <span>Showdown</span></div>
   <div class="w-sub">Instructor View</div>
-  <div class="w-stats">
-    <div class="w-stat"><div class="n">9</div><div class="l">Groups</div></div>
-    <div class="w-stat"><div class="n">5</div><div class="l">Rounds</div></div>
-    <div class="w-stat"><div class="n">75</div><div class="l">Min</div></div>
-  </div>
   <button class="btn btn-gold btn-lg" onclick="goSetup()">Set Up Groups →</button>
 </div>
 
 <!-- SETUP -->
 <div class="screen" id="s-setup">
   <div class="setup-h">Name Your 9 Groups</div>
-  <div class="setup-sub">Students pick their group when they open the student link.</div>
+  <div class="setup-sub">Students will enter the 4-digit code to join.</div>
   <div class="groups-grid" id="groups-grid"></div>
   <button class="btn btn-gold btn-lg" onclick="startGame()">Start Game →</button>
 </div>
@@ -244,9 +222,7 @@
       <button class="btn btn-soft" onclick="showScoreboard()">📊</button>
       <button class="btn btn-soft" onclick="showScreen('s-winner');renderWinner()">🏆</button>
     </div>
-
     <div class="body-area">
-      <!-- WRITE PANEL -->
       <div class="write-panel show" id="write-panel">
         <div class="write-feed" id="write-feed"></div>
         <div class="write-sidebar">
@@ -254,8 +230,6 @@
           <div class="score-list" id="score-list-w"></div>
         </div>
       </div>
-
-      <!-- DISCUSS PANEL -->
       <div class="discuss-panel" id="discuss-panel">
         <div class="presenter-bar">
           <div class="pb-left">
@@ -281,7 +255,6 @@
         </div>
       </div>
     </div>
-
     <div class="bottom-bar" id="bottom-bar"></div>
   </div>
 </div>
@@ -325,28 +298,28 @@ const db = getDatabase(app);
 // ── STATE ──
 let groups = Array.from({length:9},(_,i)=>({key:`g${i}`,name:`Group ${i+1}`,points:0}));
 let curRound = 0;
-let phase = 'write'; // write | discuss | vote
+let phase = 'write';
 let timerSec = 0, timerRunning = false, timerInterval = null;
 let allSubs = {};
-let presenterIdx = 0;
-let presenterOrder = [];
+let presenterIdx = 0, presenterOrder = [];
+let sessionCode = '';
 
 const ROUNDS = [
-  { id:'r1', num:1, name:'Tea Tank',        tag:'CONFLICT',         tagClass:'tag-c', writeSec:300, hidden:true,
-    desc:'Groups secretly pick a threat + write a 2-sentence argument. Timer ends → auto-reveal → argue in order.',
-    discussTask:'Argue your threat — why is it the most dangerous for Kate right now?' },
-  { id:'r2', num:2, name:'Flip It',          tag:"DEVIL'S ADVOCATE", tagClass:'tag-f', writeSec:180, hidden:false,
-    desc:'Groups argue against their own recommendation. Submissions appear live. Timer ends → present in order.',
-    discussTask:'Read your counter-argument out loud. No hedging.' },
-  { id:'r3', num:3, name:'Hot Potato',       tag:'CHAIN REACTION',   tagClass:'tag-h', writeSec:90,  hidden:false,
-    desc:'You send a question. Groups submit one unique point. Go around the room — no repeating.',
-    discussTask:'Read your point. Next group adds something new or challenges it.' },
-  { id:'r4', num:4, name:'Numbers Changed',  tag:'TWIST',            tagClass:'tag-t', writeSec:300, hidden:false,
-    desc:'You reveal a twist. Groups calculate the new profit. Timer ends → walk through the math.',
-    discussTask:'Walk through your calculation. What changed and by how much?' },
-  { id:'r5', num:5, name:"Kate's Voicemail", tag:'LIVE PITCH',       tagClass:'tag-v', writeSec:120, hidden:true,
-    desc:'Groups write their voicemail. Timer ends → auto-reveal → each group reads aloud → class votes.',
-    discussTask:'Read your voicemail out loud. 30 seconds. Go.' },
+  {id:'r1',num:1,name:'Tea Tank',tag:'CONFLICT',tagClass:'tag-c',writeSec:300,hidden:true,
+   desc:'Groups secretly pick a threat + write a 2-sentence argument. Timer ends → auto-reveal → argue in order.',
+   discussTask:'Argue your threat — why is it the most dangerous for Kate right now?'},
+  {id:'r2',num:2,name:'Flip It',tag:"DEVIL'S ADVOCATE",tagClass:'tag-f',writeSec:180,hidden:false,
+   desc:'Groups argue against their own recommendation. Submissions appear live. Timer ends → present in order.',
+   discussTask:'Read your counter-argument out loud. No hedging.'},
+  {id:'r3',num:3,name:'Hot Potato',tag:'CHAIN REACTION',tagClass:'tag-h',writeSec:90,hidden:false,
+   desc:'You send a question. Groups submit one unique point. Go around the room — no repeating.',
+   discussTask:'Read your point. Next group adds something new or challenges it.'},
+  {id:'r4',num:4,name:'Numbers Changed',tag:'TWIST',tagClass:'tag-t',writeSec:300,hidden:false,
+   desc:'You reveal a twist. Groups calculate the new profit. Timer ends → walk through the math.',
+   discussTask:'Walk through your calculation. What changed and by how much?'},
+  {id:'r5',num:5,name:"Kate's Voicemail",tag:'LIVE PITCH',tagClass:'tag-v',writeSec:120,hidden:true,
+   desc:'Groups write their voicemail. Timer ends → auto-reveal → each group reads aloud → class votes.',
+   discussTask:'Read your voicemail out loud. 30 seconds. Go.'},
 ];
 
 // ── SCREEN ──
@@ -356,10 +329,7 @@ window.showScreen = id => {
 };
 
 // ── SETUP ──
-window.goSetup = () => {
-  renderSetupGrid();
-  showScreen('s-setup');
-};
+window.goSetup = () => { renderSetupGrid(); showScreen('s-setup'); };
 
 function renderSetupGrid(){
   document.getElementById('groups-grid').innerHTML = groups.map((g,i)=>`
@@ -372,14 +342,27 @@ window.startGame = async () => {
   document.querySelectorAll('#groups-grid input').forEach((el,i)=>{
     if(el.value.trim()) groups[i].name = el.value.trim();
   });
-  // Clear all Firebase state
-  await remove(ref(db,'submissions'));
-  // Set groups
+
+  // Generate a fresh 4-digit session code
+  sessionCode = Math.floor(1000 + Math.random() * 9000).toString();
+
+  // Wipe ALL previous session data
+  await remove(ref(db, sessionCode));
+
+  // Write groups under this session code
   const gObj = {};
   groups.forEach((g,i)=>{ gObj[`g${i}`]={name:g.name,points:0}; });
-  await set(ref(db,'groups'), gObj);
-  // Set initial game state — students see LOBBY until we start round 1
-  await set(ref(db,'game'), {gameStarted:false, screen:'lobby', curRound:null, phase:null, timerSec:0, timerRunning:false});
+  await set(ref(db,`${sessionCode}/groups`), gObj);
+
+  // Set initial game state — students cannot see anything yet
+  await set(ref(db,`${sessionCode}/game`), {
+    screen: 'lobby',
+    curRound: null,
+    phase: null,
+    timerSec: 0,
+    timerRunning: false
+  });
+
   renderLeftNav();
   renderScoreLists();
   listenGroups();
@@ -396,41 +379,22 @@ function renderLeftNav(){
 
 // ── GOTO ROUND ──
 window.gotoRound = async idx => {
-  curRound = idx;
-  phase = 'write';
-  presenterIdx = 0;
-  presenterOrder = [];
+  curRound = idx; phase = 'write'; presenterIdx = 0; presenterOrder = [];
   const r = ROUNDS[idx];
-
   document.getElementById('tb-title').textContent = `Round ${r.num} · ${r.name}`;
   document.querySelectorAll('.rdot').forEach((d,i)=>{
-    d.classList.toggle('active', i===idx);
-    d.classList.toggle('done', i<idx);
+    d.classList.toggle('active',i===idx); d.classList.toggle('done',i<idx);
   });
-
   setPanels('write');
   pauseTimer(); timerSec = r.writeSec; updateTimerDisplay();
-
-  // Push to Firebase — students transition to write form
-  const gameState = {
-    gameStarted: true,
-    screen: 'write',
-    curRound: r.id,
-    phase: 'write',
-    timerSec: r.writeSec,
-    timerRunning: false,
-    twist: null,
-    potatoQ: null,
-    potatoIdx: -1,
-    correctDirection: null,
-    correctProfit: 0,
-  };
-  await set(ref(db,'game'), gameState);
-  // Clear this round's submissions
-  await remove(ref(db,`submissions/${r.id}`));
-
-  renderWriteFeed();
-  renderBottomBar();
+  await remove(ref(db,`${sessionCode}/submissions/${r.id}`));
+  await set(ref(db,`${sessionCode}/game`), {
+    screen: 'write', curRound: r.id, phase: 'write',
+    timerSec: r.writeSec, timerRunning: false,
+    twist: null, potatoQ: null, potatoIdx: -1,
+    correctDirection: null, correctProfit: 0,
+  });
+  renderWriteFeed(); renderBottomBar();
 };
 
 // ── PANELS ──
@@ -444,26 +408,22 @@ function setPanels(p){
   else if(p==='vote'){ pill.textContent='🗳 Voting'; pill.className='phase-pill pp-vote'; }
 }
 
-// ── START DISCUSSION ──
+// ── DISCUSSION ──
 async function startDiscussion(){
   const r = ROUNDS[curRound];
-  // Reveal hidden submissions if any exist
   if(r.hidden) await revealAll(true);
-  // Build presenter order from whoever submitted, plus remaining groups
   const subs = Object.values(allSubs[r.id]||{}).sort((a,b)=>(a.timestamp||0)-(b.timestamp||0));
   const submitted = subs.map(s=>s.group);
   const notSub = groups.map(g=>g.name).filter(n=>!submitted.includes(n));
-  presenterOrder = [...submitted, ...notSub]; // non-submitters go last
+  presenterOrder = [...submitted, ...notSub];
   presenterIdx = 0;
   setPanels('discuss');
-  renderPresenterBar();
-  renderDiscussFeed();
-  renderScoreLists();
-  await update(ref(db,'game'),{screen:'discuss', phase:'discuss'});
+  renderPresenterBar(); renderDiscussFeed(); renderScoreLists();
+  await update(ref(db,`${sessionCode}/game`),{screen:'discuss', phase:'discuss'});
   showNotif('Discussion started!');
 }
+window.startDiscussion = startDiscussion;
 
-// ── PRESENTER BAR ──
 function renderPresenterBar(){
   const r = ROUNDS[curRound];
   const name = presenterOrder[presenterIdx] || '—';
@@ -471,30 +431,23 @@ function renderPresenterBar(){
   document.getElementById('pb-task').textContent = r.discussTask;
   document.getElementById('pb-count').textContent = `${presenterIdx+1} / ${presenterOrder.length}`;
 }
-
-window.nextPresenter = () => {
-  if(presenterIdx < presenterOrder.length-1){ presenterIdx++; renderPresenterBar(); renderDiscussFeed(); }
-  else showNotif('All groups have presented!');
-};
-window.prevPresenter = () => {
-  if(presenterIdx > 0){ presenterIdx--; renderPresenterBar(); renderDiscussFeed(); }
-};
+window.nextPresenter = () => { if(presenterIdx < presenterOrder.length-1){ presenterIdx++; renderPresenterBar(); renderDiscussFeed(); } else showNotif('All groups presented!'); };
+window.prevPresenter = () => { if(presenterIdx > 0){ presenterIdx--; renderPresenterBar(); renderDiscussFeed(); } };
 
 // ── TIMER ──
-window.setTimer = sec => { pauseTimer(); timerSec=sec; updateTimerDisplay(); update(ref(db,'game'),{timerSec:sec,timerRunning:false}); };
+window.setTimer = sec => { pauseTimer(); timerSec=sec; updateTimerDisplay(); update(ref(db,`${sessionCode}/game`),{timerSec:sec,timerRunning:false}); };
 window.startTimer = () => {
   if(timerRunning) return;
   if(timerSec<=0) timerSec = ROUNDS[curRound].writeSec;
   timerRunning = true;
   timerInterval = setInterval(async()=>{
-    timerSec = Math.max(0, timerSec-1);
+    timerSec = Math.max(0,timerSec-1);
     updateTimerDisplay();
-    update(ref(db,'game'),{timerSec, timerRunning:true});
-    // Countdown last 5s
+    update(ref(db,`${sessionCode}/game`),{timerSec,timerRunning:true});
     if(timerSec<=5 && timerSec>0 && phase==='write'){
       const bar = document.getElementById('countdown-bar');
       bar.classList.add('show');
-      bar.textContent = `⏰ ${timerSec} second${timerSec!==1?'s':''} left — discussion starts automatically`;
+      bar.textContent = `⏰ ${timerSec}s left — discussion starts automatically`;
     }
     if(timerSec<=0){
       pauseTimer();
@@ -503,71 +456,59 @@ window.startTimer = () => {
     }
   },1000);
 };
-window.pauseTimer = () => { timerRunning=false; clearInterval(timerInterval); update(ref(db,'game'),{timerRunning:false}); };
+window.pauseTimer = () => { timerRunning=false; clearInterval(timerInterval); update(ref(db,`${sessionCode}/game`),{timerRunning:false}); };
 window.resetTimer = () => { pauseTimer(); timerSec=ROUNDS[curRound].writeSec; updateTimerDisplay(); document.getElementById('countdown-bar').classList.remove('show'); };
-
 function updateTimerDisplay(){
   const el = document.getElementById('timer-num');
   if(timerSec<=0){ el.textContent='—'; el.className='timer-big'; return; }
-  const m=Math.floor(timerSec/60), s=timerSec%60;
-  el.textContent = `${m}:${String(s).padStart(2,'0')}`;
-  el.className = 'timer-big'+(timerSec<=10?' warn':'');
+  const m=Math.floor(timerSec/60),s=timerSec%60;
+  el.textContent=`${m}:${String(s).padStart(2,'0')}`;
+  el.className='timer-big'+(timerSec<=10?' warn':'');
 }
 
-// ── REVEAL ALL ──
+// ── REVEAL ──
 async function revealAll(silent=false){
   const r = ROUNDS[curRound];
   const subs = allSubs[r.id]||{};
-  if(Object.keys(subs).length===0){
-    // Nothing to reveal — just start discussion anyway
-    if(!silent) showNotif('No submissions — starting discussion anyway');
-    return;
-  }
+  if(Object.keys(subs).length===0){ if(!silent) showNotif('No submissions — starting discussion anyway'); return; }
   const updates={};
-  Object.keys(subs).forEach(k=>{ updates[`submissions/${r.id}/${k}/hidden`]=false; });
+  Object.keys(subs).forEach(k=>{ updates[`${sessionCode}/submissions/${r.id}/${k}/hidden`]=false; });
   await update(ref(db,'/'), updates);
   if(!silent) showNotif('Revealed!');
 }
 
-// ── POTATO Q ──
+// ── POTATO ──
 window.sendPotatoQ = async idx => {
-  const qs=[
-    'Why have slotting fees become so important in CPG? Add ONE new reason — or challenge the last group. No repeating.',
-    'What could Sagacity do to reduce its slotting fees? Add a new tactic — or explain why the last one won\'t work. No repeating.',
-    'Name one reason Kate should NOT go with the online option — or defend it against what was just said. No repeating.'
-  ];
-  await remove(ref(db,'submissions/r3'));
-  await update(ref(db,'game'),{screen:'write', phase:'potato', potatoQ:qs[idx], potatoIdx:idx, curRound:'r3', timerSec:90, timerRunning:false});
-  timerSec=90; updateTimerDisplay();
-  showNotif(`Question ${['A','B','C'][idx]} sent to students`);
+  const qs=['Why have slotting fees become so important in CPG? Add ONE new reason — or challenge the last group. No repeating.','What could Sagacity do to reduce its slotting fees? Add a new tactic — or explain why the last one won\'t work. No repeating.','Name one reason Kate should NOT go with the online option — or defend it against what was just said. No repeating.'];
+  await remove(ref(db,`${sessionCode}/submissions/r3`));
+  await update(ref(db,`${sessionCode}/game`),{screen:'write',phase:'potato',potatoQ:qs[idx],potatoIdx:idx,curRound:'r3',timerSec:90,timerRunning:false});
+  timerSec=90; updateTimerDisplay(); showNotif(`Question ${['A','B','C'][idx]} sent`);
 };
 
 // ── TWIST ──
 window.sendTwist = async idx => {
   const twists=[
     {label:'A',text:"Kate's coupon vendor calls. Real redemption rates run closer to 25%, not 12%. Same 100,000 coupons, same $1 face value. What happens to the broker plan's profit?",dir:'down',profit:7447},
-    {label:'B',text:"Shields calls back. He can only guarantee 150 stores, not 300. Slotting fees and expected cases drop proportionally. Does the deal get better or worse — by how much?",dir:'mixed',profit:null},
+    {label:'B',text:"Shields calls back. He can only guarantee 150 stores, not 300. Slotting fees and expected cases drop proportionally. Does the deal get better or worse — and by how much?",dir:'mixed',profit:null},
     {label:'C',text:"Amazon offers to carry Sagacity but demands a 30% cut of retail price. What does this do to the $110K online profit projection?",dir:'down',profit:null},
   ];
-  const t = twists[idx];
-  await remove(ref(db,'submissions/r4'));
-  await update(ref(db,'game'),{screen:'write', phase:'twist', twist:t, curRound:'r4', correctDirection:t.dir, correctProfit:t.profit||0, timerSec:300, timerRunning:false});
-  timerSec=300; updateTimerDisplay();
-  showNotif(`Twist ${t.label} sent — 5 min timer ready`);
+  const t=twists[idx];
+  await remove(ref(db,`${sessionCode}/submissions/r4`));
+  await update(ref(db,`${sessionCode}/game`),{screen:'write',phase:'twist',twist:t,curRound:'r4',correctDirection:t.dir,correctProfit:t.profit||0,timerSec:300,timerRunning:false});
+  timerSec=300; updateTimerDisplay(); showNotif(`Twist ${t.label} sent — 5 min timer ready`);
 };
 
-// ── OPEN VOTING ──
+// ── VOTING ──
 window.openVoting = async () => {
   await revealAll(true);
   const r = ROUNDS[curRound];
-  await update(ref(db,'game'),{screen:'voting', phase:'vote', votingRound:r.id});
-  setPanels('vote');
-  showNotif('Voting open — students can now vote');
+  await update(ref(db,`${sessionCode}/game`),{screen:'voting',phase:'vote',votingRound:r.id});
+  setPanels('vote'); showNotif('Voting open');
 };
 
 // ── LISTEN ──
 function listenGroups(){
-  onValue(ref(db,'groups'), snap=>{
+  onValue(ref(db,`${sessionCode}/groups`),snap=>{
     if(!snap.exists()) return;
     Object.entries(snap.val()).forEach(([k,v],i)=>{
       if(groups[i]){ groups[i].points=v.points||0; groups[i].name=v.name||groups[i].name; }
@@ -575,10 +516,9 @@ function listenGroups(){
     renderScoreLists();
   });
 }
-
 function listenSubs(){
-  onValue(ref(db,'submissions'), snap=>{
-    allSubs = snap.exists() ? snap.val() : {};
+  onValue(ref(db,`${sessionCode}/submissions`),snap=>{
+    allSubs = snap.exists()?snap.val():{};
     renderWriteFeed();
     if(phase==='discuss') renderDiscussFeed();
     updateSubCount();
@@ -587,17 +527,15 @@ function listenSubs(){
 
 // ── FEEDS ──
 function renderWriteFeed(){
-  const r = ROUNDS[curRound];
-  const subs = Object.values(allSubs[r.id]||{});
-  const feed = document.getElementById('write-feed');
-  let html = `<div class="round-info"><div class="ri-tag ${r.tagClass}">${r.tag}</div>
+  const r=ROUNDS[curRound], subs=Object.values(allSubs[r.id]||{});
+  const feed=document.getElementById('write-feed');
+  let html=`<div class="round-info"><div class="ri-tag ${r.tagClass}">${r.tag}</div>
     <div class="ri-title">${r.name}</div><div class="ri-desc">${r.desc}</div></div>`;
   if(subs.length===0){
     html+=`<div class="empty"><div class="ei">⏳</div><div class="ec">0/9</div><p>Waiting for submissions…</p></div>`;
   } else {
     const pct=Math.round(subs.length/9*100);
-    html+=`<div class="sub-count-bar">${subs.length}/9 submitted
-      <div class="progress"><div class="progress-fill" style="width:${pct}%"></div></div></div>`;
+    html+=`<div class="sub-count-bar">${subs.length}/9 submitted<div class="progress"><div class="progress-fill" style="width:${pct}%"></div></div></div>`;
     const hidden=subs.filter(s=>s.hidden), visible=subs.filter(s=>!s.hidden);
     if(hidden.length) html+=`<div style="display:flex;gap:6px;flex-wrap:wrap;">${hidden.map(s=>`<div class="hidden-chip">🔒 ${s.group}</div>`).join('')}</div>`;
     if(visible.length) html+=`<div class="sub-grid">${visible.map(s=>buildCard(s,r,false,false)).join('')}</div>`;
@@ -606,11 +544,9 @@ function renderWriteFeed(){
 }
 
 function renderDiscussFeed(){
-  const r = ROUNDS[curRound];
-  const subs = Object.values(allSubs[r.id]||{});
-  const cur = presenterOrder[presenterIdx];
-  const feed = document.getElementById('discuss-feed');
-  if(subs.length===0){ feed.innerHTML=`<div class="empty"><div class="ei">📭</div><p>No submissions</p></div>`; return; }
+  const r=ROUNDS[curRound], subs=Object.values(allSubs[r.id]||{}), cur=presenterOrder[presenterIdx];
+  const feed=document.getElementById('discuss-feed');
+  if(subs.length===0){feed.innerHTML=`<div class="empty"><div class="ei">📭</div><p>No submissions</p></div>`;return;}
   feed.innerHTML=`<div class="sub-grid">${subs.map(s=>buildCard(s,r,true,s.group===cur)).join('')}</div>`;
 }
 
@@ -620,7 +556,7 @@ function buildCard(s,r,showScore,isPresenting){
   if(r.id==='r1') body=`<div class="sc-body"><span class="lbl">Threat</span><strong>${s.threat||''}</strong><span class="lbl">Argument</span>${s.argument||''}</div>`;
   else if(r.id==='r2') body=`<div class="sc-body"><span class="lbl">Recommended</span><strong>${s.option||''}</strong><span class="lbl">Counter</span>${s.counter||''}${s.evidence?`<span class="lbl">Evidence</span><span style="color:var(--gold)">📌 ${s.evidence}</span>`:''}</div>`;
   else if(r.id==='r3') body=`<div class="sc-body">${s.point||''}${s.duplicate?'<br><span style="color:var(--accent);font-size:10px;">⚠ Possible duplicate</span>':''}</div>`;
-  else if(r.id==='r4'){const as=s.autoScore||{};body=`<div class="sc-body"><span class="lbl">Direction</span><strong style="color:${as.dirOk?'var(--leaf)':'var(--accent)'}">${s.direction||'—'} ${as.dirOk!==undefined?(as.dirOk?'✓':'✗'):''}</strong><span class="lbl">New profit</span>$${s.newProfit||'—'} ${as.profOk?'<span style="color:var(--leaf);font-size:10px;">✓</span>':''}<span class="lbl">Reasoning</span>${s.reasoning||'—'}</div>`;}
+  else if(r.id==='r4'){const as=s.autoScore||{};body=`<div class="sc-body"><span class="lbl">Direction</span><strong style="color:${as.dirOk?'var(--leaf)':'var(--accent)'}">${s.direction||'—'} ${as.dirOk!==undefined?(as.dirOk?'✓':'✗'):''}</strong><span class="lbl">New profit</span>$${s.newProfit||'—'}${as.profOk?' <span style="color:var(--leaf);font-size:10px;">✓</span>':''}<span class="lbl">Reasoning</span>${s.reasoning||'—'}</div>`;}
   else if(r.id==='r5') body=`<div class="sc-body" style="font-style:italic;">"${s.voicemail||''}"</div>${s.votes?`<div style="font-size:10px;color:var(--gold);margin-top:2px;">👍 ${Object.keys(s.votes).length} vote${Object.keys(s.votes).length!==1?'s':''}</div>`:''}`;
   const scoreRow=showScore?`<div class="sc-score-row">
     <button class="ptb" onclick="givePoints('${s.group}','${r.id}',1)">+1</button>
@@ -634,23 +570,22 @@ function buildCard(s,r,showScore,isPresenting){
 
 // ── POINTS ──
 window.givePoints = async (groupName,roundId,delta) => {
-  const idx=groups.findIndex(g=>g.name===groupName);
-  if(idx<0) return;
+  const idx=groups.findIndex(g=>g.name===groupName); if(idx<0) return;
   const newPts=Math.max(0,(groups[idx].points||0)+delta);
   groups[idx].points=newPts;
-  await update(ref(db,`groups/g${idx}`),{points:newPts});
+  await update(ref(db,`${sessionCode}/groups/g${idx}`),{points:newPts});
   const safeKey=groupName.replace(/\s/g,'_');
-  const snap=await get(ref(db,`submissions/${roundId}/${safeKey}`));
-  if(snap.exists()) await update(ref(db,`submissions/${roundId}/${safeKey}`),{points:Math.max(0,(snap.val().points||0)+delta)});
+  const snap=await get(ref(db,`${sessionCode}/submissions/${roundId}/${safeKey}`));
+  if(snap.exists()) await update(ref(db,`${sessionCode}/submissions/${roundId}/${safeKey}`),{points:Math.max(0,(snap.val().points||0)+delta)});
   showNotif(`${groupName}: ${newPts} pts`);
 };
 
 // ── SCORE LISTS ──
 function renderScoreLists(){
   const sorted=[...groups].sort((a,b)=>b.points-a.points);
-  const html=sorted.map((g,i)=>`
+  const html=sorted.map(g=>`
     <div class="slr">
-      <span class="slr-name">${i===0&&g.points>0?'👑 ':''}${g.name}</span>
+      <span class="slr-name">${g.name}</span>
       <div class="slr-btns">
         <button class="spt m" onclick="givePoints('${g.name}','${ROUNDS[curRound].id}',-1)">−</button>
         <button class="spt p" onclick="givePoints('${g.name}','${ROUNDS[curRound].id}',1)">+</button>
@@ -661,27 +596,22 @@ function renderScoreLists(){
   document.getElementById('score-list-d').innerHTML=html;
 }
 
-// ── SUB COUNT ──
 function updateSubCount(){
-  const r=ROUNDS[curRound];
-  const n=Object.keys(allSubs[r.id]||{}).length;
+  const r=ROUNDS[curRound], n=Object.keys(allSubs[r.id]||{}).length;
   document.getElementById('sub-count').textContent=`${n}/9`;
 }
 
 // ── BOTTOM BAR ──
 function renderBottomBar(){
-  const r=ROUNDS[curRound];
-  const bar=document.getElementById('bottom-bar');
+  const r=ROUNDS[curRound], bar=document.getElementById('bottom-bar');
   let hint='', actions='';
-  if(r.id==='r1'){ hint='5 min to write → timer auto-reveals + starts discussion → cycle through groups → score as they argue'; actions=`<button class="btn btn-tea" onclick="startDiscussion()">💬 Start Discussion Now</button><button class="btn btn-soft" onclick="openVoting()">🗳 Open Voting</button>`; }
-  else if(r.id==='r2'){ hint='3 min to write → timer auto-starts discussion → call each group → score as they speak'; actions=`<button class="btn btn-tea" onclick="startDiscussion()">💬 Start Discussion Now</button>`; }
-  else if(r.id==='r3'){ hint='Send a question → 90s per group → go around the room → score each group'; actions=`<button class="btn btn-soft" onclick="sendPotatoQ(0)">Q-A: Why slotting fees?</button><button class="btn btn-soft" onclick="sendPotatoQ(1)">Q-B: Reduce SFs?</button><button class="btn btn-soft" onclick="sendPotatoQ(2)">Q-C: Against online?</button><button class="btn btn-tea" onclick="startDiscussion()">💬 Start Discussion</button>`; }
-  else if(r.id==='r4'){ hint='Reveal ONE twist → 5 min to calculate → timer auto-starts discussion → call groups to explain'; actions=`<button class="btn btn-purple" onclick="sendTwist(0)">🌀 A: Coupons 25%</button><button class="btn btn-purple" onclick="sendTwist(1)">🌀 B: 150 stores</button><button class="btn btn-purple" onclick="sendTwist(2)">🌀 C: Amazon 30%</button><button class="btn btn-tea" onclick="startDiscussion()">💬 Start Discussion</button>`; }
-  else if(r.id==='r5'){ hint='2 min to write → timer auto-reveals + starts discussion → each group reads aloud → open voting'; actions=`<button class="btn btn-tea" onclick="startDiscussion()">💬 Start Discussion Now</button><button class="btn btn-soft" onclick="openVoting()">🗳 Open Voting</button>`; }
+  if(r.id==='r1'){hint='5 min to write → timer auto-reveals + starts discussion → cycle through groups → score as they argue';actions=`<button class="btn btn-tea" onclick="startDiscussion()">💬 Start Discussion Now</button><button class="btn btn-soft" onclick="openVoting()">🗳 Open Voting</button>`;}
+  else if(r.id==='r2'){hint='3 min to write → timer auto-starts discussion → call each group → score as they speak';actions=`<button class="btn btn-tea" onclick="startDiscussion()">💬 Start Discussion Now</button>`;}
+  else if(r.id==='r3'){hint='Send a question → 90s per group → go around the room → score each group';actions=`<button class="btn btn-soft" onclick="sendPotatoQ(0)">Q-A: Why slotting fees?</button><button class="btn btn-soft" onclick="sendPotatoQ(1)">Q-B: Reduce SFs?</button><button class="btn btn-soft" onclick="sendPotatoQ(2)">Q-C: Against online?</button><button class="btn btn-tea" onclick="startDiscussion()">💬 Start Discussion</button>`;}
+  else if(r.id==='r4'){hint='Reveal ONE twist → 5 min to calculate → timer auto-starts discussion → call groups to explain';actions=`<button class="btn btn-purple" onclick="sendTwist(0)">🌀 A: Coupons 25%</button><button class="btn btn-purple" onclick="sendTwist(1)">🌀 B: 150 stores</button><button class="btn btn-purple" onclick="sendTwist(2)">🌀 C: Amazon 30%</button><button class="btn btn-tea" onclick="startDiscussion()">💬 Start Discussion</button>`;}
+  else if(r.id==='r5'){hint='2 min to write → timer auto-reveals + starts discussion → each group reads aloud → open voting';actions=`<button class="btn btn-tea" onclick="startDiscussion()">💬 Start Discussion Now</button><button class="btn btn-soft" onclick="openVoting()">🗳 Open Voting</button>`;}
   bar.innerHTML=`<span class="bb-hint">${hint}</span>${actions}`;
 }
-
-window.startDiscussion = startDiscussion;
 
 // ── SCOREBOARD ──
 window.showScoreboard=()=>{
@@ -708,9 +638,6 @@ window.renderWinner=()=>{
 // ── NOTIF ──
 let nT;
 window.showNotif=msg=>{const el=document.getElementById('notif');el.textContent=msg;el.classList.add('show');clearTimeout(nT);nT=setTimeout(()=>el.classList.remove('show'),2400);};
-
-// ── INIT ──
-renderSetupGrid();
 </script>
 </body>
 </html>
