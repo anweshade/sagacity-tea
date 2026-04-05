@@ -6,150 +6,172 @@
 <title>Sagacity Tea — Student</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600&display=swap');
-  :root{--tea:#2D5016;--leaf:#4A7C2F;--gold:#C9A84C;--cream:#F7F3EB;--dark:#1C1C1C;--mist:#E6EFD8;--border:#DDD5C4;--soft:#F0EBE0;--accent:#8B3A3A;--purple:#5a1a8a;}
+  :root{
+    --tea:#2D5016;--leaf:#4A7C2F;--gold:#C9A84C;
+    --cream:#F7F3EB;--dark:#1C1C1C;--mist:#E6EFD8;
+    --border:#DDD5C4;--soft:#F0EBE0;--accent:#8B3A3A;--purple:#5a1a8a;
+  }
   *{margin:0;padding:0;box-sizing:border-box;}
   html,body{width:100%;min-height:100vh;background:var(--cream);}
   body{font-family:'DM Sans',sans-serif;color:var(--dark);}
-  .screen{display:none;min-height:100vh;width:100%;align-items:center;justify-content:center;padding:40px 24px;flex-direction:column;}
+
+  .screen{display:none;min-height:100vh;flex-direction:column;align-items:center;justify-content:center;padding:36px 20px;}
   .screen.active{display:flex;}
 
-  /* ── CODE ENTRY ── */
+  /* CODE ENTRY */
   #s-code{text-align:center;}
-  .logo{font-family:'Playfair Display',serif;font-size:clamp(28px,5vw,52px);color:var(--tea);margin-bottom:4px;}
+  .logo{font-family:'Playfair Display',serif;font-size:clamp(26px,5vw,48px);color:var(--tea);margin-bottom:4px;}
   .logo em{color:var(--gold);font-style:normal;}
-  .logo-sub{font-size:14px;color:#aaa;margin-bottom:44px;}
-  .code-label{font-size:12px;text-transform:uppercase;letter-spacing:.14em;color:#aaa;margin-bottom:12px;}
-  .code-input{
-    font-family:'Playfair Display',serif;font-size:48px;font-weight:700;
-    color:var(--tea);text-align:center;letter-spacing:.2em;
-    width:220px;padding:12px 16px;
-    border:2px solid var(--border);border-radius:12px;background:white;outline:none;
-    transition:border-color .14s;
-  }
+  .logo-sub{font-size:14px;color:#aaa;margin-bottom:40px;}
+  .code-label{font-size:11px;text-transform:uppercase;letter-spacing:.14em;color:#aaa;margin-bottom:10px;}
+  .code-input{font-family:'Playfair Display',serif;font-size:52px;font-weight:700;color:var(--tea);text-align:center;letter-spacing:.2em;width:220px;padding:12px;border:2px solid var(--border);border-radius:12px;background:white;outline:none;transition:border-color .14s;}
   .code-input:focus{border-color:var(--leaf);}
   .code-error{font-size:13px;color:var(--accent);margin-top:10px;min-height:20px;}
-  .code-btn{margin-top:20px;padding:14px 48px;background:var(--tea);color:var(--gold);border:none;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:600;cursor:pointer;transition:all .14s;}
+  .code-btn{margin-top:20px;padding:14px 48px;background:var(--tea);color:var(--gold);border:none;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:600;cursor:pointer;}
   .code-btn:hover{background:var(--leaf);}
   .code-btn:disabled{background:#ddd;color:#aaa;cursor:not-allowed;}
 
-  /* ── GROUP PICKER ── */
+  /* GROUP PICKER */
   #s-join{text-align:center;}
-  .pick-label{font-size:12px;text-transform:uppercase;letter-spacing:.14em;color:#aaa;margin-bottom:12px;}
-  .group-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;width:100%;max-width:520px;margin-bottom:28px;}
-  .gp{padding:14px 10px;background:white;border:2px solid var(--border);border-radius:10px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;cursor:pointer;transition:all .14s;text-align:center;color:#555;}
+  .pick-label{font-size:11px;text-transform:uppercase;letter-spacing:.14em;color:#aaa;margin-bottom:10px;}
+  .group-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;width:100%;max-width:500px;margin-bottom:24px;}
+  .gp{padding:14px 8px;background:white;border:2px solid var(--border);border-radius:9px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:all .13s;text-align:center;color:#555;}
   .gp:hover{border-color:var(--leaf);background:var(--mist);color:var(--tea);}
   .gp.sel{background:var(--tea);color:var(--gold);border-color:var(--tea);}
-  .join-btn{padding:14px 40px;background:var(--tea);color:var(--gold);border:none;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:600;cursor:pointer;transition:all .14s;}
+  .join-btn{padding:14px 44px;background:var(--tea);color:var(--gold);border:none;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:600;cursor:pointer;}
   .join-btn:hover{background:var(--leaf);}
   .join-btn:disabled{background:#ddd;color:#aaa;cursor:not-allowed;}
 
-  /* ── LOBBY ── */
-  #s-lobby{text-align:center;}
-  .lobby-icon{font-size:56px;margin-bottom:14px;}
-  .lobby-title{font-family:'Playfair Display',serif;font-size:clamp(24px,4vw,42px);color:var(--tea);margin-bottom:8px;}
-  .lobby-group{display:inline-block;background:var(--mist);color:var(--tea);font-size:14px;font-weight:600;padding:5px 16px;border-radius:20px;margin-bottom:20px;}
-  .lobby-sub{font-size:14px;color:#aaa;margin-bottom:28px;}
+  /* LOBBY / STANDBY */
+  #s-lobby, #s-standby{text-align:center;}
+  .lobby-icon{font-size:52px;margin-bottom:12px;}
+  .lobby-title{font-family:'Playfair Display',serif;font-size:clamp(22px,4vw,40px);color:var(--tea);margin-bottom:8px;}
+  .lobby-group{display:inline-block;background:var(--mist);color:var(--tea);font-size:14px;font-weight:600;padding:5px 16px;border-radius:20px;margin-bottom:18px;}
+  .lobby-sub{font-size:14px;color:#aaa;margin-bottom:24px;max-width:400px;line-height:1.6;}
   .dots{display:flex;gap:8px;justify-content:center;}
   .dot{width:9px;height:9px;border-radius:50%;background:var(--border);animation:dp 1.4s infinite ease-in-out;}
   .dot:nth-child(2){animation-delay:.2s;}
   .dot:nth-child(3){animation-delay:.4s;}
   @keyframes dp{0%,80%,100%{transform:scale(.8);opacity:.4}40%{transform:scale(1.2);opacity:1}}
 
-  /* ── STANDBY ── */
-  #s-standby{text-align:center;}
-
-  /* ── FORM PAGE ── */
-  #s-round{max-width:680px;width:100%;}
-  .form-header{margin-bottom:24px;}
-  .form-tag{font-size:11px;text-transform:uppercase;letter-spacing:.14em;font-weight:700;padding:3px 12px;border-radius:20px;display:inline-block;margin-bottom:10px;}
+  /* FORM */
+  #s-round{max-width:660px;width:100%;}
+  .form-header{margin-bottom:20px;width:100%;}
+  .form-tag{font-size:10px;text-transform:uppercase;letter-spacing:.14em;font-weight:700;padding:3px 11px;border-radius:20px;display:inline-block;margin-bottom:8px;}
   .tag-c{color:#8a5a00;background:#fff7e6;}
   .tag-f{color:var(--accent);background:#fff0f0;}
   .tag-h{color:#1a5a8a;background:#e6f0ff;}
   .tag-t{color:#5a1a8a;background:#f5e6ff;}
   .tag-v{color:var(--tea);background:var(--mist);}
-  .form-title{font-family:'Playfair Display',serif;font-size:clamp(22px,4vw,36px);color:var(--tea);margin-bottom:8px;line-height:1.2;}
-  .form-task{font-size:15px;color:#555;line-height:1.7;}
-  .timer-strip{display:flex;align-items:center;justify-content:space-between;background:white;border:2px solid var(--border);border-radius:10px;padding:12px 20px;margin-bottom:20px;}
-  .ts-label{font-size:12px;color:#aaa;text-transform:uppercase;letter-spacing:.08em;}
-  .ts-time{font-family:'Playfair Display',serif;font-size:32px;font-weight:700;color:var(--tea);}
+  .form-title{font-family:'Playfair Display',serif;font-size:clamp(20px,4vw,34px);color:var(--tea);margin-bottom:6px;line-height:1.2;}
+  .form-task{font-size:14px;color:#555;line-height:1.7;}
+
+  .timer-strip{display:flex;align-items:center;justify-content:space-between;background:white;border:2px solid var(--border);border-radius:9px;padding:10px 18px;margin-bottom:16px;width:100%;}
+  .ts-label{font-size:11px;color:#aaa;text-transform:uppercase;letter-spacing:.08em;}
+  .ts-time{font-family:'Playfair Display',serif;font-size:30px;font-weight:700;color:var(--tea);}
   .ts-time.warn{color:#cc3333;animation:tpulse .5s infinite alternate;}
   @keyframes tpulse{from{opacity:1}to{opacity:.3}}
-  .form-card{background:white;border:2px solid var(--border);border-radius:12px;padding:28px;display:flex;flex-direction:column;gap:20px;}
-  .field{display:flex;flex-direction:column;gap:6px;}
+
+  .form-card{background:white;border:2px solid var(--border);border-radius:12px;padding:24px;display:flex;flex-direction:column;gap:18px;width:100%;}
+
+  /* ASSIGNMENT BOX */
+  .assign-box{border-radius:10px;padding:14px 18px;}
+  .assign-box.green{background:var(--mist);border:2px solid var(--leaf);}
+  .assign-box.red{background:#fff0f0;border:2px solid var(--accent);}
+  .assign-box .ab-label{font-size:10px;text-transform:uppercase;letter-spacing:.14em;font-weight:700;margin-bottom:5px;}
+  .assign-box.green .ab-label{color:var(--leaf);}
+  .assign-box.red .ab-label{color:var(--accent);}
+  .assign-box .ab-value{font-size:17px;font-weight:700;color:var(--dark);margin-bottom:4px;}
+  .assign-box .ab-hint{font-size:12px;color:#777;line-height:1.5;}
+
+  .field{display:flex;flex-direction:column;gap:5px;}
   .field-label{font-size:13px;font-weight:600;color:var(--dark);}
-  .field-hint{font-size:12px;color:#aaa;}
-  .field input,.field textarea{width:100%;padding:12px 14px;border:2px solid var(--border);border-radius:8px;font-family:'DM Sans',sans-serif;font-size:14px;color:var(--dark);background:var(--cream);outline:none;transition:border-color .14s;resize:vertical;}
+  .field-hint{font-size:12px;color:#aaa;line-height:1.5;}
+  .field input,.field textarea{width:100%;padding:11px 13px;border:2px solid var(--border);border-radius:8px;font-family:'DM Sans',sans-serif;font-size:14px;color:var(--dark);background:var(--cream);outline:none;transition:border-color .13s;resize:vertical;}
   .field input:focus,.field textarea:focus{border-color:var(--leaf);background:white;}
-  .field textarea{min-height:90px;}
-  .char-ct{font-size:11px;color:#bbb;text-align:right;}
+  .field textarea{min-height:88px;}
+  .char-ct{font-size:10px;color:#bbb;text-align:right;}
   .char-ct.near{color:var(--gold);}
-  .opt-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
-  .opt{padding:12px 14px;background:var(--soft);border:2px solid var(--border);border-radius:8px;font-family:'DM Sans',sans-serif;font-size:13px;cursor:pointer;transition:all .13s;text-align:left;color:#555;font-weight:500;line-height:1.4;}
+
+  .opt-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px;}
+  .opt{padding:11px 12px;background:var(--soft);border:2px solid var(--border);border-radius:7px;font-family:'DM Sans',sans-serif;font-size:13px;cursor:pointer;transition:all .12s;text-align:left;color:#555;font-weight:500;line-height:1.4;}
   .opt:hover{border-color:var(--leaf);background:var(--mist);color:var(--tea);}
   .opt.sel{background:var(--tea);color:var(--gold);border-color:var(--tea);}
-  .threat-list{display:flex;flex-direction:column;gap:6px;}
-  .thr{padding:12px 16px;background:var(--soft);border:2px solid var(--border);border-radius:8px;font-family:'DM Sans',sans-serif;font-size:13.5px;cursor:pointer;transition:all .13s;text-align:left;color:#555;font-weight:500;}
-  .thr:hover{border-color:var(--leaf);background:var(--mist);color:var(--tea);}
-  .thr.sel{background:var(--tea);color:var(--gold);border-color:var(--tea);}
-  .twist-box{background:#f5e6ff;border:2px solid #cc88ff;border-radius:10px;padding:16px 20px;}
-  .twist-box-label{font-size:10px;text-transform:uppercase;letter-spacing:.14em;color:var(--purple);font-weight:700;margin-bottom:6px;}
+
+  .twist-box{background:#f5e6ff;border:2px solid #cc88ff;border-radius:10px;padding:14px 18px;}
+  .twist-box-label{font-size:10px;text-transform:uppercase;letter-spacing:.14em;color:var(--purple);font-weight:700;margin-bottom:5px;}
   .twist-box-text{font-size:14px;color:#330033;line-height:1.7;}
-  .calc-ref{background:var(--soft);border:2px solid var(--border);border-radius:10px;padding:16px 20px;font-size:13px;color:#555;line-height:1.85;}
+
+  .calc-ref{background:var(--soft);border:2px solid var(--border);border-radius:9px;padding:14px 18px;font-size:12.5px;color:#555;line-height:1.85;}
   .calc-ref strong{color:var(--tea);}
-  .submit-btn{width:100%;padding:14px;background:var(--tea);color:var(--gold);border:none;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:600;cursor:pointer;transition:all .14s;margin-top:4px;}
+
+  .submit-btn{width:100%;padding:13px;background:var(--tea);color:var(--gold);border:none;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:600;cursor:pointer;margin-top:2px;}
   .submit-btn:hover{background:var(--leaf);}
 
-  /* ── SUBMITTED ── */
+  /* SUBMITTED */
   #s-submitted{text-align:center;}
-  .sub-icon{font-size:60px;margin-bottom:14px;}
-  .sub-title{font-family:'Playfair Display',serif;font-size:32px;color:var(--tea);margin-bottom:8px;}
-  .sub-note{font-size:14px;color:#aaa;margin-bottom:24px;line-height:1.6;max-width:480px;}
-  .sub-card-label{font-size:10px;text-transform:uppercase;letter-spacing:.12em;color:#bbb;margin-bottom:8px;}
-  .sub-card{background:white;border:2px solid var(--border);border-radius:12px;padding:20px 24px;text-align:left;font-size:14px;color:#555;line-height:1.75;white-space:pre-wrap;width:100%;max-width:520px;}
+  .sub-icon{font-size:56px;margin-bottom:12px;}
+  .sub-title{font-family:'Playfair Display',serif;font-size:30px;color:var(--tea);margin-bottom:6px;}
+  .sub-note{font-size:14px;color:#aaa;margin-bottom:22px;line-height:1.6;max-width:460px;}
+  .sub-preview-label{font-size:10px;text-transform:uppercase;letter-spacing:.12em;color:#bbb;margin-bottom:7px;}
+  .sub-preview{background:white;border:2px solid var(--border);border-radius:10px;padding:18px 22px;text-align:left;font-size:14px;color:#555;line-height:1.7;white-space:pre-wrap;width:100%;max-width:500px;}
 
-  /* ── DISCUSS ── */
+  /* DISCUSS */
   #s-discuss{text-align:center;}
-  .discuss-icon{font-size:56px;margin-bottom:14px;}
-  .discuss-title{font-family:'Playfair Display',serif;font-size:32px;color:var(--tea);margin-bottom:8px;}
-  .discuss-note{font-size:14px;color:#aaa;margin-bottom:24px;max-width:420px;line-height:1.6;}
-  .ya-label{font-size:10px;text-transform:uppercase;letter-spacing:.12em;color:var(--gold);margin-bottom:8px;font-weight:700;}
-  .your-answer{background:white;border:2px solid var(--gold);border-radius:12px;padding:20px 24px;text-align:left;font-size:14px;color:#555;line-height:1.75;white-space:pre-wrap;width:100%;max-width:520px;}
+  .discuss-icon{font-size:52px;margin-bottom:12px;}
+  .discuss-title{font-family:'Playfair Display',serif;font-size:30px;color:var(--tea);margin-bottom:6px;}
+  .discuss-note{font-size:14px;color:#aaa;margin-bottom:22px;max-width:400px;line-height:1.6;}
+  .ya-label{font-size:10px;text-transform:uppercase;letter-spacing:.12em;color:var(--gold);margin-bottom:7px;font-weight:700;}
+  .your-answer{background:white;border:2px solid var(--gold);border-radius:10px;padding:18px 22px;text-align:left;font-size:14px;color:#555;line-height:1.7;white-space:pre-wrap;width:100%;max-width:500px;}
 
-  /* ── VOTING ── */
-  #s-voting{max-width:640px;width:100%;}
-  .vote-title{font-family:'Playfair Display',serif;font-size:clamp(22px,4vw,34px);color:var(--tea);margin-bottom:6px;text-align:center;}
-  .vote-sub{font-size:14px;color:#aaa;margin-bottom:20px;text-align:center;line-height:1.6;}
-  .vote-list{display:flex;flex-direction:column;gap:10px;width:100%;}
-  .vc{background:white;border:2px solid var(--border);border-radius:10px;padding:16px 20px;cursor:pointer;transition:all .14s;}
-  .vc:hover{border-color:var(--leaf);background:var(--mist);}
-  .vc.voted{border-color:var(--gold);background:#fffdf5;cursor:default;}
-  .vc-grp{font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:#bbb;margin-bottom:5px;}
-  .vc-body{font-size:14px;color:var(--dark);line-height:1.65;}
+  /* ANON VOTING */
+  #s-anon-vote{max-width:680px;width:100%;}
+  .vote-header{text-align:center;margin-bottom:20px;}
+  .vote-title{font-family:'Playfair Display',serif;font-size:clamp(20px,4vw,32px);color:var(--tea);margin-bottom:5px;}
+  .vote-sub{font-size:14px;color:#aaa;line-height:1.6;}
+  .vote-timer{font-family:'Playfair Display',serif;font-size:28px;font-weight:700;color:var(--tea);margin-top:6px;}
+  .vote-timer.warn{color:#cc3333;animation:tpulse .5s infinite alternate;}
+  .anon-cards{display:flex;flex-direction:column;gap:10px;width:100%;}
+  .anon-card{background:white;border:2px solid var(--border);border-radius:10px;padding:16px 20px;cursor:pointer;transition:all .14s;}
+  .anon-card:hover{border-color:var(--leaf);background:var(--mist);}
+  .anon-card.voted{border-color:var(--gold);background:#fffdf5;cursor:default;}
+  .anon-card .ac-label{font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:#bbb;margin-bottom:4px;}
+  .anon-card .ac-assigned{font-size:13px;font-weight:600;color:var(--tea);margin-bottom:5px;}
+  .anon-card .ac-body{font-size:14px;color:var(--dark);line-height:1.65;}
   .voted-badge{display:inline-block;margin-top:8px;font-size:11px;color:var(--gold);font-weight:600;}
+  .already-voted{text-align:center;font-size:14px;color:#aaa;padding:20px;}
 
-  .notif{position:fixed;top:16px;left:50%;transform:translateX(-50%) translateY(-70px);background:var(--tea);color:var(--gold);padding:10px 22px;border-radius:8px;font-size:13px;font-weight:600;z-index:1000;transition:transform .3s;box-shadow:0 4px 16px rgba(0,0,0,.12);white-space:nowrap;}
+  /* GRADE RESULT */
+  #s-grade{text-align:center;}
+  .grade-icon{font-size:52px;margin-bottom:12px;}
+  .grade-title{font-family:'Playfair Display',serif;font-size:28px;color:var(--tea);margin-bottom:6px;}
+  .grade-pts{font-family:'Playfair Display',serif;font-size:72px;font-weight:900;color:var(--gold);line-height:1;margin-bottom:6px;}
+  .grade-label{font-size:14px;color:#aaa;margin-bottom:20px;}
+  .grade-detail{background:white;border:2px solid var(--border);border-radius:10px;padding:16px 20px;text-align:left;font-size:13px;color:#555;line-height:1.75;max-width:440px;width:100%;}
+
+  .notif{position:fixed;top:14px;left:50%;transform:translateX(-50%) translateY(-70px);background:var(--tea);color:var(--gold);padding:9px 20px;border-radius:7px;font-size:13px;font-weight:600;z-index:1000;transition:transform .3s;box-shadow:0 4px 14px rgba(0,0,0,.1);white-space:nowrap;}
   .notif.show{transform:translateX(-50%) translateY(0);}
 </style>
 </head>
 <body>
 <div class="notif" id="notif"></div>
 
-<!-- STEP 1: Enter code -->
+<!-- CODE ENTRY -->
 <div class="screen active" id="s-code">
   <div class="logo">☕ Sagacity Tea <em>Showdown</em></div>
   <div class="logo-sub">Enter the 4-digit code from your instructor</div>
   <div class="code-label">Session Code</div>
   <input class="code-input" id="code-input" type="text" maxlength="4" placeholder="----"
-         oninput="this.value=this.value.replace(/\D/g,''); checkCode()" />
+         oninput="this.value=this.value.replace(/\D/g,'');checkCode()"/>
   <div class="code-error" id="code-error"></div>
   <button class="code-btn" id="code-btn" onclick="enterCode()" disabled>Join →</button>
 </div>
 
-<!-- STEP 2: Pick group -->
+<!-- GROUP PICKER -->
 <div class="screen" id="s-join">
   <div class="logo">☕ Sagacity Tea <em>Showdown</em></div>
-  <div class="logo-sub" id="join-sub">Session joined!</div>
-  <div class="pick-label">Select Your Group</div>
+  <div class="logo-sub" id="join-sub">Pick your group</div>
+  <div class="pick-label">Your Group</div>
   <div class="group-grid" id="group-grid"></div>
   <button class="join-btn" id="join-btn" onclick="joinGroup()" disabled>Join →</button>
 </div>
@@ -158,23 +180,23 @@
 <div class="screen" id="s-lobby">
   <div class="lobby-icon">☕</div>
   <div class="lobby-title">You're in!</div>
-  <div class="lobby-group" id="lobby-group"></div>
-  <div class="lobby-sub">Waiting for the instructor to start…</div>
+  <div class="lobby-group" id="lobby-group">—</div>
+  <div class="lobby-sub">Waiting for the instructor to start the game…</div>
   <div class="dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
 </div>
 
-<!-- STANDBY -->
+<!-- STANDBY (waiting for potato Q or twist) -->
 <div class="screen" id="s-standby">
   <div class="lobby-icon" id="standby-icon">⏳</div>
   <div class="lobby-title" id="standby-title">Stand by…</div>
-  <div class="lobby-group" id="standby-group"></div>
+  <div class="lobby-group" id="standby-group">—</div>
   <div class="lobby-sub" id="standby-sub">Your instructor is about to send the next prompt.</div>
   <div class="dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
 </div>
 
 <!-- ACTIVE FORM -->
 <div class="screen" id="s-round">
-  <div style="width:100%;max-width:680px;">
+  <div style="width:100%;max-width:660px;">
     <div class="form-header">
       <div class="form-tag" id="f-tag">ROUND</div>
       <div class="form-title" id="f-title">—</div>
@@ -193,8 +215,18 @@
   <div class="sub-icon">✅</div>
   <div class="sub-title">Submitted!</div>
   <div class="sub-note" id="sub-note">Watch the instructor screen.</div>
-  <div class="sub-card-label">Your answer</div>
-  <div class="sub-card" id="sub-preview">—</div>
+  <div class="sub-preview-label">Your answer</div>
+  <div class="sub-preview" id="sub-preview">—</div>
+</div>
+
+<!-- ANONYMOUS VOTING -->
+<div class="screen" id="s-anon-vote">
+  <div class="vote-header">
+    <div class="vote-title" id="vote-title">Vote for the Best Argument</div>
+    <div class="vote-sub" id="vote-sub">Read all arguments carefully. Vote for the most convincing one.<br>You cannot vote for your own group.</div>
+    <div class="vote-timer" id="vote-timer">—</div>
+  </div>
+  <div class="anon-cards" id="anon-cards"></div>
 </div>
 
 <!-- DISCUSS -->
@@ -206,11 +238,13 @@
   <div class="your-answer" id="your-answer">—</div>
 </div>
 
-<!-- VOTING -->
-<div class="screen" id="s-voting">
-  <div class="vote-title" id="vote-title">Vote for the Best</div>
-  <div class="vote-sub" id="vote-sub">Which answer would actually change Kate's mind?</div>
-  <div class="vote-list" id="vote-list"></div>
+<!-- AUTO-GRADE RESULT (Round 4) -->
+<div class="screen" id="s-grade">
+  <div class="grade-icon" id="grade-icon">🎯</div>
+  <div class="grade-title">Your Score</div>
+  <div class="grade-pts" id="grade-pts">—</div>
+  <div class="grade-label" id="grade-label">points earned this round</div>
+  <div class="grade-detail" id="grade-detail">—</div>
 </div>
 
 <script type="module">
@@ -230,276 +264,265 @@ const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 
 // ── STATE ──
-let sessionCode = '';
-let myGroup = null, myGroupKey = null;
-let lastRoundKey = null;
-let hasSubmitted = false, hasVoted = false;
-let myPreview = '';
-let selThreat='', selOpt='', selDir='';
+let sessionCode='', myGroup=null, myGroupKey=null;
+let lastRoundKey=null, hasSubmitted=false, hasVoted=false;
+let myPreview='', myAssigned='', selDir='';
 let localTimer=0, localTimerRunning=false, localTimerInterval=null;
 
-// ── STEP 1: CODE ENTRY ──
-window.checkCode = () => {
-  const val = document.getElementById('code-input').value;
-  document.getElementById('code-btn').disabled = val.length !== 4;
-  document.getElementById('code-error').textContent = '';
+// ── CODE ENTRY ──
+window.checkCode=()=>{
+  const v=document.getElementById('code-input').value;
+  document.getElementById('code-btn').disabled=v.length!==4;
+  document.getElementById('code-error').textContent='';
 };
 
-window.enterCode = async () => {
-  const code = document.getElementById('code-input').value.trim();
-  if(code.length !== 4) return;
-  // Check if this session exists in Firebase
-  const snap = await get(ref(db, `${code}/game`));
-  if(!snap.exists()){
-    document.getElementById('code-error').textContent = 'Code not found. Check with your instructor.';
-    return;
-  }
-  if(snap.val().screen !== 'lobby' && snap.val().screen !== 'write'){
-    // Still allow joining mid-game
-  }
-  sessionCode = code;
-  // Load groups for picker
-  const gSnap = await get(ref(db, `${code}/groups`));
-  if(!gSnap.exists()){ document.getElementById('code-error').textContent = 'Session not ready yet.'; return; }
-  const data = gSnap.val();
-  document.getElementById('group-grid').innerHTML = Object.entries(data).map(([key,g])=>
+window.enterCode=async()=>{
+  const code=document.getElementById('code-input').value.trim();
+  if(code.length!==4) return;
+  const snap=await get(ref(db,`${code}/game`));
+  if(!snap.exists()){document.getElementById('code-error').textContent='Code not found. Check with your instructor.';return;}
+  sessionCode=code;
+  const gSnap=await get(ref(db,`${code}/groups`));
+  if(!gSnap.exists()){document.getElementById('code-error').textContent='Session not ready yet.';return;}
+  document.getElementById('group-grid').innerHTML=Object.entries(gSnap.val()).map(([key,g])=>
     `<button class="gp" id="gp-${key}" onclick="pickGroup('${key}','${g.name}')">${g.name}</button>`).join('');
-  document.getElementById('join-sub').textContent = `Session ${code} — select your group`;
+  document.getElementById('join-sub').textContent=`Session ${code} — pick your group`;
   showScreen('s-join');
 };
 
-// ── STEP 2: GROUP PICKER ──
-window.pickGroup = (key, name) => {
-  myGroup = name; myGroupKey = key;
+// ── GROUP PICKER ──
+window.pickGroup=(key,name)=>{
+  myGroup=name; myGroupKey=key;
   document.querySelectorAll('.gp').forEach(b=>b.classList.remove('sel'));
   document.getElementById(`gp-${key}`)?.classList.add('sel');
-  document.getElementById('join-btn').disabled = false;
+  document.getElementById('join-btn').disabled=false;
 };
 
-window.joinGroup = () => {
+window.joinGroup=async()=>{
   if(!myGroup) return;
-  document.getElementById('lobby-group').textContent = myGroup;
+  document.getElementById('lobby-group').textContent=myGroup;
+  // Register join
+  await set(ref(db,`${sessionCode}/joined/${myGroupKey}`),{name:myGroup,ts:Date.now()});
   showScreen('s-lobby');
-  // NOW start listening — only after code verified + group selected
   listenGame();
 };
 
 // ── GAME LISTENER ──
 function listenGame(){
-  onValue(ref(db, `${sessionCode}/game`), snap => {
+  onValue(ref(db,`${sessionCode}/game`),snap=>{
     if(!snap.exists()) return;
-    const state = snap.val();
+    const state=snap.val();
     syncTimer(state);
-    const screen = state.screen;
+    const screen=state.screen, phase=state.phase;
 
-    if(!screen || screen === 'lobby'){
-      showScreen('s-lobby');
+    if(!screen||screen==='lobby'){showScreen('s-lobby');return;}
+
+    if(screen==='discuss'){
+      document.getElementById('your-answer').textContent=myPreview||'(Nothing submitted this round)';
+      showScreen('s-discuss');return;
+    }
+
+    if(screen==='anon-vote'){
+      if(!hasVoted) loadAnonVote(state);
       return;
     }
 
-    if(screen === 'discuss'){
-      document.getElementById('your-answer').textContent = myPreview || '(Nothing submitted this round)';
-      showScreen('s-discuss');
+    if(screen==='reveal'){
+      // Names revealed — go back to submitted/discuss
+      document.getElementById('your-answer').textContent=myPreview||'(Nothing submitted this round)';
+      showScreen('s-discuss');return;
+    }
+
+    if(screen==='voting'){
+      // Final voting (r5 after discussion)
+      if(!hasVoted) loadFinalVote(state.votingRound);
       return;
     }
 
-    if(screen === 'voting'){
-      if(!hasVoted) loadVoting(state.votingRound, state.votingRound === 'r5');
-      else showScreen('s-voting');
-      return;
-    }
-
-    if(screen === 'write'){
-      const roundId = state.curRound;
-      const phase = state.phase;
-
-      if(phase === 'write'){
-        if(lastRoundKey !== roundId){
-          lastRoundKey = roundId;
-          hasSubmitted = false; hasVoted = false; myPreview = '';
-          selThreat=''; selOpt=''; selDir='';
-          const assigned = state.assignments?.[myGroup] || null;
-          loadForm(roundId, {assigned});
-        } else if(hasSubmitted){
-          showScreen('s-submitted');
-        }
-      } else if(phase === 'potato'){
+    if(screen==='write'){
+      const roundId=state.curRound;
+      if(phase==='write'){
+        if(lastRoundKey!==roundId){
+          lastRoundKey=roundId; hasSubmitted=false; hasVoted=false;
+          myPreview=''; myAssigned=''; selDir='';
+          myAssigned=state.assignments?.[myGroup]||'';
+          loadForm(roundId,{assigned:myAssigned});
+        } else if(hasSubmitted){showScreen('s-submitted');}
+      } else if(phase==='grade'){
+        // R4 auto-graded — show their score
+        showGradeResult();
+      } else if(phase==='potato'){
         if(state.potatoQ){
-          const key = `potato-${state.potatoIdx}`;
-          if(lastRoundKey !== key){
-            lastRoundKey = key;
-            hasSubmitted = false; selThreat=''; selOpt=''; selDir='';
-            loadForm('r3', {overrideTask: state.potatoQ});
-          } else if(hasSubmitted){ showScreen('s-submitted'); }
-        } else {
-          showStandby('🥔','Hot Potato','The instructor is about to send the question.');
-        }
-      } else if(phase === 'twist'){
+          const key=`potato-${state.potatoIdx}`;
+          if(lastRoundKey!==key){lastRoundKey=key;hasSubmitted=false;loadForm('r3',{overrideTask:state.potatoQ});}
+          else if(hasSubmitted) showScreen('s-submitted');
+        } else showStandby('🥔','Hot Potato','The instructor is about to send the question.');
+      } else if(phase==='twist'){
         if(state.twist){
-          const key = `twist-${state.twist.label}`;
-          if(lastRoundKey !== key){
-            lastRoundKey = key;
-            hasSubmitted = false; selThreat=''; selOpt=''; selDir='';
-            loadForm('r4', {twist:state.twist, correctDirection:state.correctDirection, correctProfit:state.correctProfit});
-          } else if(hasSubmitted){ showScreen('s-submitted'); }
-        } else {
-          showStandby('🌀','Numbers Changed','The instructor is about to reveal the changed assumption.');
-        }
+          const key=`twist-${state.twist.label}`;
+          if(lastRoundKey!==key){lastRoundKey=key;hasSubmitted=false;selDir='';loadForm('r4',{twist:state.twist,correctDirection:state.correctDirection,correctProfit:state.correctProfit});}
+          else if(hasSubmitted) showScreen('s-submitted');
+        } else showStandby('🌀','Numbers Changed','The instructor is about to reveal the changed assumption.');
       }
     }
   });
 }
 
 // ── STANDBY ──
-function showStandby(icon, title, sub){
-  document.getElementById('standby-icon').textContent = icon;
-  document.getElementById('standby-title').textContent = title;
-  document.getElementById('standby-group').textContent = myGroup;
-  document.getElementById('standby-sub').textContent = sub;
+function showStandby(icon,title,sub){
+  document.getElementById('standby-icon').textContent=icon;
+  document.getElementById('standby-title').textContent=title;
+  document.getElementById('standby-group').textContent=myGroup;
+  document.getElementById('standby-sub').textContent=sub;
   showScreen('s-standby');
 }
 
 // ── FORM ──
-const META = {
-  r1:{tag:'CONFLICT',tagClass:'tag-c',title:'Tea Tank',
-      task:"Your group has been assigned a specific threat to argue is Sagacity's most dangerous. You cannot change it — your job is to make the strongest possible case for why THIS threat is the one Kate cannot afford to ignore right now. In 2 sentences: explain what makes it deadly, and why it matters specifically for the decision she faces today."},
-  r2:{tag:"DEVIL'S ADVOCATE",tagClass:'tag-f',title:'Flip It',
-      task:"Your group has been randomly assigned an expansion option to argue AGAINST. Even if you think this option is a good idea, your job right now is to be Kate's harshest critic. Write the most compelling case you can for why this option could fail — and back it up with at least one specific number or fact from the case. No hedging."},
+const META={
+  r1:{tag:'CONFLICT',tagClass:'tag-c',title:'Tea Tank',task:''},
+  r2:{tag:"DEVIL'S ADVOCATE",tagClass:'tag-f',title:'Flip It',task:''},
   r3:{tag:'CHAIN REACTION',tagClass:'tag-h',title:'Hot Potato',task:''},
-  r4:{tag:'TWIST',tagClass:'tag-t',title:'Numbers Changed',
-      task:"A key assumption in the broker plan has just changed. Using the original numbers provided and the new assumption shown above, calculate what the new profit would be. Show every step — even if your final answer is slightly off, you can still earn points for correct reasoning and logic."},
-  r5:{tag:'LIVE PITCH',tagClass:'tag-v',title:"Kate's Voicemail",
-      task:"It's 8:58am. Kate walks into Shields' office at 9:00 to sign. She checks her phone one last time. You have 30 seconds on her voicemail. Tell her exactly what to do and why — name your recommendation, give one strong reason, flag one real risk, and cite at least one number from the case. Vague advice ('think carefully about your options') scores zero."},
+  r4:{tag:'TWIST',tagClass:'tag-t',title:'Numbers Changed',task:'Calculate the impact of the changed assumption. Show every step — partial credit for correct logic even if the final number is off.'},
+  r5:{tag:'LIVE PITCH',tagClass:'tag-v',title:"Kate's Voicemail",task:"It's 8:58am. Kate walks into Shields' office at 9:00 to sign. She checks her phone one last time. You have 30 seconds on her voicemail. Recommendation + one strong reason + one risk + one number from the case. Vague advice scores zero."},
 };
 
-function loadForm(roundId, opts){
-  const meta = META[roundId]; if(!meta) return;
-  document.getElementById('f-tag').textContent = meta.tag;
-  document.getElementById('f-tag').className = 'form-tag ' + meta.tagClass;
-  document.getElementById('f-title').textContent = meta.title;
-  document.getElementById('f-task').textContent = opts.overrideTask || meta.task;
-  const ts = document.getElementById('timer-strip');
-  ts.style.display = localTimer > 0 ? 'flex' : 'none';
-  if(localTimer > 0) updateSTimer();
-  buildForm(roundId, opts);
+function loadForm(roundId,opts){
+  const meta=META[roundId]; if(!meta) return;
+  document.getElementById('f-tag').textContent=meta.tag;
+  document.getElementById('f-tag').className='form-tag '+meta.tagClass;
+  document.getElementById('f-title').textContent=meta.title;
+  document.getElementById('f-task').textContent=opts.overrideTask||meta.task;
+  const ts=document.getElementById('timer-strip');
+  ts.style.display=localTimer>0?'flex':'none';
+  if(localTimer>0) updateSTimer();
+  buildForm(roundId,opts);
   showScreen('s-round');
 }
 
-function buildForm(roundId, opts){
-  const card = document.getElementById('form-card');
-  const assigned = opts.assigned || '—';
-  let html = '';
+function buildForm(roundId,opts){
+  const card=document.getElementById('form-card');
+  const assigned=opts.assigned||'—';
+  let html='';
 
-  if(roundId === 'r1'){
-    html += `<div style="background:var(--mist);border:2px solid var(--leaf);border-radius:10px;padding:16px 20px;margin-bottom:4px;">
-      <div style="font-size:10px;text-transform:uppercase;letter-spacing:.14em;color:var(--leaf);font-weight:700;margin-bottom:6px;">Your assigned threat</div>
-      <div style="font-size:17px;font-weight:600;color:var(--tea);">${assigned}</div>
-      <div style="font-size:12px;color:#777;margin-top:5px;">Argue that this is Sagacity's single deadliest threat — right now, for Kate's specific decision today.</div>
+  if(roundId==='r1'){
+    document.getElementById('f-task').textContent="Your group has been assigned a specific threat to argue is Sagacity's most dangerous. Make the strongest possible case for why THIS threat is the one Kate cannot afford to ignore right now. Write 2 sentences: what makes it deadly, and why it matters specifically for her decision today.";
+    html+=`<div class="assign-box green">
+      <div class="ab-label">Your assigned threat</div>
+      <div class="ab-value">${assigned}</div>
+      <div class="ab-hint">You cannot change this. Argue that this is the single deadliest threat Sagacity faces.</div>
     </div>
-    <div class="field"><div class="field-label">Write your 2-sentence argument</div>
-      <div class="field-hint">Sentence 1: what makes this threat dangerous. Sentence 2: why Kate cannot afford to ignore it right now specifically.</div>
-      <textarea id="f-arg" maxlength="300" placeholder="e.g. This threat is most dangerous because Kate is about to spend $80K on a broker deal, leaving zero cash to respond if a competitor moves in…" oninput="cc('f-arg',300)"></textarea>
-      <div class="char-ct" id="cc-f-arg">0 / 300</div>
+    <div class="field">
+      <div class="field-label">Your 2-sentence argument</div>
+      <div class="field-hint">Sentence 1: what makes this threat dangerous. Sentence 2: why Kate cannot afford to ignore it right now specifically — given the decision she faces today.</div>
+      <textarea id="f-arg" maxlength="320" placeholder="e.g. This threat is most dangerous because Kate is about to spend $80K+ on a broker deal, leaving zero cash to respond if national brands launch organic lines in the Northeast. If that happens simultaneously, Sagacity loses its premium positioning before it even reaches New York." oninput="cc('f-arg',320)"></textarea>
+      <div class="char-ct" id="cc-f-arg">0 / 320</div>
     </div>`;
 
-  } else if(roundId === 'r2'){
-    html += `<div style="background:#fff0f0;border:2px solid var(--accent);border-radius:10px;padding:16px 20px;margin-bottom:4px;">
-      <div style="font-size:10px;text-transform:uppercase;letter-spacing:.14em;color:var(--accent);font-weight:700;margin-bottom:6px;">You must argue AGAINST this option</div>
-      <div style="font-size:17px;font-weight:600;color:var(--dark);">${assigned}</div>
-      <div style="font-size:12px;color:#777;margin-top:5px;">Even if you think this is a good idea — right now you are Kate's harshest critic. Find the strongest reason it could fail.</div>
+  } else if(roundId==='r2'){
+    document.getElementById('f-task').textContent="Your group has been randomly assigned an expansion option to argue AGAINST. Even if your group originally liked this option — your job right now is to be Kate's harshest critic. Write the most compelling case you can for why this option could fail, using real numbers from the case if possible.";
+    html+=`<div class="assign-box red">
+      <div class="ab-label">You must argue AGAINST this option</div>
+      <div class="ab-value">${assigned}</div>
+      <div class="ab-hint">You cannot change this. Find the single strongest reason this option fails for Kate.</div>
     </div>
-    <div class="field"><div class="field-label">Your counter-argument</div>
-      <div class="field-hint">What is the single biggest reason this option could blow up for Kate? Be specific — don't just say "it's risky."</div>
-      <textarea id="f-counter" maxlength="250" placeholder="e.g. Even if the broker secures 300 stores, the $45K sampling cost alone nearly wipes out the entire $20K projected profit — leaving Kate no margin for error…" oninput="cc('f-counter',250)"></textarea>
-      <div class="char-ct" id="cc-f-counter">0 / 250</div>
+    <div class="field">
+      <div class="field-label">Your counter-argument</div>
+      <div class="field-hint">What is the biggest reason this option could blow up? Don't just say "it's risky" — explain specifically how it could fail for Sagacity in 2017.</div>
+      <textarea id="f-counter" maxlength="280" placeholder="e.g. Even if we hit 10,000 cases, the broker plan only nets ~$20K profit after all trade costs — a margin so thin that any shortfall in sampling or coupon redemption wipes out the entire return, making this an enormous execution risk for very little reward." oninput="cc('f-counter',280)"></textarea>
+      <div class="char-ct" id="cc-f-counter">0 / 280</div>
     </div>
-    <div class="field"><div class="field-label">One specific number or fact from the case</div>
+    <div class="field">
+      <div class="field-label">One specific number or fact from the case</div>
       <div class="field-hint">Groups that cite real case data earn a bonus point. Don't leave this blank.</div>
-      <input type="text" id="f-evid" placeholder="e.g. Wholesale price is $25.63/case, so even at 10,000 cases profit is only ~$20K" maxlength="150"/>
+      <input type="text" id="f-evid" placeholder="e.g. Wholesale price $25.63/case · Sampling costs $45K · Profit only ~$20K at 10,000 cases" maxlength="160"/>
     </div>`;
 
-  } else if(roundId === 'r3'){
-    html += `<div class="field"><div class="field-label">Your unique point</div>
-      <div class="field-hint">One sentence — must be something no other group has said. Duplicates score 0.</div>
-      <textarea id="f-point" maxlength="200" placeholder="Be specific. Generic statements score zero." oninput="cc('f-point',200)"></textarea>
-      <div class="char-ct" id="cc-f-point">0 / 200</div></div>`;
+  } else if(roundId==='r3'){
+    html+=`<div class="field">
+      <div class="field-label">Your unique point</div>
+      <div class="field-hint">One sentence — must be something no other group has already said. Read the question on the board carefully before writing. Duplicates score 0.</div>
+      <textarea id="f-point" maxlength="200" placeholder="Be specific. Generic statements like 'it's risky' score zero." oninput="cc('f-point',200)"></textarea>
+      <div class="char-ct" id="cc-f-point">0 / 200</div>
+    </div>`;
 
-  } else if(roundId === 'r4'){
-    const twistText = opts.twist?.text || 'Waiting for instructor…';
-    html += `<div class="twist-box"><div class="twist-box-label">The Changed Assumption</div>
-      <div class="twist-box-text">${twistText}</div></div>
-      <div class="calc-ref"><strong>Original broker plan numbers:</strong><br>
+  } else if(roundId==='r4'){
+    const twistText=opts.twist?.text||'Waiting for the instructor to reveal the twist…';
+    html+=`<div class="twist-box">
+      <div class="twist-box-label">The Changed Assumption</div>
+      <div class="twist-box-text">${twistText}</div>
+    </div>
+    <div class="calc-ref">
+      <strong>Original broker plan numbers:</strong><br>
       Gross sales (9,100 × $25.63) = $233,233<br>
-      COGS 40% = $93,293 · Shipping = $8,008 · Broker 5% = $11,662<br>
+      COGS 40% = $93,293 · Shipping = $8,008 · Broker fee 5% = $11,662<br>
       Slotting = $10,019 · Advertising = $18,000 · Sampling = $45,000<br>
-      <strong>Coupons (12% × 100,000 × $1) = $12,000</strong><br>
-      Trade promo = $8,804 · Pioneering = $6,000<br>
-      <strong>Original profit ≈ $20,447</strong></div>
-      <div class="field"><div class="field-label">Does the profit go UP or DOWN?</div>
+      Coupons (12% × 100,000 × $1) = $12,000 · Trade promo = $8,804 · Pioneering = $6,000<br>
+      <strong>Original profit ≈ $20,447</strong>
+    </div>
+    <div class="field">
+      <div class="field-label">Does the profit go UP or DOWN?</div>
       <div class="opt-grid">
         <button class="opt" id="dir-up" onclick="pickDir('up')">📈 Goes UP</button>
         <button class="opt" id="dir-down" onclick="pickDir('down')">📉 Goes DOWN</button>
-      </div></div>
-      <div class="field"><div class="field-label">Your calculated new profit ($)</div>
-      <input type="number" id="f-profit" placeholder="e.g. 7447"/></div>
-      <div class="field"><div class="field-label">Show your full calculation</div>
-      <div class="field-hint">Partial credit for correct reasoning even if the final number is off.</div>
-      <textarea id="f-reason" maxlength="320" placeholder="e.g. New coupon cost = 25% × 100,000 × $1 = $25,000. Was $12,000. Extra = $13,000. New profit = $20,447 − $13,000 = $7,447" oninput="cc('f-reason',320)"></textarea>
-      <div class="char-ct" id="cc-f-reason">0 / 320</div></div>`;
+      </div>
+    </div>
+    <div class="field">
+      <div class="field-label">Your calculated new profit ($)</div>
+      <div class="field-hint">Enter just the number — e.g. 7447</div>
+      <input type="number" id="f-profit" placeholder="e.g. 7447"/>
+    </div>
+    <div class="field">
+      <div class="field-label">Show every step of your calculation</div>
+      <div class="field-hint">Partial credit for correct logic even if the final answer is off. Walk through each change clearly.</div>
+      <textarea id="f-reason" maxlength="350" placeholder="Step 1: New coupon cost = 25% × 100,000 × $1 = $25,000&#10;Step 2: Original coupon cost was $12,000&#10;Step 3: Extra cost = $25,000 − $12,000 = $13,000&#10;Step 4: New profit = $20,447 − $13,000 = $7,447" oninput="cc('f-reason',350)"></textarea>
+      <div class="char-ct" id="cc-f-reason">0 / 350</div>
+    </div>`;
 
-  } else if(roundId === 'r5'){
-    html += `<div class="field"><div class="field-label">Your 30-second voicemail to Kate</div>
-      <div class="field-hint">Recommendation + one strong reason + one risk + one specific number. Vague advice scores zero.</div>
-      <textarea id="f-vm" maxlength="400" placeholder="Kate, don't sign yet — …" oninput="cc('f-vm',400)" style="min-height:110px;"></textarea>
-      <div class="char-ct" id="cc-f-vm">0 / 400</div></div>`;
+  } else if(roundId==='r5'){
+    html+=`<div class="field">
+      <div class="field-label">Your 30-second voicemail to Kate</div>
+      <div class="field-hint">Write exactly what you would say. It must include: your recommendation, one strong reason, one real risk, and at least one specific number from the case. "Think carefully about your options" scores zero.</div>
+      <textarea id="f-vm" maxlength="420" placeholder="Kate, don't sign yet — Shields won't guarantee a single shelf spot. Before you write any checks, get written confirmation of at least 200 stores. Without that, your $10K slotting fee is wasted and your $20K profit projection disappears entirely." oninput="cc('f-vm',420)" style="min-height:110px;"></textarea>
+      <div class="char-ct" id="cc-f-vm">0 / 420</div>
+    </div>`;
   }
 
-  html += `<button class="submit-btn" onclick="submitAnswer('${roundId}')">Submit Answer →</button>`;
-  card.innerHTML = html;
+  html+=`<button class="submit-btn" onclick="submitAnswer('${roundId}')">Submit →</button>`;
+  card.innerHTML=html;
 }
 
 // ── FORM HELPERS ──
-window.pickThreat=(i,t)=>{selThreat=t;document.querySelectorAll('.thr').forEach(b=>b.classList.remove('sel'));document.getElementById(`thr${i}`)?.classList.add('sel');};
-window.pickOpt=(i,o)=>{selOpt=o;document.querySelectorAll('.opt').forEach(b=>b.classList.remove('sel'));document.getElementById(`opt${i}`)?.classList.add('sel');};
-window.pickDir=(d)=>{selDir=d;document.querySelectorAll('[id^=dir-]').forEach(b=>b.classList.remove('sel'));document.getElementById(`dir-${d}`)?.classList.add('sel');};
+window.pickDir=d=>{selDir=d;document.querySelectorAll('[id^=dir-]').forEach(b=>b.classList.remove('sel'));document.getElementById(`dir-${d}`)?.classList.add('sel');};
 window.cc=(id,max)=>{const el=document.getElementById(id),cc=document.getElementById('cc-'+id);if(!el||!cc)return;const l=el.value.length;cc.textContent=`${l} / ${max}`;cc.className='char-ct'+(l>max*.88?' near':'');};
 
 // ── SUBMIT ──
-window.submitAnswer = async roundId => {
+window.submitAnswer=async roundId=>{
   if(hasSubmitted){showNotif('Already submitted!');return;}
-  const safeKey = myGroup.replace(/\s/g,'_');
-  const subRef = ref(db,`${sessionCode}/submissions/${roundId}/${safeKey}`);
-  let data = {group:myGroup,points:0,timestamp:Date.now()};
-  let preview = '';
+  const safeKey=myGroup.replace(/\s/g,'_');
+  const subRef=ref(db,`${sessionCode}/submissions/${roundId}/${safeKey}`);
+  let data={group:myGroup,points:0,timestamp:Date.now(),votes:0};
+  let preview='';
 
   if(roundId==='r1'){
     const arg=document.getElementById('f-arg')?.value?.trim();
     if(!arg){showNotif('Please write your argument');return;}
-    const gameSnap=await get(ref(db,`${sessionCode}/game`));
-    const assigned=gameSnap.val()?.assignments?.[myGroup]||'—';
-    data={...data,assigned,argument:arg,hidden:true};
-    preview=`Assigned: ${assigned}\n\n"${arg}"`;
-    document.getElementById('sub-note').textContent='Hidden until the instructor reveals all.';
+    data={...data,assigned:myAssigned,argument:arg};
+    preview=`Assigned: ${myAssigned}\n\n"${arg}"`;
+    document.getElementById('sub-note').textContent='Submitted! When voting opens, you will see all arguments anonymously and vote for the best one.';
   } else if(roundId==='r2'){
     const counter=document.getElementById('f-counter')?.value?.trim();
     if(!counter){showNotif('Please write your counter-argument');return;}
     const evid=document.getElementById('f-evid')?.value?.trim()||'';
-    const gameSnap=await get(ref(db,`${sessionCode}/game`));
-    const assigned=gameSnap.val()?.assignments?.[myGroup]||'—';
-    data={...data,assigned,counter,evidence:evid,hidden:false};
-    preview=`Arguing against: ${assigned}\n\nCounter: "${counter}"${evid?'\n\nEvidence: '+evid:''}`;
-    document.getElementById('sub-note').textContent='Submitted. Watch the instructor screen.';
+    data={...data,assigned:myAssigned,counter,evidence:evid};
+    preview=`Arguing against: ${myAssigned}\n\nCounter: "${counter}"${evid?'\n\nEvidence: '+evid:''}`;
+    document.getElementById('sub-note').textContent='Submitted! When voting opens, you will see all arguments anonymously and vote for the best one.';
   } else if(roundId==='r3'){
     const point=document.getElementById('f-point')?.value?.trim();
     if(!point){showNotif('Please write your point');return;}
     const snap=await get(ref(db,`${sessionCode}/submissions/r3`));
     let isDupe=false;
-    if(snap.exists()){
-      const existing=Object.values(snap.val()).map(s=>s.point?.toLowerCase()||'');
-      const myWords=new Set(point.toLowerCase().split(/\s+/).filter(w=>w.length>4));
-      isDupe=existing.some(p=>{const tw=new Set(p.split(/\s+/).filter(w=>w.length>4));let ov=0;myWords.forEach(w=>{if(tw.has(w))ov++;});return ov>=3;});
-    }
-    data={...data,point,duplicate:isDupe,hidden:false};
+    if(snap.exists()){const existing=Object.values(snap.val()).map(s=>s.point?.toLowerCase()||'');const myWords=new Set(point.toLowerCase().split(/\s+/).filter(w=>w.length>4));isDupe=existing.some(p=>{const tw=new Set(p.split(/\s+/).filter(w=>w.length>4));let ov=0;myWords.forEach(w=>{if(tw.has(w))ov++;});return ov>=3;});}
+    data={...data,point,duplicate:isDupe};
     preview=`"${point}"${isDupe?'\n\n⚠ May be flagged as duplicate':''}`;
     document.getElementById('sub-note').textContent=isDupe?'⚠ Possible duplicate flagged.':'Submitted!';
   } else if(roundId==='r4'){
@@ -509,60 +532,92 @@ window.submitAnswer = async roundId => {
     const reason=document.getElementById('f-reason')?.value?.trim()||'';
     const gameSnap=await get(ref(db,`${sessionCode}/game`));
     const gd=gameSnap.val();
-    const cDir=gd?.correctDirection||'down',cProfit=gd?.correctProfit||0;
+    const cDir=gd?.correctDirection||'down', cProfit=gd?.correctProfit||0;
     let autoPts=0;
     if(selDir===cDir) autoPts+=1;
     const pNum=parseFloat(profit);
     const profOk=cProfit>0&&!isNaN(pNum)&&Math.abs(pNum-cProfit)/cProfit<0.15;
     if(profOk) autoPts+=2;
-    data={...data,direction:selDir,newProfit:profit,reasoning:reason,hidden:false,autoScore:{dirOk:selDir===cDir,profOk},points:autoPts};
+    data={...data,direction:selDir,newProfit:profit,reasoning:reason,autoScore:{dirOk:selDir===cDir,profOk},points:autoPts};
     if(autoPts>0){const gs=await get(ref(db,`${sessionCode}/groups/${myGroupKey}`));await update(ref(db,`${sessionCode}/groups/${myGroupKey}`),{points:(gs.val()?.points||0)+autoPts});}
     preview=`Direction: ${selDir}\nNew profit: $${profit}\n\nReasoning: ${reason}`;
-    document.getElementById('sub-note').textContent=autoPts>0?`Auto-scored: ${autoPts} point${autoPts!==1?'s':''} earned!`:'Submitted.';
+    document.getElementById('sub-note').textContent=autoPts>0?`Auto-scored: ${autoPts} point${autoPts!==1?'s':''} earned!`:'Submitted. Partial credit may apply.';
+    // Show grade screen
+    showGradeResult(autoPts, selDir===cDir, profOk);
   } else if(roundId==='r5'){
     const vm=document.getElementById('f-vm')?.value?.trim();
     if(!vm){showNotif('Please write your voicemail');return;}
-    data={...data,voicemail:vm,hidden:true};
+    data={...data,voicemail:vm};
     preview=`"${vm}"`;
-    document.getElementById('sub-note').textContent='Hidden until the instructor reveals all voicemails.';
+    document.getElementById('sub-note').textContent='Submitted! When voting opens, you will see all voicemails anonymously and vote for the best one.';
   }
 
   await set(subRef,data);
   hasSubmitted=true; myPreview=preview;
   document.getElementById('sub-preview').textContent=preview;
-  showScreen('s-submitted');
+  if(roundId!=='r4') showScreen('s-submitted');
   showNotif('Submitted! ✅');
 };
 
-// ── VOTING ──
-async function loadVoting(roundId,isVm){
+// ── GRADE RESULT ──
+function showGradeResult(pts, dirOk, profOk){
+  document.getElementById('grade-pts').textContent=pts||0;
+  document.getElementById('grade-icon').textContent=pts>=3?'🏆':pts>=1?'✅':'📉';
+  document.getElementById('grade-detail').innerHTML=`
+    <strong>Direction (up/down):</strong> ${dirOk?'✓ Correct (+1 pt)':'✗ Incorrect (0 pts)'}<br>
+    <strong>Calculation (within 15%):</strong> ${profOk?'✓ Correct (+2 pts)':'✗ Not within range (0 pts)'}<br><br>
+    <span style="color:#aaa;">Your full reasoning is visible to the instructor. They may award additional points for correct logic even if the final number was off.</span>`;
+  showScreen('s-grade');
+}
+window.showGradeResult=showGradeResult;
+
+// ── ANON VOTING ──
+async function loadAnonVote(state){
+  const roundId=state.curRound;
   const snap=await get(ref(db,`${sessionCode}/submissions/${roundId}`));
-  if(!snap.exists()){showScreen('s-discuss');return;}
-  const subs=Object.values(snap.val()).filter(s=>s.group!==myGroup&&!s.hidden);
-  if(!subs.length){showScreen('s-discuss');return;}
-  document.getElementById('vote-title').textContent=isVm?'Vote for the Best Voicemail':'Vote for the Best Argument';
-  document.getElementById('vote-sub').textContent=isVm?'Which voicemail would actually change what Kate does this morning?':'Which threat argument is the most convincing?';
-  document.getElementById('vote-list').innerHTML=subs.map(s=>`
-    <div class="vc" id="vc-${s.group.replace(/\s/g,'_')}" onclick="castVote('${roundId}','${s.group}')">
-      <div class="vc-grp">${s.group}</div>
-      <div class="vc-body">${isVm?`"${s.voicemail||''}"`:
-        `<strong>${s.threat||''}</strong><br><span style="color:#666;">${s.argument||''}</span>`}</div>
+  if(!snap.exists()){showScreen('s-submitted');return;}
+  const subs=Object.values(snap.val());
+
+  const isR1=roundId==='r1', isR2=roundId==='r2', isR5=roundId==='r5';
+  document.getElementById('vote-title').textContent=
+    isR5?'Vote for the Best Voicemail':
+    isR1?'Vote for the Most Convincing Threat Argument':
+    'Vote for the Most Compelling Counter-Argument';
+  document.getElementById('vote-sub').textContent=
+    'Read all carefully. Vote for the one you find most convincing. You cannot vote for your own group — you won\'t know which is yours.';
+
+  const cards=document.getElementById('anon-cards');
+  // Shuffle so position doesn't bias voting
+  const shuffled=[...subs].sort(()=>Math.random()-.5);
+  cards.innerHTML=shuffled.map((s,i)=>`
+    <div class="anon-card" id="av-${i}" onclick="castAnonVote('${roundId}','${s.group}',${i})">
+      <div class="ac-label">Argument ${i+1}</div>
+      ${isR1?`<div class="ac-assigned">${s.assigned||''}</div><div class="ac-body">${s.argument||''}</div>`:''}
+      ${isR2?`<div class="ac-assigned">Against: ${s.assigned||''}</div><div class="ac-body">${s.counter||''}</div>`:''}
+      ${isR5?`<div class="ac-body" style="font-style:italic;">"${s.voicemail||''}"</div>`:''}
     </div>`).join('');
-  showScreen('s-voting');
+
+  showScreen('s-anon-vote');
 }
 
-window.castVote=async(roundId,groupName)=>{
+window.castAnonVote=async(roundId,groupName,cardIdx)=>{
   if(hasVoted){showNotif('Already voted!');return;}
   hasVoted=true;
   const safeKey=groupName.replace(/\s/g,'_');
-  await update(ref(db,`${sessionCode}/submissions/${roundId}/${safeKey}/votes`),{[myGroup.replace(/\s/g,'_')]:true});
-  const snap=await get(ref(db,`${sessionCode}/groups`));
-  if(snap.exists()){const entry=Object.entries(snap.val()).find(([,g])=>g.name===groupName);if(entry){const[k,g]=entry;await update(ref(db,`${sessionCode}/groups/${k}`),{points:(g.points||0)+1});}}
-  document.querySelectorAll('.vc').forEach(c=>c.classList.remove('voted'));
-  const el=document.getElementById(`vc-${safeKey}`);
-  if(el){el.classList.add('voted');el.innerHTML+=`<div class="voted-badge">✓ Your vote</div>`;}
+  // Increment vote count
+  const snap=await get(ref(db,`${sessionCode}/submissions/${roundId}/${safeKey}/votes`));
+  const curVotes=snap.exists()?snap.val():0;
+  await update(ref(db,`${sessionCode}/submissions/${roundId}/${safeKey}`),{votes:curVotes+1});
+  document.querySelectorAll('.anon-card').forEach(c=>c.classList.remove('voted'));
+  document.getElementById(`av-${cardIdx}`)?.classList.add('voted');
+  document.getElementById(`av-${cardIdx}`).innerHTML+=`<div class="voted-badge">✓ Your vote</div>`;
   showNotif('Vote cast! 👍');
 };
+
+async function loadFinalVote(roundId){
+  // Same as anon vote but names already revealed
+  await loadAnonVote({curRound:roundId});
+}
 
 // ── TIMER ──
 function syncTimer(state){
@@ -575,12 +630,17 @@ function startLocalTimer(){localTimerRunning=true;clearInterval(localTimerInterv
 function stopLocalTimer(){localTimerRunning=false;clearInterval(localTimerInterval);}
 function updateSTimer(){
   const el=document.getElementById('stimer'),ts=document.getElementById('timer-strip');
+  const vt=document.getElementById('vote-timer');
   if(!el) return;
-  if(localTimer<=0){if(ts)ts.style.display='none';el.textContent='—';el.className='ts-time';return;}
+  if(localTimer<=0){
+    if(ts)ts.style.display='none';el.textContent='—';el.className='ts-time';
+    if(vt)vt.textContent='';return;
+  }
   if(ts)ts.style.display='flex';
   const m=Math.floor(localTimer/60),s=localTimer%60;
-  el.textContent=`${m}:${String(s).padStart(2,'0')}`;
-  el.className='ts-time'+(localTimer<=10?' warn':'');
+  const str=`${m}:${String(s).padStart(2,'0')}`;
+  el.textContent=str;el.className='ts-time'+(localTimer<=10?' warn':'');
+  if(vt){vt.textContent=str;vt.className='vote-timer'+(localTimer<=10?' warn':'');}
 }
 
 // ── SCREEN ──
