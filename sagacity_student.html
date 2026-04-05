@@ -294,46 +294,53 @@ function listenGame(){
   onValue(ref(db,'game'), snap=>{
     if(!snap.exists()) return;
     const state=snap.val();
-    const screen=state.screen;
 
-    // Sync timer
+    // Sync timer always
     syncTimer(state);
 
-    // Strict screen routing based on instructor's screen state
+    const screen=state.screen;
+
+    // ── LOBBY ──
     if(screen==='lobby'){
       resetRound();
       showScreen('s-lobby');
       return;
     }
 
+    // ── DISCUSS — always transition, regardless of submission state ──
     if(screen==='discuss'){
       showDiscuss();
       return;
     }
 
+    // ── VOTING — always transition ──
     if(screen==='voting'){
       if(!hasVoted) loadVoting(state.votingRound, state.votingRound==='r5');
+      else showScreen('s-voting'); // stay on voting if already voted
       return;
     }
 
+    // ── WRITE — only show form if not already submitted for this exact prompt ──
     if(screen==='write'){
-      if(hasSubmitted) return; // stay on submitted screen
       const roundId=state.curRound;
       const phase=state.phase;
 
-      // Different write phases
       if(phase==='write'){
-        // Normal round — show form only if round changed or first time
+        // New round — always reset and show form
         if(lastScreen!==roundId){
           lastScreen=roundId;
+          hasSubmitted=false;
+          hasVoted=false;
+          myPreview='';
           loadForm(roundId, {});
         }
+        // If already submitted for this round, stay on submitted screen — do nothing
       } else if(phase==='potato'){
         if(state.potatoQ){
           const key=`potato-${state.potatoIdx}`;
           if(lastScreen!==key){
             lastScreen=key;
-            hasSubmitted=false; // reset for each potato Q
+            hasSubmitted=false;
             loadForm('r3',{overrideTask:state.potatoQ});
           }
         } else {

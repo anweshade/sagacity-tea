@@ -446,13 +446,13 @@ function setPanels(p){
 // ── START DISCUSSION ──
 async function startDiscussion(){
   const r = ROUNDS[curRound];
-  // Reveal hidden submissions first
+  // Reveal hidden submissions if any exist
   if(r.hidden) await revealAll(true);
-  // Build presenter order
+  // Build presenter order from whoever submitted, plus remaining groups
   const subs = Object.values(allSubs[r.id]||{}).sort((a,b)=>(a.timestamp||0)-(b.timestamp||0));
   const submitted = subs.map(s=>s.group);
   const notSub = groups.map(g=>g.name).filter(n=>!submitted.includes(n));
-  presenterOrder = [...submitted, ...notSub];
+  presenterOrder = [...submitted, ...notSub]; // non-submitters go last
   presenterIdx = 0;
   setPanels('discuss');
   renderPresenterBar();
@@ -517,7 +517,11 @@ function updateTimerDisplay(){
 async function revealAll(silent=false){
   const r = ROUNDS[curRound];
   const subs = allSubs[r.id]||{};
-  if(Object.keys(subs).length===0){ if(!silent) showNotif('No submissions yet'); return; }
+  if(Object.keys(subs).length===0){
+    // Nothing to reveal — just start discussion anyway
+    if(!silent) showNotif('No submissions — starting discussion anyway');
+    return;
+  }
   const updates={};
   Object.keys(subs).forEach(k=>{ updates[`submissions/${r.id}/${k}/hidden`]=false; });
   await update(ref(db,'/'), updates);
