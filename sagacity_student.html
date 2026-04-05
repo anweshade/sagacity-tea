@@ -382,8 +382,8 @@ const META={
   r1:{tag:'CONFLICT',tagClass:'tag-c',title:'Tea Tank',task:''},
   r2:{tag:"DEVIL'S ADVOCATE",tagClass:'tag-f',title:'Flip It',task:''},
   r3:{tag:'CHAIN REACTION',tagClass:'tag-h',title:'Hot Potato',task:''},
-  r4:{tag:'TWIST',tagClass:'tag-t',title:'Numbers Changed',task:'Calculate the impact of the changed assumption. Show every step — partial credit for correct logic even if the final number is off.'},
-  r5:{tag:'LIVE PITCH',tagClass:'tag-v',title:"Kate's Voicemail",task:"It's 8:58am. Kate walks into Shields' office at 9:00 to sign. She checks her phone one last time. You have 30 seconds on her voicemail. Recommendation + one strong reason + one risk + one number from the case. Vague advice scores zero."},
+  r4:{tag:'TWIST',tagClass:'tag-t',title:'Numbers Changed',task:'A key assumption has changed. Calculate the new profit and show your work.'},
+  r5:{tag:'LIVE PITCH',tagClass:'tag-v',title:"Kate's Voicemail",task:"It's 8:58am. Kate walks into Shields' office at 9:00 to sign. She checks her phone one last time. You have 30 seconds."},
 };
 
 function loadForm(roundId,opts){
@@ -405,43 +405,37 @@ function buildForm(roundId,opts){
   let html='';
 
   if(roundId==='r1'){
-    document.getElementById('f-task').textContent="Your group has been assigned a specific threat to argue is Sagacity's most dangerous. Make the strongest possible case for why THIS threat is the one Kate cannot afford to ignore right now. Write 2 sentences: what makes it deadly, and why it matters specifically for her decision today.";
+    document.getElementById('f-task').textContent="Your group has been assigned a threat. Argue that this is Sagacity's single most dangerous threat right now. Write 2 sentences.";
     html+=`<div class="assign-box green">
       <div class="ab-label">Your assigned threat</div>
       <div class="ab-value">${assigned}</div>
-      <div class="ab-hint">You cannot change this. Argue that this is the single deadliest threat Sagacity faces.</div>
     </div>
     <div class="field">
-      <div class="field-label">Your 2-sentence argument</div>
-      <div class="field-hint">Sentence 1: what makes this threat dangerous. Sentence 2: why Kate cannot afford to ignore it right now specifically — given the decision she faces today.</div>
-      <textarea id="f-arg" maxlength="320" placeholder="e.g. This threat is most dangerous because Kate is about to spend $80K+ on a broker deal, leaving zero cash to respond if national brands launch organic lines in the Northeast. If that happens simultaneously, Sagacity loses its premium positioning before it even reaches New York." oninput="cc('f-arg',320)"></textarea>
+      <div class="field-label">Your argument</div>
+      <textarea id="f-arg" maxlength="320" placeholder="" oninput="cc('f-arg',320)"></textarea>
       <div class="char-ct" id="cc-f-arg">0 / 320</div>
     </div>`;
 
   } else if(roundId==='r2'){
-    document.getElementById('f-task').textContent="Your group has been randomly assigned an expansion option to argue AGAINST. Even if your group originally liked this option — your job right now is to be Kate's harshest critic. Write the most compelling case you can for why this option could fail, using real numbers from the case if possible.";
+    document.getElementById('f-task').textContent="Your group has been assigned an expansion option to argue AGAINST. Make the strongest case you can for why this option fails for Kate.";
     html+=`<div class="assign-box red">
       <div class="ab-label">You must argue AGAINST this option</div>
       <div class="ab-value">${assigned}</div>
-      <div class="ab-hint">You cannot change this. Find the single strongest reason this option fails for Kate.</div>
     </div>
     <div class="field">
       <div class="field-label">Your counter-argument</div>
-      <div class="field-hint">What is the biggest reason this option could blow up? Don't just say "it's risky" — explain specifically how it could fail for Sagacity in 2017.</div>
-      <textarea id="f-counter" maxlength="280" placeholder="e.g. Even if we hit 10,000 cases, the broker plan only nets ~$20K profit after all trade costs — a margin so thin that any shortfall in sampling or coupon redemption wipes out the entire return, making this an enormous execution risk for very little reward." oninput="cc('f-counter',280)"></textarea>
+      <textarea id="f-counter" maxlength="280" placeholder="" oninput="cc('f-counter',280)"></textarea>
       <div class="char-ct" id="cc-f-counter">0 / 280</div>
     </div>
     <div class="field">
       <div class="field-label">One specific number or fact from the case</div>
-      <div class="field-hint">Groups that cite real case data earn a bonus point. Don't leave this blank.</div>
-      <input type="text" id="f-evid" placeholder="e.g. Wholesale price $25.63/case · Sampling costs $45K · Profit only ~$20K at 10,000 cases" maxlength="160"/>
+      <input type="text" id="f-evid" placeholder="" maxlength="160"/>
     </div>`;
 
   } else if(roundId==='r3'){
     html+=`<div class="field">
-      <div class="field-label">Your unique point</div>
-      <div class="field-hint">One sentence — must be something no other group has already said. Read the question on the board carefully before writing. Duplicates score 0.</div>
-      <textarea id="f-point" maxlength="200" placeholder="Be specific. Generic statements like 'it's risky' score zero." oninput="cc('f-point',200)"></textarea>
+      <div class="field-label">Your point</div>
+      <textarea id="f-point" maxlength="200" placeholder="" oninput="cc('f-point',200)"></textarea>
       <div class="char-ct" id="cc-f-point">0 / 200</div>
     </div>`;
 
@@ -467,22 +461,19 @@ function buildForm(roundId,opts){
       </div>
     </div>
     <div class="field">
-      <div class="field-label">Your calculated new profit ($)</div>
-      <div class="field-hint">Enter just the number — e.g. 7447</div>
-      <input type="number" id="f-profit" placeholder="e.g. 7447"/>
+      <div class="field-label">New profit ($)</div>
+      <input type="number" id="f-profit" placeholder=""/>
     </div>
     <div class="field">
-      <div class="field-label">Show every step of your calculation</div>
-      <div class="field-hint">Partial credit for correct logic even if the final answer is off. Walk through each change clearly.</div>
-      <textarea id="f-reason" maxlength="350" placeholder="Step 1: New coupon cost = 25% × 100,000 × $1 = $25,000&#10;Step 2: Original coupon cost was $12,000&#10;Step 3: Extra cost = $25,000 − $12,000 = $13,000&#10;Step 4: New profit = $20,447 − $13,000 = $7,447" oninput="cc('f-reason',350)"></textarea>
+      <div class="field-label">Show your calculation</div>
+      <textarea id="f-reason" maxlength="350" placeholder="" oninput="cc('f-reason',350)"></textarea>
       <div class="char-ct" id="cc-f-reason">0 / 350</div>
     </div>`;
 
   } else if(roundId==='r5'){
     html+=`<div class="field">
       <div class="field-label">Your 30-second voicemail to Kate</div>
-      <div class="field-hint">Write exactly what you would say. It must include: your recommendation, one strong reason, one real risk, and at least one specific number from the case. "Think carefully about your options" scores zero.</div>
-      <textarea id="f-vm" maxlength="420" placeholder="Kate, don't sign yet — Shields won't guarantee a single shelf spot. Before you write any checks, get written confirmation of at least 200 stores. Without that, your $10K slotting fee is wasted and your $20K profit projection disappears entirely." oninput="cc('f-vm',420)" style="min-height:110px;"></textarea>
+      <textarea id="f-vm" maxlength="420" placeholder="" oninput="cc('f-vm',420)" style="min-height:110px;"></textarea>
       <div class="char-ct" id="cc-f-vm">0 / 420</div>
     </div>`;
   }
