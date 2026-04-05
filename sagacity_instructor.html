@@ -346,10 +346,10 @@ const ROUNDS=[
    desc:'Each group argues against their assigned expansion option. Then everyone votes anonymously. Top 2 argue live.',
    discussTask:'Make your case — why does this option fail for Kate?'},
   {id:'r3',num:3,name:'Hot Potato',tag:'CHAIN REACTION',tagClass:'tag-h',writeSec:45,
-   desc:'You send a question. Each group adds a unique point. No repeating.',
-   discussTask:'Read your point. Next group adds something new or challenges it.'},
+   desc:'You send one question at a time. Groups submit their unique point (45 sec). Then go around all 9 — each group reads aloud in 20 seconds. Run 1–2 questions.',
+   discussTask:'Read your point. 20 seconds.'},
   {id:'r4',num:4,name:'Numbers Changed',tag:'TWIST',tagClass:'tag-t',writeSec:240,
-   desc:'Groups calculate the impact of a changed assumption. Auto-graded. Top and bottom scorer explain their work.',
+   desc:'Groups calculate the impact of a changed assumption. Auto-graded. Only the highest and lowest scorer explain their work — 2 groups total.',
    discussTask:'Walk through your calculation step by step.'},
   {id:'r5',num:5,name:"Kate's Voicemail",tag:'LIVE PITCH',tagClass:'tag-v',writeSec:120,
    desc:'Groups write a 30-second voicemail to Kate. All revealed, everyone votes anonymously. Winner presents live.',
@@ -521,10 +521,17 @@ window.startDiscussion=async()=>{
 };
 
 window.nextPresenter=()=>{
-  if(presenterIdx<presenterOrder.length-1){presenterIdx++;renderFeed();}
-  else showNotif('All presenters done!');
+  if(presenterIdx<presenterOrder.length-1){
+    presenterIdx++;
+    renderFeed();
+    renderBottomBar();
+    // Auto-set timer per round type
+    const r=ROUNDS[curRound];
+    if(r.id==='r3'){ setTimer(20); startTimer(); }
+    else if(r.id==='r4'){ setTimer(120); }
+  } else { showNotif('All presenters done!'); }
 };
-window.prevPresenter=()=>{if(presenterIdx>0){presenterIdx--;renderFeed();}};
+window.prevPresenter=()=>{if(presenterIdx>0){presenterIdx--;renderFeed();renderBottomBar();}};
 
 // ── AUTO-GRADE R4 ──
 async function autoGradeR4(){
@@ -549,7 +556,13 @@ async function autoGradeR4(){
   // Set presenter order: best first, worst second
   presenterOrder=[bestGroup,worstGroup].filter(Boolean);
   presenterIdx=0;
-  showNotif('Auto-graded! Showing best and lowest scorer.');
+  showNotif('Auto-graded! Calling on highest and lowest scorer.');
+  // Auto-switch to discuss phase
+  setPhasePill('discuss');
+  await update(ref(db,`${sessionCode}/game`),{screen:'discuss',phase:'discuss'});
+  renderFeed(); renderBottomBar();
+  // Set 2min timer for first presenter
+  setTimer(120);
 }
 
 // ── POTATO ──
@@ -736,19 +749,32 @@ function renderBottomBar(){
     }
   } else if(r.id==='r3'){
     if(roundPhase==='write'){
-      hint='Send a question → 45s each → go around the room';
-      actions=`<button class="btn btn-soft" onclick="sendPotatoQ(0)">Q-A: Slotting fees</button><button class="btn btn-soft" onclick="sendPotatoQ(1)">Q-B: Reduce SFs</button><button class="btn btn-soft" onclick="sendPotatoQ(2)">Q-C: Against online</button><button class="btn btn-tea" onclick="startDiscuss3()">💬 Start Discussion</button>`;
+      hint='Send ONE question. Groups submit their point (45 sec). Then click Start Discussion — each group gets 20 seconds. Run 1–2 questions total.';
+      actions=`
+        <button class="btn btn-soft" onclick="sendPotatoQ(0)">Send Q-A: Why have slotting fees grown?</button>
+        <button class="btn btn-soft" onclick="sendPotatoQ(1)">Send Q-B: How to reduce slotting fees?</button>
+        <button class="btn btn-soft" onclick="sendPotatoQ(2)">Send Q-C: Reasons against online?</button>
+        <button class="btn btn-tea" onclick="startDiscuss3()">💬 Start Discussion (20s each)</button>`;
     } else {
-      hint=`Presenting: ${presenterOrder[presenterIdx]||'—'} · ${presenterIdx+1}/${Math.max(presenterOrder.length,1)}`;
-      actions=`<button class="btn btn-soft" onclick="prevPresenter()">← Prev</button><button class="btn btn-tea" onclick="nextPresenter()">Next →</button>`;
+      const remaining=presenterOrder.length-presenterIdx;
+      hint=`${presenterOrder[presenterIdx]||'—'} is presenting · ${presenterIdx+1}/${presenterOrder.length} · ~${remaining * 20} seconds left in this question`;
+      actions=`<button class="btn btn-soft" onclick="prevPresenter()">← Prev</button>
+               <button class="btn btn-tea" onclick="nextPresenter()">Next → (20s)</button>
+               <button class="btn btn-soft" onclick="sendPotatoQ(0)">New Q-A</button>
+               <button class="btn btn-soft" onclick="sendPotatoQ(1)">New Q-B</button>
+               <button class="btn btn-soft" onclick="sendPotatoQ(2)">New Q-C</button>`;
     }
   } else if(r.id==='r4'){
     if(roundPhase==='write'){
-      hint='Reveal ONE twist → 4 min to calculate → auto-graded on timer end';
-      actions=`<button class="btn btn-purple" onclick="sendTwist(0)">🌀 A: Coupons 25%</button><button class="btn btn-purple" onclick="sendTwist(1)">🌀 B: 150 stores</button><button class="btn btn-purple" onclick="sendTwist(2)">🌀 C: Amazon 30%</button>`;
+      hint='Reveal ONE twist → groups calculate for 4 min → auto-graded on submit → only 2 groups present: highest and lowest scorer.';
+      actions=`<button class="btn btn-purple" onclick="sendTwist(0)">🌀 A: Coupons 25%</button>
+               <button class="btn btn-purple" onclick="sendTwist(1)">🌀 B: 150 stores</button>
+               <button class="btn btn-purple" onclick="sendTwist(2)">🌀 C: Amazon 30%</button>`;
     } else {
-      hint=`Top scorer & lowest scorer explain their work`;
-      actions=`<button class="btn btn-soft" onclick="prevPresenter()">← Prev</button><button class="btn btn-tea" onclick="nextPresenter()">Next →</button>`;
+      const labels=['🏆 Highest scorer','📉 Lowest scorer'];
+      hint=`${labels[presenterIdx]||''}: ${presenterOrder[presenterIdx]||'—'} · 2 min to walk through their calculation`;
+      actions=`<button class="btn btn-soft" onclick="prevPresenter()">← Prev</button>
+               <button class="btn btn-tea" onclick="nextPresenter()">Next → (2 min)</button>`;
     }
   } else if(r.id==='r5'){
     if(roundPhase==='write'){
@@ -771,6 +797,9 @@ window.startDiscuss3=async()=>{
   presenterOrder=subs.map(s=>s.group); presenterIdx=0;
   await update(ref(db,`${sessionCode}/game`),{screen:'discuss',phase:'discuss'});
   setPhasePill('discuss'); renderFeed(); renderBottomBar();
+  // Set 20s timer for first presenter
+  setTimer(20);
+  showNotif(`Starting with ${presenterOrder[0]||'first group'} — 20 seconds`);
 };
 
 // ── POINTS ──
