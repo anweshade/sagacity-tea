@@ -193,7 +193,20 @@
   <div class="setup-h">Name Your 9 Groups</div>
   <div class="setup-sub">Students will enter the 4-digit code to join.</div>
   <div class="groups-grid" id="groups-grid"></div>
-  <button class="btn btn-gold btn-lg" onclick="startGame()">Start Game →</button>
+  <button class="btn btn-gold btn-lg" onclick="startGame()">Generate Code & Start →</button>
+</div>
+
+<!-- CODE DISPLAY — shown after startGame, before round 1 -->
+<div class="screen" id="s-code">
+  <div class="setup-h" style="margin-bottom:8px;">Share this code with your students</div>
+  <div class="setup-sub" style="margin-bottom:24px;">Students go to the student link and type this code to join.</div>
+  <div class="code-display">
+    <div class="cd-label">Session Code</div>
+    <div class="cd-code" id="cd-code">—</div>
+    <div class="cd-url">sagacity_student.html</div>
+  </div>
+  <div style="margin-top:16px;font-size:13px;color:#aaa;margin-bottom:24px;" id="cd-joined">0 / 9 groups joined</div>
+  <button class="btn btn-gold btn-lg" onclick="beginRound1()">Everyone's in — Start Round 1 →</button>
 </div>
 
 <!-- GAME -->
@@ -346,23 +359,32 @@ window.startGame = async () => {
   // Generate a fresh 4-digit session code
   sessionCode = Math.floor(1000 + Math.random() * 9000).toString();
 
-  // Wipe ALL previous session data
+  // Wipe any previous data under this code
   await remove(ref(db, sessionCode));
 
-  // Write groups under this session code
+  // Write groups
   const gObj = {};
   groups.forEach((g,i)=>{ gObj[`g${i}`]={name:g.name,points:0}; });
   await set(ref(db,`${sessionCode}/groups`), gObj);
 
-  // Set initial game state — students cannot see anything yet
+  // Set lobby state — students can join but see nothing yet
   await set(ref(db,`${sessionCode}/game`), {
-    screen: 'lobby',
-    curRound: null,
-    phase: null,
-    timerSec: 0,
-    timerRunning: false
+    screen: 'lobby', curRound: null, phase: null, timerSec: 0, timerRunning: false
   });
 
+  // Show the code screen
+  document.getElementById('cd-code').textContent = sessionCode;
+  showScreen('s-code');
+
+  // Listen for groups joining and update the counter
+  onValue(ref(db,`${sessionCode}/groups`), snap=>{
+    if(!snap.exists()) return;
+    // Count how many have been selected (in future we could track this)
+    // For now just show the code clearly
+  });
+};
+
+window.beginRound1 = async () => {
   renderLeftNav();
   renderScoreLists();
   listenGroups();
