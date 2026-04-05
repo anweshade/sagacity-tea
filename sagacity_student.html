@@ -3,125 +3,160 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sagacity Tea — Join</title>
+<title>Sagacity Tea — Student</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600&display=swap');
-  :root{--tea:#2D5016;--leaf:#4A7C2F;--gold:#C9A84C;--cream:#F7F3EB;--dark:#1C1C1C;--mist:#E6EFD8;--border:#DDD5C4;--soft:#F0EBE0;--accent:#8B3A3A;--blue:#1a5a8a;--purple:#5a1a8a;}
+  :root{
+    --tea:#2D5016;--leaf:#4A7C2F;--gold:#C9A84C;
+    --cream:#F7F3EB;--dark:#1C1C1C;--mist:#E6EFD8;
+    --border:#DDD5C4;--soft:#F0EBE0;--accent:#8B3A3A;
+    --purple:#5a1a8a;
+  }
   *{margin:0;padding:0;box-sizing:border-box;}
-  html,body{width:100%;min-height:100vh;}
-  body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--dark);}
-  .screen{display:none;min-height:100vh;flex-direction:column;align-items:center;justify-content:center;padding:28px 20px;}
+  html,body{width:100%;min-height:100vh;background:var(--cream);}
+  body{font-family:'DM Sans',sans-serif;color:var(--dark);}
+
+  /* Every screen is full page, centered */
+  .screen{
+    display:none;
+    min-height:100vh;
+    width:100%;
+    align-items:center;
+    justify-content:center;
+    padding:40px 24px;
+    flex-direction:column;
+  }
   .screen.active{display:flex;}
 
-  /* JOIN */
+  /* ── JOIN ── */
   #s-join{text-align:center;}
-  .logo{font-family:'Playfair Display',serif;font-size:clamp(24px,5vw,44px);color:var(--tea);margin-bottom:3px;}
-  .logo span{color:var(--gold);}
-  .logo-sub{font-size:13px;color:#aaa;margin-bottom:28px;}
-  .pick-label{font-size:10px;text-transform:uppercase;letter-spacing:.12em;color:#aaa;margin-bottom:9px;}
-  .group-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;width:100%;max-width:460px;margin-bottom:20px;}
-  .gp{padding:12px 8px;background:white;border:1.5px solid var(--border);border-radius:7px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;cursor:pointer;transition:all .14s;text-align:center;}
+  .logo{font-family:'Playfair Display',serif;font-size:clamp(28px,5vw,52px);color:var(--tea);margin-bottom:4px;}
+  .logo em{color:var(--gold);font-style:normal;}
+  .logo-sub{font-size:14px;color:#aaa;margin-bottom:40px;}
+  .pick-label{font-size:11px;text-transform:uppercase;letter-spacing:.14em;color:#aaa;margin-bottom:12px;}
+  .group-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;width:100%;max-width:520px;margin-bottom:28px;}
+  .gp{padding:14px 10px;background:white;border:2px solid var(--border);border-radius:10px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;cursor:pointer;transition:all .14s;text-align:center;color:#555;}
   .gp:hover{border-color:var(--leaf);background:var(--mist);color:var(--tea);}
   .gp.sel{background:var(--tea);color:var(--gold);border-color:var(--tea);}
-  .btn-join{width:100%;max-width:260px;padding:11px;background:var(--tea);color:var(--gold);border:none;border-radius:6px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;cursor:pointer;transition:all .14s;}
-  .btn-join:hover{background:var(--leaf);}
-  .btn-join:disabled{background:#ccc;color:#fff;cursor:not-allowed;}
+  .join-btn{padding:14px 40px;background:var(--tea);color:var(--gold);border:none;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:600;cursor:pointer;transition:all .14s;}
+  .join-btn:hover{background:var(--leaf);}
+  .join-btn:disabled{background:#ddd;color:#aaa;cursor:not-allowed;}
 
-  /* WAITING */
-  #s-waiting{text-align:center;}
-  .wg-name{font-family:'Playfair Display',serif;font-size:clamp(26px,5vw,48px);color:var(--tea);margin-bottom:5px;}
-  .wg-sub{font-size:13px;color:#aaa;margin-bottom:24px;}
-  .dots{display:flex;gap:7px;justify-content:center;}
-  .dot{width:8px;height:8px;border-radius:50%;background:var(--border);animation:dp 1.4s infinite ease-in-out;}
+  /* ── LOBBY / WAITING ── */
+  .lobby-wrap{text-align:center;}
+  .lobby-icon{font-size:56px;margin-bottom:16px;}
+  .lobby-title{font-family:'Playfair Display',serif;font-size:clamp(24px,4vw,42px);color:var(--tea);margin-bottom:8px;}
+  .lobby-group{display:inline-block;background:var(--mist);color:var(--tea);font-size:14px;font-weight:600;padding:5px 16px;border-radius:20px;margin-bottom:24px;}
+  .lobby-sub{font-size:14px;color:#aaa;margin-bottom:32px;}
+  .dots{display:flex;gap:8px;justify-content:center;}
+  .dot{width:9px;height:9px;border-radius:50%;background:var(--border);animation:dp 1.4s infinite ease-in-out;}
   .dot:nth-child(2){animation-delay:.2s;}
   .dot:nth-child(3){animation-delay:.4s;}
   @keyframes dp{0%,80%,100%{transform:scale(.8);opacity:.4}40%{transform:scale(1.2);opacity:1}}
 
-  /* WAITING FOR CONTENT (potato/twist) */
-  #s-waiting-content{text-align:center;}
-  .wc-icon{font-size:48px;margin-bottom:12px;}
-  .wc-title{font-family:'Playfair Display',serif;font-size:26px;margin-bottom:6px;}
-  .wc-sub{font-size:13px;color:#aaa;}
-
-  /* ROUND */
-  #s-round{max-width:600px;width:100%;gap:0;}
-  .rh{width:100%;margin-bottom:14px;}
-  .rh-tag{font-size:9px;text-transform:uppercase;letter-spacing:.14em;font-weight:700;padding:2px 9px;border-radius:20px;display:inline-block;margin-bottom:5px;}
+  /* ── FORM (Google Form style) ── */
+  .form-page{width:100%;max-width:680px;}
+  .form-header{margin-bottom:28px;}
+  .form-tag{font-size:11px;text-transform:uppercase;letter-spacing:.14em;font-weight:700;padding:3px 12px;border-radius:20px;display:inline-block;margin-bottom:10px;}
   .tag-c{color:#8a5a00;background:#fff7e6;}
   .tag-f{color:var(--accent);background:#fff0f0;}
   .tag-h{color:#1a5a8a;background:#e6f0ff;}
   .tag-t{color:#5a1a8a;background:#f5e6ff;}
   .tag-v{color:var(--tea);background:var(--mist);}
-  .rh-title{font-family:'Playfair Display',serif;font-size:clamp(20px,4vw,30px);color:var(--tea);margin-bottom:4px;}
-  .rh-task{font-size:13px;color:#555;line-height:1.65;margin-bottom:12px;}
+  .form-title{font-family:'Playfair Display',serif;font-size:clamp(22px,4vw,36px);color:var(--tea);margin-bottom:8px;line-height:1.2;}
+  .form-task{font-size:15px;color:#555;line-height:1.7;}
 
   /* Timer */
-  .timer-bar{background:white;border:1.5px solid var(--border);border-radius:7px;padding:8px 13px;display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;width:100%;}
-  .tb-lbl{font-size:10px;color:#aaa;text-transform:uppercase;letter-spacing:.08em;}
-  .tb-time{font-family:'Playfair Display',serif;font-size:24px;font-weight:700;color:var(--tea);}
-  .tb-time.warn{color:#cc3333;animation:tp .5s infinite alternate;}
-  @keyframes tp{from{opacity:1}to{opacity:.3}}
+  .timer-strip{display:flex;align-items:center;justify-content:space-between;background:white;border:2px solid var(--border);border-radius:10px;padding:12px 20px;margin-bottom:24px;}
+  .ts-label{font-size:12px;color:#aaa;text-transform:uppercase;letter-spacing:.08em;}
+  .ts-time{font-family:'Playfair Display',serif;font-size:32px;font-weight:700;color:var(--tea);}
+  .ts-time.warn{color:#cc3333;animation:tpulse .5s infinite alternate;}
+  @keyframes tpulse{from{opacity:1}to{opacity:.3}}
 
-  /* Form */
-  .form-card{background:white;border:1.5px solid var(--border);border-radius:9px;padding:16px;display:flex;flex-direction:column;gap:11px;width:100%;}
-  .field{display:flex;flex-direction:column;gap:3px;}
-  .field label{font-size:9px;text-transform:uppercase;letter-spacing:.1em;color:#aaa;font-weight:600;}
-  .field input,.field textarea{width:100%;padding:8px 11px;border:1.5px solid var(--border);border-radius:5px;font-family:'DM Sans',sans-serif;font-size:13.5px;color:var(--dark);background:white;outline:none;transition:border-color .14s;resize:vertical;}
-  .field input:focus,.field textarea:focus{border-color:var(--leaf);}
-  .field textarea{min-height:70px;}
-  .field .hint{font-size:10px;color:#bbb;}
-  .char-ct{font-size:10px;color:#bbb;text-align:right;}
+  /* Form card */
+  .form-card{background:white;border:2px solid var(--border);border-radius:12px;padding:28px;display:flex;flex-direction:column;gap:20px;}
+
+  .field{display:flex;flex-direction:column;gap:6px;}
+  .field-label{font-size:13px;font-weight:600;color:var(--dark);}
+  .field-hint{font-size:12px;color:#aaa;}
+  .field input,.field textarea{
+    width:100%;padding:12px 14px;
+    border:2px solid var(--border);border-radius:8px;
+    font-family:'DM Sans',sans-serif;font-size:14px;color:var(--dark);
+    background:var(--cream);outline:none;transition:border-color .14s;
+    resize:vertical;
+  }
+  .field input:focus,.field textarea:focus{border-color:var(--leaf);background:white;}
+  .field textarea{min-height:90px;}
+  .char-ct{font-size:11px;color:#bbb;text-align:right;}
   .char-ct.near{color:var(--gold);}
 
-  .opt-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;}
-  .opt{padding:9px 8px;background:var(--soft);border:1.5px solid var(--border);border-radius:5px;font-family:'DM Sans',sans-serif;font-size:12.5px;cursor:pointer;transition:all .13s;text-align:center;}
-  .opt:hover{border-color:var(--leaf);background:var(--mist);}
+  /* Option buttons */
+  .opt-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+  .opt{
+    padding:12px 14px;background:var(--soft);border:2px solid var(--border);
+    border-radius:8px;font-family:'DM Sans',sans-serif;font-size:13px;
+    cursor:pointer;transition:all .13s;text-align:left;color:#555;font-weight:500;
+    line-height:1.4;
+  }
+  .opt:hover{border-color:var(--leaf);background:var(--mist);color:var(--tea);}
   .opt.sel{background:var(--tea);color:var(--gold);border-color:var(--tea);}
 
-  .threat-list{display:flex;flex-direction:column;gap:5px;}
-  .thr{padding:9px 12px;background:var(--soft);border:1.5px solid var(--border);border-radius:5px;font-family:'DM Sans',sans-serif;font-size:12.5px;cursor:pointer;transition:all .13s;text-align:left;}
-  .thr:hover{border-color:var(--leaf);background:var(--mist);}
+  .threat-list{display:flex;flex-direction:column;gap:6px;}
+  .thr{
+    padding:12px 16px;background:var(--soft);border:2px solid var(--border);
+    border-radius:8px;font-family:'DM Sans',sans-serif;font-size:13.5px;
+    cursor:pointer;transition:all .13s;text-align:left;color:#555;font-weight:500;
+  }
+  .thr:hover{border-color:var(--leaf);background:var(--mist);color:var(--tea);}
   .thr.sel{background:var(--tea);color:var(--gold);border-color:var(--tea);}
 
-  .twist-box{background:#f5e6ff;border:1.5px solid #cc88ff;border-radius:7px;padding:13px;}
-  .twist-box .tl{font-size:9px;text-transform:uppercase;letter-spacing:.14em;color:#9940cc;margin-bottom:4px;font-weight:700;}
-  .twist-box .tt{font-size:13.5px;color:#330033;line-height:1.6;}
+  .twist-box{background:#f5e6ff;border:2px solid #cc88ff;border-radius:10px;padding:16px 20px;}
+  .twist-box-label{font-size:10px;text-transform:uppercase;letter-spacing:.14em;color:var(--purple);font-weight:700;margin-bottom:6px;}
+  .twist-box-text{font-size:14px;color:#330033;line-height:1.7;}
 
-  .calc-hint{background:var(--soft);border:1.5px solid var(--border);border-radius:6px;padding:11px;font-size:12px;color:#666;line-height:1.75;}
-  .calc-hint strong{color:var(--tea);}
+  .calc-ref{background:var(--soft);border:2px solid var(--border);border-radius:10px;padding:16px 20px;font-size:13px;color:#555;line-height:1.85;}
+  .calc-ref strong{color:var(--tea);}
 
-  .sub-btn{width:100%;padding:11px;background:var(--tea);color:var(--gold);border:none;border-radius:6px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;cursor:pointer;transition:all .14s;margin-top:2px;}
-  .sub-btn:hover{background:var(--leaf);}
-  .sub-btn:disabled{background:#ccc;color:#fff;cursor:not-allowed;}
+  .submit-btn{
+    width:100%;padding:14px;background:var(--tea);color:var(--gold);
+    border:none;border-radius:8px;font-family:'DM Sans',sans-serif;
+    font-size:15px;font-weight:600;cursor:pointer;transition:all .14s;
+    margin-top:4px;
+  }
+  .submit-btn:hover{background:var(--leaf);}
+  .submit-btn:disabled{background:#ccc;color:#fff;cursor:not-allowed;}
 
-  /* SUBMITTED */
-  #s-submitted{text-align:center;}
-  .sub-icon{font-size:52px;margin-bottom:10px;}
-  .sub-title{font-family:'Playfair Display',serif;font-size:26px;color:var(--tea);margin-bottom:5px;}
-  .sub-note{font-size:13px;color:#aaa;margin-bottom:18px;}
-  .sub-preview{background:white;border:1.5px solid var(--border);border-radius:8px;padding:14px 16px;max-width:440px;width:100%;text-align:left;font-size:13px;color:#555;line-height:1.7;white-space:pre-wrap;}
+  /* ── SUBMITTED ── */
+  .submitted-wrap{text-align:center;width:100%;max-width:560px;}
+  .sub-icon{font-size:60px;margin-bottom:14px;}
+  .sub-title{font-family:'Playfair Display',serif;font-size:32px;color:var(--tea);margin-bottom:8px;}
+  .sub-note{font-size:14px;color:#aaa;margin-bottom:28px;line-height:1.6;}
+  .sub-card{background:white;border:2px solid var(--border);border-radius:12px;padding:20px 24px;text-align:left;font-size:14px;color:#555;line-height:1.75;white-space:pre-wrap;width:100%;}
+  .sub-card-label{font-size:10px;text-transform:uppercase;letter-spacing:.12em;color:#bbb;margin-bottom:8px;}
 
-  /* DISCUSS */
-  #s-discuss{text-align:center;}
-  .discuss-icon{font-size:48px;margin-bottom:10px;}
-  .discuss-title{font-family:'Playfair Display',serif;font-size:26px;color:var(--tea);margin-bottom:6px;}
-  .discuss-sub{font-size:13px;color:#aaa;margin-bottom:20px;max-width:420px;}
-  .your-submission{background:white;border:1.5px solid var(--gold);border-radius:8px;padding:14px 16px;max-width:440px;width:100%;text-align:left;font-size:13px;color:#555;line-height:1.7;white-space:pre-wrap;}
-  .ys-label{font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--gold);margin-bottom:4px;}
+  /* ── DISCUSSION ── */
+  .discuss-wrap{text-align:center;width:100%;max-width:560px;}
+  .discuss-icon{font-size:56px;margin-bottom:14px;}
+  .discuss-title{font-family:'Playfair Display',serif;font-size:32px;color:var(--tea);margin-bottom:8px;}
+  .discuss-note{font-size:14px;color:#aaa;margin-bottom:28px;line-height:1.6;}
+  .your-answer{background:white;border:2px solid var(--gold);border-radius:12px;padding:20px 24px;text-align:left;font-size:14px;color:#555;line-height:1.75;white-space:pre-wrap;width:100%;}
+  .ya-label{font-size:10px;text-transform:uppercase;letter-spacing:.12em;color:var(--gold);margin-bottom:8px;font-weight:700;}
 
-  /* VOTING */
-  #s-voting{max-width:620px;width:100%;}
-  .vote-h{font-family:'Playfair Display',serif;font-size:24px;color:var(--tea);margin-bottom:4px;text-align:center;}
-  .vote-sub{font-size:13px;color:#aaa;margin-bottom:16px;text-align:center;}
-  .vote-list{display:flex;flex-direction:column;gap:7px;width:100%;}
-  .vc{background:white;border:1.5px solid var(--border);border-radius:7px;padding:13px;cursor:pointer;transition:all .14s;}
+  /* ── VOTING ── */
+  .vote-page{width:100%;max-width:640px;}
+  .vote-title{font-family:'Playfair Display',serif;font-size:clamp(22px,4vw,34px);color:var(--tea);margin-bottom:6px;text-align:center;}
+  .vote-sub{font-size:14px;color:#aaa;margin-bottom:24px;text-align:center;line-height:1.6;}
+  .vote-list{display:flex;flex-direction:column;gap:10px;width:100%;}
+  .vc{background:white;border:2px solid var(--border);border-radius:10px;padding:16px 20px;cursor:pointer;transition:all .14s;}
   .vc:hover{border-color:var(--leaf);background:var(--mist);}
   .vc.voted{border-color:var(--gold);background:#fffdf5;cursor:default;}
-  .vc-grp{font-size:9px;text-transform:uppercase;letter-spacing:.1em;color:#bbb;margin-bottom:3px;}
-  .vc-body{font-size:13px;color:var(--dark);line-height:1.6;}
+  .vc-grp{font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:#bbb;margin-bottom:5px;}
+  .vc-body{font-size:14px;color:var(--dark);line-height:1.65;}
+  .voted-badge{display:inline-block;margin-top:8px;font-size:11px;color:var(--gold);font-weight:600;}
 
   /* NOTIF */
-  .notif{position:fixed;top:12px;left:50%;transform:translateX(-50%) translateY(-60px);background:var(--tea);color:var(--gold);padding:8px 18px;border-radius:6px;font-size:13px;font-weight:500;z-index:1000;transition:transform .3s;box-shadow:0 4px 14px rgba(0,0,0,.1);white-space:nowrap;}
+  .notif{position:fixed;top:16px;left:50%;transform:translateX(-50%) translateY(-70px);background:var(--tea);color:var(--gold);padding:10px 22px;border-radius:8px;font-size:13px;font-weight:600;z-index:1000;transition:transform .3s;box-shadow:0 4px 16px rgba(0,0,0,.12);white-space:nowrap;}
   .notif.show{transform:translateX(-50%) translateY(0);}
 </style>
 </head>
@@ -130,67 +165,82 @@
 
 <!-- JOIN -->
 <div class="screen active" id="s-join">
-  <div class="logo">☕ Sagacity Tea <span>Showdown</span></div>
-  <div class="logo-sub">Select your group to join</div>
+  <div class="logo">☕ Sagacity Tea <em>Showdown</em></div>
+  <div class="logo-sub">Select your group to join the game</div>
   <div class="pick-label">Your Group</div>
   <div class="group-grid" id="group-grid">
-    <div style="color:#aaa;font-size:13px;grid-column:1/-1;text-align:center;padding:20px;">Loading…</div>
+    <div style="color:#aaa;font-size:13px;grid-column:1/-1;text-align:center;padding:24px;">Loading groups…</div>
   </div>
-  <button class="btn-join" id="join-btn" onclick="joinGame()" disabled>Join →</button>
+  <button class="join-btn" id="join-btn" onclick="joinGame()" disabled>Join →</button>
 </div>
 
-<!-- WAITING FOR GAME TO START -->
-<div class="screen" id="s-waiting">
-  <div class="wg-name" id="wg-name">Group 1</div>
-  <div class="wg-sub">You're in! Waiting for the instructor to start…</div>
-  <div class="dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
+<!-- LOBBY (waiting for game to start or next round) -->
+<div class="screen" id="s-lobby">
+  <div class="lobby-wrap">
+    <div class="lobby-icon">☕</div>
+    <div class="lobby-title">You're in!</div>
+    <div class="lobby-group" id="lobby-group-name">Group 1</div>
+    <div class="lobby-sub">Waiting for the instructor to start…</div>
+    <div class="dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
+  </div>
 </div>
 
-<!-- WAITING FOR CONTENT (potato Q / twist) -->
-<div class="screen" id="s-waiting-content">
-  <div class="wc-icon" id="wc-icon">⏳</div>
-  <div class="wc-title" id="wc-title">Stand by…</div>
-  <div class="wc-sub" id="wc-sub">Your instructor is about to send the next prompt.</div>
+<!-- WAITING FOR CONTENT (potato / twist) -->
+<div class="screen" id="s-standby">
+  <div class="lobby-wrap">
+    <div class="lobby-icon" id="standby-icon">⏳</div>
+    <div class="lobby-title" id="standby-title">Stand by…</div>
+    <div class="lobby-group" id="standby-group"></div>
+    <div class="lobby-sub" id="standby-sub">Your instructor is about to send the next prompt.</div>
+    <div class="dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
+  </div>
 </div>
 
 <!-- ACTIVE ROUND FORM -->
 <div class="screen" id="s-round">
-  <div class="rh">
-    <div class="rh-tag" id="rh-tag">ROUND</div>
-    <div class="rh-title" id="rh-title">—</div>
-    <div class="rh-task" id="rh-task">—</div>
+  <div class="form-page">
+    <div class="form-header">
+      <div class="form-tag" id="f-tag">ROUND</div>
+      <div class="form-title" id="f-title">—</div>
+      <div class="form-task" id="f-task">—</div>
+    </div>
+    <div class="timer-strip" id="timer-strip" style="display:none;">
+      <div class="ts-label">Time remaining</div>
+      <div class="ts-time" id="stimer">—</div>
+    </div>
+    <div class="form-card" id="form-card"></div>
   </div>
-  <div class="timer-bar" id="timer-bar" style="display:none;">
-    <div class="tb-lbl">Time remaining</div>
-    <div class="tb-time" id="stimer">—</div>
-  </div>
-  <div class="form-card" id="form-card"></div>
 </div>
 
-<!-- SUBMITTED — waiting for discussion -->
+<!-- SUBMITTED -->
 <div class="screen" id="s-submitted">
-  <div class="sub-icon">✅</div>
-  <div class="sub-title">Submitted!</div>
-  <div class="sub-note" id="sub-note">Watch the instructor screen.</div>
-  <div class="sub-preview" id="sub-preview"></div>
+  <div class="submitted-wrap">
+    <div class="sub-icon">✅</div>
+    <div class="sub-title">Submitted!</div>
+    <div class="sub-note" id="sub-note">Your answer is in. Watch the instructor screen.</div>
+    <div class="sub-card-label">Your answer</div>
+    <div class="sub-card" id="sub-preview">—</div>
+  </div>
 </div>
 
-<!-- DISCUSSION PHASE -->
+<!-- DISCUSSION -->
 <div class="screen" id="s-discuss">
-  <div class="discuss-icon">💬</div>
-  <div class="discuss-title">Discussion Time</div>
-  <div class="discuss-sub" id="discuss-sub">Listen to the instructor. Be ready to present when called.</div>
-  <div style="width:100%;max-width:440px;">
-    <div class="ys-label">Your submission</div>
-    <div class="your-submission" id="your-submission">—</div>
+  <div class="discuss-wrap">
+    <div class="discuss-icon">💬</div>
+    <div class="discuss-title">Discussion Time</div>
+    <div class="discuss-note">Listen to the instructor. Be ready when your group is called on.</div>
+    <div class="ya-label">Your submission</div>
+    <div class="your-answer" id="your-answer">—</div>
   </div>
 </div>
 
 <!-- VOTING -->
 <div class="screen" id="s-voting">
-  <div class="vote-h" id="vote-h">Vote for the Best</div>
-  <div class="vote-sub" id="vote-sub">Which answer would actually change Kate's mind?</div>
-  <div class="vote-list" id="vote-list"></div>
+  <div class="vote-page">
+    <div class="vote-title" id="vote-title">Vote for the Best</div>
+    <div class="vote-sub" id="vote-sub">Which answer would actually change Kate's mind?</div>
+    <div class="vote-list" id="vote-list"></div>
+  </div>
 </div>
 
 <script type="module">
@@ -211,14 +261,14 @@ const db = getDatabase(app);
 
 // ── STATE ──
 let myGroup=null, myGroupKey=null;
-let gameRound=null, gamePhase=null;
+let lastScreen=null;  // track what screen drove last state change
 let hasSubmitted=false, hasVoted=false;
-let mySubmissionPreview='';
-let localTimer=0, localTimerInterval=null;
+let myPreview='';
+let localTimer=0, localTimerInterval=null, localTimerRunning=false;
 let selThreat='', selOpt='', selDir='';
 
-// ── GROUPS ──
-onValue(ref(db,'groups'),snap=>{
+// ── LOAD GROUPS ──
+onValue(ref(db,'groups'), snap=>{
   if(!snap.exists()) return;
   const data=snap.val();
   document.getElementById('group-grid').innerHTML=Object.entries(data).map(([key,g])=>
@@ -234,128 +284,119 @@ window.pickGroup=(key,name)=>{
 
 window.joinGame=()=>{
   if(!myGroup) return;
-  document.getElementById('wg-name').textContent=myGroup;
-  showScreen('s-waiting');
-  listenToGame();
+  document.getElementById('lobby-group-name').textContent=myGroup;
+  showScreen('s-lobby');
+  listenGame();
 };
 
-// ── GAME LISTENER ──
-function listenToGame(){
-  onValue(ref(db,'game'),snap=>{
+// ── LISTEN TO GAME ──
+function listenGame(){
+  onValue(ref(db,'game'), snap=>{
     if(!snap.exists()) return;
     const state=snap.val();
+    const screen=state.screen;
 
-    // Timer sync
+    // Sync timer
     syncTimer(state);
 
-    const phase=state.phase;
-    const roundId=state.curRound;
-
-    // VOTING
-    if(phase==='voting'){
-      if(!hasVoted) loadVoting(state.votingRound);
+    // Strict screen routing based on instructor's screen state
+    if(screen==='lobby'){
+      resetRound();
+      showScreen('s-lobby');
       return;
     }
 
-    // DISCUSS phase — show discussion screen
-    if(phase==='discuss'){
-      if(getCurrentScreen()!=='s-voting'){
-        showDiscussScreen();
-      }
+    if(screen==='discuss'){
+      showDiscuss();
       return;
     }
 
-    // WAITING
-    if(phase==='waiting'){
-      hasSubmitted=false; hasVoted=false; mySubmissionPreview='';
-      showScreen('s-waiting');
+    if(screen==='voting'){
+      if(!hasVoted) loadVoting(state.votingRound, state.votingRound==='r5');
       return;
     }
 
-    // POTATO
-    if(phase==='potato'){
-      if(hasSubmitted) return;
-      if(state.potatoQ){
-        loadForm('r3',{overrideTask:state.potatoQ});
-      } else {
-        showWaitingContent('🥔','Waiting for question…','The instructor is about to send the Hot Potato question.');
-      }
-      return;
-    }
+    if(screen==='write'){
+      if(hasSubmitted) return; // stay on submitted screen
+      const roundId=state.curRound;
+      const phase=state.phase;
 
-    // TWIST
-    if(phase==='twist'){
-      if(hasSubmitted) return;
-      if(state.twist){
-        loadForm('r4',{twist:state.twist, correctDirection:state.correctDirection, correctProfit:state.correctProfit});
-      } else {
-        showWaitingContent('🌀','Waiting for twist…','The instructor is about to reveal the changed assumption.');
-      }
-      return;
-    }
-
-    // NORMAL ROUND
-    if(roundId && roundId!==gameRound){
-      gameRound=roundId; gamePhase=phase;
-      hasSubmitted=false; hasVoted=false; mySubmissionPreview='';
-      // r3 and r4 wait for instructor to send content
-      if(roundId==='r3'){
-        showWaitingContent('🥔','Hot Potato','The instructor will send a question shortly.');
-      } else if(roundId==='r4'){
-        showWaitingContent('🌀','Numbers Changed','The instructor will reveal the changed assumption shortly.');
-      } else {
-        loadForm(roundId,{});
+      // Different write phases
+      if(phase==='write'){
+        // Normal round — show form only if round changed or first time
+        if(lastScreen!==roundId){
+          lastScreen=roundId;
+          loadForm(roundId, {});
+        }
+      } else if(phase==='potato'){
+        if(state.potatoQ){
+          const key=`potato-${state.potatoIdx}`;
+          if(lastScreen!==key){
+            lastScreen=key;
+            hasSubmitted=false; // reset for each potato Q
+            loadForm('r3',{overrideTask:state.potatoQ});
+          }
+        } else {
+          showStandby('🥔','Hot Potato',myGroup,'The instructor is about to send the question.');
+        }
+      } else if(phase==='twist'){
+        if(state.twist){
+          const key=`twist-${state.twist.label}`;
+          if(lastScreen!==key){
+            lastScreen=key;
+            hasSubmitted=false;
+            loadForm('r4',{twist:state.twist, correctDirection:state.correctDirection, correctProfit:state.correctProfit});
+          }
+        } else {
+          showStandby('🌀','Numbers Changed',myGroup,'The instructor is about to reveal the changed assumption.');
+        }
       }
     }
   });
 }
 
-function getCurrentScreen(){
-  return document.querySelector('.screen.active')?.id;
+function resetRound(){
+  hasSubmitted=false; hasVoted=false; myPreview=''; lastScreen=null;
+  selThreat=''; selOpt=''; selDir='';
 }
 
-// ── WAITING FOR CONTENT ──
-function showWaitingContent(icon,title,sub){
-  document.getElementById('wc-icon').textContent=icon;
-  document.getElementById('wc-title').textContent=title;
-  document.getElementById('wc-sub').textContent=sub;
-  showScreen('s-waiting-content');
+// ── STANDBY ──
+function showStandby(icon,title,group,sub){
+  document.getElementById('standby-icon').textContent=icon;
+  document.getElementById('standby-title').textContent=title;
+  document.getElementById('standby-group').textContent=group;
+  document.getElementById('standby-sub').textContent=sub;
+  showScreen('s-standby');
 }
 
-// ── DISCUSS SCREEN ──
-function showDiscussScreen(){
-  document.getElementById('discuss-sub').textContent='Listen to the instructor. Be ready to present when called on.';
-  document.getElementById('your-submission').textContent=mySubmissionPreview||'(No submission this round)';
+// ── DISCUSS ──
+function showDiscuss(){
+  document.getElementById('your-answer').textContent=myPreview||'(Nothing submitted this round)';
   showScreen('s-discuss');
 }
 
 // ── LOAD FORM ──
-const ROUND_META={
+const META={
   r1:{tag:'CONFLICT',tagClass:'tag-c',title:'Tea Tank',
       task:'Pick Sagacity\'s single deadliest threat. Write a 2-sentence argument for why it\'s the most dangerous for Kate right now.'},
   r2:{tag:"DEVIL'S ADVOCATE",tagClass:'tag-f',title:'Flip It',
-      task:'Argue AGAINST the option your group recommended. You are Kate\'s most skeptical investor. No hedging.'},
-  r3:{tag:'CHAIN REACTION',tagClass:'tag-h',title:'Hot Potato',
-      task:''},  // overridden by potatoQ
+      task:'Argue against the option your group recommended. You are Kate\'s most skeptical investor. No hedging allowed.'},
+  r3:{tag:'CHAIN REACTION',tagClass:'tag-h',title:'Hot Potato',task:''},
   r4:{tag:'TWIST',tagClass:'tag-t',title:'Numbers Changed',
-      task:'Calculate the new profit using the changed assumption. Show your reasoning.'},
+      task:'Use the changed assumption to calculate the new profit. Show your full reasoning.'},
   r5:{tag:'LIVE PITCH',tagClass:'tag-v',title:"Kate's Voicemail",
-      task:'Type your voicemail to Kate — recommendation + one reason + one risk + one number from the case.'},
+      task:'Write your 30-second voicemail to Kate before she walks in to sign. Recommendation + reason + risk + one number from the case.'},
 };
 
-function loadForm(roundId,opts){
-  const meta=ROUND_META[roundId];
-  if(!meta) return;
+function loadForm(roundId, opts){
+  const meta=META[roundId]; if(!meta) return;
   selThreat=''; selOpt=''; selDir='';
-  document.getElementById('rh-tag').textContent=meta.tag;
-  document.getElementById('rh-tag').className='rh-tag '+meta.tagClass;
-  document.getElementById('rh-title').textContent=meta.title;
-  document.getElementById('rh-task').textContent=opts.overrideTask||meta.task;
-
-  const tb=document.getElementById('timer-bar');
-  if(localTimer>0){tb.style.display='flex';updateSTimer();}
-  else tb.style.display='none';
-
+  document.getElementById('f-tag').textContent=meta.tag;
+  document.getElementById('f-tag').className='form-tag '+meta.tagClass;
+  document.getElementById('f-title').textContent=meta.title;
+  document.getElementById('f-task').textContent=opts.overrideTask||meta.task;
+  const ts=document.getElementById('timer-strip');
+  if(localTimer>0){ ts.style.display='flex'; updateSTimer(); } else { ts.style.display='none'; }
   buildForm(roundId,opts);
   showScreen('s-round');
 }
@@ -366,91 +407,88 @@ function buildForm(roundId,opts){
   let html='';
 
   if(roundId==='r1'){
-    const threats=[
-      '🏭 New regional competitors entering the market',
-      '🏪 National brands going all-natural / organic',
-      '💸 Cannot afford slotting fees to get shelf space',
-      '📦 Glass packaging limits cost competitiveness',
-      '🛒 Amazon / online competition undercuts margins',
-      '📉 Investor pressure forcing premature expansion',
-    ];
-    html+=`<div class="field"><label>Pick your deadliest threat</label>
-      <div class="threat-list">${threats.map((t,i)=>
-        `<button class="thr" id="thr${i}" onclick="pickThreat(${i},'${t.replace(/'/g,"\\'")}')"> ${t}</button>`).join('')}
-      </div></div>
-      <div class="field">
-        <label>2-sentence argument — why is this most dangerous for Kate RIGHT NOW?</label>
-        <textarea id="f-arg" maxlength="300" placeholder="Be specific. Tie it to Kate's decision today…" oninput="cc('f-arg',300)"></textarea>
-        <div class="char-ct" id="cc-f-arg">0 / 300</div>
-      </div>`;
+    const threats=['🏭 New regional competitors entering the market','🏪 National brands going all-natural / organic','💸 Cannot afford slotting fees to get shelf space','📦 Glass packaging limits cost competitiveness','🛒 Amazon / online competition undercuts margins','📉 Investor pressure forcing premature expansion'];
+    html+=`<div class="field">
+      <div class="field-label">Pick Sagacity's deadliest threat</div>
+      <div class="threat-list">${threats.map((t,i)=>`<button class="thr" id="thr${i}" onclick="pickThreat(${i},'${t.replace(/'/g,"\\'")}')">${t}</button>`).join('')}</div>
+    </div>
+    <div class="field">
+      <div class="field-label">Your 2-sentence argument</div>
+      <div class="field-hint">Why is this the most dangerous for Kate right now? Be specific — tie it to her actual decision.</div>
+      <textarea id="f-arg" maxlength="300" placeholder="e.g. This threat is most dangerous because…" oninput="cc('f-arg',300)"></textarea>
+      <div class="char-ct" id="cc-f-arg">0 / 300</div>
+    </div>`;
 
   } else if(roundId==='r2'){
-    const opts2=['Accept broker proposal','Focus on online sales','Find a new broker','Use a distributor','Continue regional / pop-up'];
-    html+=`<div class="field"><label>Your group's original recommendation</label>
-      <div class="opt-grid">${opts2.map((o,i)=>
-        `<button class="opt" id="opt${i}" onclick="pickOpt(${i},'${o}')">${o}</button>`).join('')}
-      </div></div>
-      <div class="field">
-        <label>Strongest counter-argument (why it could fail)</label>
-        <textarea id="f-counter" maxlength="250" placeholder="Commit fully — no 'on balance it's still good'…" oninput="cc('f-counter',250)"></textarea>
-        <div class="char-ct" id="cc-f-counter">0 / 250</div>
-      </div>
-      <div class="field">
-        <label>One specific case fact or number supporting your counter</label>
-        <input type="text" id="f-evid" placeholder="e.g. '$45K sampling nearly wipes out $20K profit'" maxlength="150"/>
-        <div class="hint">Citing a real number earns a bonus point</div>
-      </div>`;
+    const opts2=['Accept the broker proposal','Focus on online sales','Find a new broker','Use a distributor','Continue regional / pop-up'];
+    html+=`<div class="field">
+      <div class="field-label">Your group's original recommendation</div>
+      <div class="opt-grid">${opts2.map((o,i)=>`<button class="opt" id="opt${i}" onclick="pickOpt(${i},'${o}')">${o}</button>`).join('')}</div>
+    </div>
+    <div class="field">
+      <div class="field-label">Your counter-argument</div>
+      <div class="field-hint">The strongest reason your own recommendation could fail. Commit fully — no hedging.</div>
+      <textarea id="f-counter" maxlength="250" placeholder="e.g. Even if this works…" oninput="cc('f-counter',250)"></textarea>
+      <div class="char-ct" id="cc-f-counter">0 / 250</div>
+    </div>
+    <div class="field">
+      <div class="field-label">One specific case fact or number</div>
+      <div class="field-hint">Citing a real number from the case earns a bonus point.</div>
+      <input type="text" id="f-evid" placeholder="e.g. '$45K sampling cost nearly wipes out the $20K projected profit'" maxlength="150"/>
+    </div>`;
 
   } else if(roundId==='r3'){
     html+=`<div class="field">
-        <label>Your unique point (one sentence — must be new)</label>
-        <textarea id="f-point" maxlength="200" placeholder="Specific and new. Generic statements score 0…" oninput="cc('f-point',200)"></textarea>
-        <div class="char-ct" id="cc-f-point">0 / 200</div>
-        <div class="hint">⚠ Duplicates are auto-flagged. First to say it wins the point.</div>
-      </div>`;
+      <div class="field-label">Your unique point</div>
+      <div class="field-hint">One sentence — must be something no other group has said. Duplicates score 0.</div>
+      <textarea id="f-point" maxlength="200" placeholder="Be specific. Generic statements score zero." oninput="cc('f-point',200)"></textarea>
+      <div class="char-ct" id="cc-f-point">0 / 200</div>
+    </div>`;
 
   } else if(roundId==='r4'){
     const twistText=opts.twist?.text||'Waiting for the instructor to reveal the twist…';
     html+=`
-      <div class="calc-hint">
-        <strong>Broker plan numbers:</strong><br>
-        Gross sales (9,100 × $25.63) = $233,233<br>
-        COGS 40% = $93,293 · Shipping = $8,008 · Broker 5% = $11,662<br>
-        Slotting = $10,019 · Advertising = $18,000 · Sampling = $45,000<br>
-        <strong>Coupons (12% × 100,000 × $1) = $12,000</strong><br>
-        Trade promo = $8,804 · Pioneering = $6,000<br>
-        <strong>Original profit ≈ $20,447</strong>
+    <div class="twist-box">
+      <div class="twist-box-label">The Changed Assumption</div>
+      <div class="twist-box-text">${twistText}</div>
+    </div>
+    <div class="calc-ref">
+      <strong>Original broker plan numbers:</strong><br>
+      Gross sales (9,100 × $25.63) = $233,233<br>
+      COGS 40% = $93,293 · Shipping = $8,008 · Broker 5% = $11,662<br>
+      Slotting = $10,019 · Advertising = $18,000 · Sampling = $45,000<br>
+      <strong>Coupons (12% × 100,000 × $1) = $12,000</strong><br>
+      Trade promo = $8,804 · Pioneering = $6,000<br>
+      <strong>Original profit ≈ $20,447</strong>
+    </div>
+    <div class="field">
+      <div class="field-label">Does the profit go UP or DOWN?</div>
+      <div class="opt-grid">
+        <button class="opt" id="dir-up" onclick="pickDir('up')">📈 Goes UP</button>
+        <button class="opt" id="dir-down" onclick="pickDir('down')">📉 Goes DOWN</button>
       </div>
-      <div class="twist-box">
-        <div class="tl">The Twist</div>
-        <div class="tt">${twistText}</div>
-      </div>
-      <div class="field"><label>Does profit go UP or DOWN?</label>
-        <div class="opt-grid">
-          <button class="opt" id="dir-up" onclick="pickDir('up')">📈 Goes UP</button>
-          <button class="opt" id="dir-down" onclick="pickDir('down')">📉 Goes DOWN</button>
-        </div>
-      </div>
-      <div class="field">
-        <label>Your calculated new profit ($)</label>
-        <input type="number" id="f-profit" placeholder="e.g. 7447"/>
-      </div>
-      <div class="field">
-        <label>Show your calculation / reasoning</label>
-        <textarea id="f-reason" maxlength="300" placeholder="e.g. New coupon cost = 25% × 100,000 × $1 = $25,000. Was $12,000. Extra cost = $13,000. New profit = $20,447 − $13,000 = $7,447" oninput="cc('f-reason',300)"></textarea>
-        <div class="char-ct" id="cc-f-reason">0 / 300</div>
-      </div>`;
+    </div>
+    <div class="field">
+      <div class="field-label">Your calculated new profit ($)</div>
+      <input type="number" id="f-profit" placeholder="e.g. 7447"/>
+    </div>
+    <div class="field">
+      <div class="field-label">Show your full calculation</div>
+      <div class="field-hint">Partial credit for correct reasoning even if the final number is off.</div>
+      <textarea id="f-reason" maxlength="320" placeholder="e.g. New coupon cost = 25% × 100,000 × $1 = $25,000. Original was $12,000. Extra cost = $13,000. New profit = $20,447 − $13,000 = $7,447" oninput="cc('f-reason',320)"></textarea>
+      <div class="char-ct" id="cc-f-reason">0 / 320</div>
+    </div>`;
 
   } else if(roundId==='r5'){
     html+=`<div class="field">
-        <label>Your 30-second voicemail to Kate</label>
-        <textarea id="f-vm" maxlength="400" placeholder="Kate, don't sign yet — …" oninput="cc('f-vm',400)" style="min-height:100px;"></textarea>
-        <div class="char-ct" id="cc-f-vm">0 / 400</div>
-        <div class="hint">Recommendation · one reason · one risk · one number from the case</div>
-      </div>`;
+      <div class="field-label">Your 30-second voicemail to Kate</div>
+      <div class="field-hint">Recommendation + one strong reason + one risk + one specific number from the case. Vague advice scores zero.</div>
+      <textarea id="f-vm" maxlength="400" placeholder="Kate, don't sign yet — …" oninput="cc('f-vm',400)" style="min-height:110px;"></textarea>
+      <div class="char-ct" id="cc-f-vm">0 / 400</div>
+    </div>`;
   }
 
-  html+=`<button class="sub-btn" id="sub-btn" onclick="submitAnswer('${roundId}')">Submit →</button>`;
+  html+=`<button class="submit-btn" id="sub-btn" onclick="submitAnswer('${roundId}')">Submit Answer →</button>`;
   card.innerHTML=html;
 }
 
@@ -474,21 +512,21 @@ window.submitAnswer=async(roundId)=>{
   let preview='';
 
   if(roundId==='r1'){
-    if(!selThreat){showNotif('Please pick a threat');return;}
+    if(!selThreat){showNotif('Please pick a threat first');return;}
     const arg=document.getElementById('f-arg')?.value?.trim();
-    if(!arg){showNotif('Please write your argument');return;}
+    if(!arg){showNotif('Please write your 2-sentence argument');return;}
     data={...data,threat:selThreat,argument:arg,hidden:true};
-    preview=`Threat: ${selThreat}\n\n"${arg}"`;
-    document.getElementById('sub-note').textContent='Hidden until instructor reveals all. Watch the screen.';
+    preview=`${selThreat}\n\n"${arg}"`;
+    document.getElementById('sub-note').textContent='Your submission is hidden until the instructor reveals all. Watch the screen.';
 
   } else if(roundId==='r2'){
-    if(!selOpt){showNotif('Please select your recommendation');return;}
+    if(!selOpt){showNotif('Please select your original recommendation');return;}
     const counter=document.getElementById('f-counter')?.value?.trim();
     if(!counter){showNotif('Please write your counter-argument');return;}
     const evid=document.getElementById('f-evid')?.value?.trim()||'';
     data={...data,option:selOpt,counter,evidence:evid,hidden:false};
     preview=`Recommended: ${selOpt}\n\nCounter: "${counter}"${evid?'\n\nEvidence: '+evid:''}`;
-    document.getElementById('sub-note').textContent='Submitted. Watch the instructor screen.';
+    document.getElementById('sub-note').textContent='Submitted. The instructor can see it. Watch the screen.';
 
   } else if(roundId==='r3'){
     const point=document.getElementById('f-point')?.value?.trim();
@@ -498,67 +536,55 @@ window.submitAnswer=async(roundId)=>{
     if(snap.exists()){
       const existing=Object.values(snap.val()).map(s=>s.point?.toLowerCase()||'');
       const myWords=new Set(point.toLowerCase().split(/\s+/).filter(w=>w.length>4));
-      isDupe=existing.some(p=>{
-        const tw=new Set(p.split(/\s+/).filter(w=>w.length>4));
-        let ov=0; myWords.forEach(w=>{if(tw.has(w))ov++;});
-        return ov>=3;
-      });
+      isDupe=existing.some(p=>{const tw=new Set(p.split(/\s+/).filter(w=>w.length>4));let ov=0;myWords.forEach(w=>{if(tw.has(w))ov++;});return ov>=3;});
     }
     data={...data,point,duplicate:isDupe,hidden:false};
     preview=`"${point}"${isDupe?'\n\n⚠ May be flagged as duplicate':''}`;
-    document.getElementById('sub-note').textContent=isDupe?'⚠ Possible duplicate flagged.':'Submitted!';
+    document.getElementById('sub-note').textContent=isDupe?'⚠ Possible duplicate flagged — check with instructor.':'Submitted!';
 
   } else if(roundId==='r4'){
-    if(!selDir){showNotif('Please pick a direction');return;}
+    if(!selDir){showNotif('Please pick a direction — UP or DOWN');return;}
     const profit=document.getElementById('f-profit')?.value?.trim();
     if(!profit){showNotif('Please enter your calculated profit');return;}
     const reason=document.getElementById('f-reason')?.value?.trim()||'';
-    // Auto-score
     const gameSnap=await get(ref(db,'game'));
     const gd=gameSnap.val();
-    const cDir=gd?.correctDirection||'down';
-    const cProfit=gd?.correctProfit||0;
+    const cDir=gd?.correctDirection||'down', cProfit=gd?.correctProfit||0;
     let autoPts=0;
     if(selDir===cDir) autoPts+=1;
     const pNum=parseFloat(profit);
     const profOk=cProfit>0&&!isNaN(pNum)&&Math.abs(pNum-cProfit)/cProfit<0.15;
     if(profOk) autoPts+=2;
-    const autoScore={dirOk:selDir===cDir,profOk};
-    data={...data,direction:selDir,newProfit:profit,reasoning:reason,hidden:false,autoScore,points:autoPts};
-    if(autoPts>0){
-      const gs=await get(ref(db,`groups/${myGroupKey}`));
-      await update(ref(db,`groups/${myGroupKey}`),{points:(gs.val()?.points||0)+autoPts});
-    }
+    data={...data,direction:selDir,newProfit:profit,reasoning:reason,hidden:false,autoScore:{dirOk:selDir===cDir,profOk},points:autoPts};
+    if(autoPts>0){const gs=await get(ref(db,`groups/${myGroupKey}`));await update(ref(db,`groups/${myGroupKey}`),{points:(gs.val()?.points||0)+autoPts});}
     preview=`Direction: ${selDir}\nNew profit: $${profit}\n\nReasoning: ${reason}`;
-    document.getElementById('sub-note').textContent=autoPts>0?`Auto-scored: ${autoPts} pt${autoPts!==1?'s':''} earned!`:'Submitted. Instructor may award more points.';
+    document.getElementById('sub-note').textContent=autoPts>0?`Auto-scored: ${autoPts} point${autoPts!==1?'s':''} earned!`:'Submitted. Instructor may award additional points.';
 
   } else if(roundId==='r5'){
     const vm=document.getElementById('f-vm')?.value?.trim();
-    if(!vm){showNotif('Please type your voicemail');return;}
+    if(!vm){showNotif('Please write your voicemail');return;}
     data={...data,voicemail:vm,hidden:true};
     preview=`"${vm}"`;
-    document.getElementById('sub-note').textContent='Hidden until instructor reveals all voicemails.';
+    document.getElementById('sub-note').textContent='Hidden until the instructor reveals all. Watch the screen.';
   }
 
   await set(subRef,data);
-  hasSubmitted=true;
-  mySubmissionPreview=preview;
+  hasSubmitted=true; myPreview=preview;
   document.getElementById('sub-preview').textContent=preview;
   showScreen('s-submitted');
   showNotif('Submitted! ✅');
 };
 
 // ── VOTING ──
-async function loadVoting(roundId){
-  const isVm=roundId==='r5';
+async function loadVoting(roundId,isVm){
   const snap=await get(ref(db,`submissions/${roundId}`));
   if(!snap.exists()){showScreen('s-discuss');return;}
   const subs=Object.values(snap.val()).filter(s=>s.group!==myGroup&&!s.hidden);
-  if(subs.length===0){showScreen('s-discuss');return;}
-  document.getElementById('vote-h').textContent=isVm?'Vote for the Best Voicemail':'Vote for the Best Argument';
+  if(!subs.length){showScreen('s-discuss');return;}
+  document.getElementById('vote-title').textContent=isVm?'Vote for the Best Voicemail':'Vote for the Best Argument';
   document.getElementById('vote-sub').textContent=isVm
     ?'Which voicemail would actually change what Kate does this morning?'
-    :'Which threat argument is most convincing?';
+    :'Which threat argument is the most convincing?';
   document.getElementById('vote-list').innerHTML=subs.map(s=>`
     <div class="vc" id="vc-${s.group.replace(/\s/g,'_')}" onclick="castVote('${roundId}','${s.group}')">
       <div class="vc-grp">${s.group}</div>
@@ -575,45 +601,46 @@ window.castVote=async(roundId,groupName)=>{
   const safeKey=groupName.replace(/\s/g,'_');
   await update(ref(db,`submissions/${roundId}/${safeKey}/votes`),{[myGroup.replace(/\s/g,'_')]:true});
   const snap=await get(ref(db,'groups'));
-  if(snap.exists()){
-    const entry=Object.entries(snap.val()).find(([,g])=>g.name===groupName);
-    if(entry){const[k,g]=entry;await update(ref(db,`groups/${k}`),{points:(g.points||0)+1});}
-  }
+  if(snap.exists()){const entry=Object.entries(snap.val()).find(([,g])=>g.name===groupName);if(entry){const[k,g]=entry;await update(ref(db,`groups/${k}`),{points:(g.points||0)+1});}}
   document.querySelectorAll('.vc').forEach(c=>c.classList.remove('voted'));
-  document.getElementById(`vc-${safeKey}`)?.classList.add('voted');
+  const el=document.getElementById(`vc-${safeKey}`);
+  if(el){el.classList.add('voted');el.innerHTML+=`<div class="voted-badge">✓ Your vote</div>`;}
   showNotif('Vote cast! 👍');
 };
 
 // ── TIMER ──
 function syncTimer(state){
-  if(state.timerSec!==undefined){
-    if(state.timerRunning&&!localTimerInterval){
-      localTimer=state.timerSec;
-      startLocalTimer();
-    } else if(!state.timerRunning){
-      clearInterval(localTimerInterval); localTimerInterval=null;
-      localTimer=state.timerSec||0;
-      updateSTimer();
-    }
+  if(state.timerSec===undefined) return;
+  if(state.timerRunning && !localTimerRunning){
+    localTimer=state.timerSec;
+    startLocalTimer();
+  } else if(!state.timerRunning && localTimerRunning){
+    stopLocalTimer();
+    localTimer=state.timerSec||0;
+    updateSTimer();
+  } else if(!localTimerRunning){
+    localTimer=state.timerSec||0;
+    updateSTimer();
   }
 }
 function startLocalTimer(){
+  localTimerRunning=true;
   clearInterval(localTimerInterval);
   localTimerInterval=setInterval(()=>{
     localTimer=Math.max(0,localTimer-1);
     updateSTimer();
-    if(localTimer<=0){clearInterval(localTimerInterval);localTimerInterval=null;}
+    if(localTimer<=0){stopLocalTimer();}
   },1000);
 }
+function stopLocalTimer(){localTimerRunning=false;clearInterval(localTimerInterval);}
 function updateSTimer(){
-  const el=document.getElementById('stimer');
+  const el=document.getElementById('stimer'), ts=document.getElementById('timer-strip');
   if(!el) return;
-  const tb=document.getElementById('timer-bar');
-  if(localTimer<=0){if(tb) tb.style.display='none';el.textContent='—';el.className='tb-time';return;}
-  if(tb) tb.style.display='flex';
+  if(localTimer<=0){if(ts) ts.style.display='none';el.textContent='—';el.className='ts-time';return;}
+  if(ts) ts.style.display='flex';
   const m=Math.floor(localTimer/60),s=localTimer%60;
   el.textContent=`${m}:${String(s).padStart(2,'0')}`;
-  el.className='tb-time'+(localTimer<=10?' warn':'');
+  el.className='ts-time'+(localTimer<=10?' warn':'');
 }
 
 // ── SCREEN ──
@@ -624,11 +651,7 @@ function showScreen(id){
 
 // ── NOTIF ──
 let nT;
-function showNotif(msg){
-  const el=document.getElementById('notif');
-  el.textContent=msg;el.classList.add('show');
-  clearTimeout(nT);nT=setTimeout(()=>el.classList.remove('show'),2400);
-}
+function showNotif(msg){const el=document.getElementById('notif');el.textContent=msg;el.classList.add('show');clearTimeout(nT);nT=setTimeout(()=>el.classList.remove('show'),2400);}
 </script>
 </body>
 </html>
