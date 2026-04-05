@@ -379,7 +379,7 @@ window.startGame = async () => {
   groups.forEach((g,i)=>{ gObj[`g${i}`]={name:g.name,points:0}; });
   await set(ref(db,'groups'), gObj);
   // Set initial game state — students see LOBBY until we start round 1
-  await set(ref(db,'game'), {screen:'lobby', curRound:null, phase:null, timerSec:0, timerRunning:false});
+  await set(ref(db,'game'), {gameStarted:false, screen:'lobby', curRound:null, phase:null, timerSec:0, timerRunning:false});
   renderLeftNav();
   renderScoreLists();
   listenGroups();
@@ -413,6 +413,7 @@ window.gotoRound = async idx => {
 
   // Push to Firebase — students transition to write form
   const gameState = {
+    gameStarted: true,
     screen: 'write',
     curRound: r.id,
     phase: 'write',

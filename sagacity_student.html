@@ -267,8 +267,8 @@ let myPreview='';
 let localTimer=0, localTimerInterval=null, localTimerRunning=false;
 let selThreat='', selOpt='', selDir='';
 
-// ── LOAD GROUPS ──
-onValue(ref(db,'groups'), snap=>{
+// ── LOAD GROUPS — populate picker only, no game logic ──
+get(ref(db,'groups')).then(snap=>{
   if(!snap.exists()) return;
   const data=snap.val();
   document.getElementById('group-grid').innerHTML=Object.entries(data).map(([key,g])=>
@@ -295,19 +295,27 @@ function listenGame(){
     if(!snap.exists()) return;
     const state=snap.val();
 
+    // ── CRITICAL GATE: do nothing until instructor explicitly starts the game ──
+    // Instructor sets gameStarted:true when they click Start Game
+    // If not set, or screen is null/lobby from a stale previous session, stay in lobby
+    if(!state.gameStarted){
+      showScreen('s-lobby');
+      return;
+    }
+
     // Sync timer always
     syncTimer(state);
 
     const screen=state.screen;
 
     // ── LOBBY ──
-    if(screen==='lobby'){
+    if(!screen || screen==='lobby'){
       resetRound();
       showScreen('s-lobby');
       return;
     }
 
-    // ── DISCUSS — always transition, regardless of submission state ──
+    // ── DISCUSS — always transition ──
     if(screen==='discuss'){
       showDiscuss();
       return;
@@ -316,7 +324,7 @@ function listenGame(){
     // ── VOTING — always transition ──
     if(screen==='voting'){
       if(!hasVoted) loadVoting(state.votingRound, state.votingRound==='r5');
-      else showScreen('s-voting'); // stay on voting if already voted
+      else showScreen('s-voting');
       return;
     }
 
@@ -326,7 +334,6 @@ function listenGame(){
       const phase=state.phase;
 
       if(phase==='write'){
-        // New round — always reset and show form
         if(lastScreen!==roundId){
           lastScreen=roundId;
           hasSubmitted=false;
@@ -334,7 +341,6 @@ function listenGame(){
           myPreview='';
           loadForm(roundId, {});
         }
-        // If already submitted for this round, stay on submitted screen — do nothing
       } else if(phase==='potato'){
         if(state.potatoQ){
           const key=`potato-${state.potatoIdx}`;
