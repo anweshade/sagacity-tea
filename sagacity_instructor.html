@@ -6,7 +6,7 @@
 <title>Sagacity — Instructor</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600&display=swap');
-  :root{--tea:#2D5016;--leaf:#4A7C2F;--gold:#C9A84C;--cream:#F7F3EB;--dark:#1C1C1C;--mist:#E6EFD8;--border:#DDD5C4;--soft:#F0EBE0;--accent:#8B3A3A;}
+  :root{--tea:#2D5016;--leaf:#4A7C2F;--gold:#C9A84C;--cream:#F7F3EB;--dark:#1C1C1C;--mist:#E6EFD8;--border:#DDD5C4;--soft:#F0EBE0;--accent:#8B3A3A;--blue:#1a5a8a;--purple:#5a1a8a;}
   *{margin:0;padding:0;box-sizing:border-box;}
   html,body{width:100%;height:100%;overflow:hidden;}
   body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--dark);display:flex;flex-direction:column;height:100vh;}
@@ -15,155 +15,194 @@
 
   /* WELCOME */
   #s-welcome{align-items:center;justify-content:center;text-align:center;padding:60px;}
-  .w-title{font-family:'Playfair Display',serif;font-size:clamp(36px,5vw,64px);color:var(--tea);margin-bottom:8px;}
+  .w-title{font-family:'Playfair Display',serif;font-size:clamp(32px,5vw,60px);color:var(--tea);margin-bottom:6px;}
   .w-title span{color:var(--gold);}
-  .w-sub{font-size:16px;color:#aaa;margin-bottom:48px;}
-  .w-stats{display:flex;gap:20px;justify-content:center;margin-bottom:48px;}
-  .w-stat{background:white;border:1.5px solid var(--border);border-radius:10px;padding:18px 28px;text-align:center;}
-  .w-stat .n{font-family:'Playfair Display',serif;font-size:36px;color:var(--gold);font-weight:700;line-height:1;}
+  .w-sub{font-size:15px;color:#aaa;margin-bottom:40px;}
+  .w-stats{display:flex;gap:16px;justify-content:center;margin-bottom:40px;}
+  .w-stat{background:white;border:1.5px solid var(--border);border-radius:10px;padding:16px 24px;text-align:center;}
+  .w-stat .n{font-family:'Playfair Display',serif;font-size:32px;color:var(--gold);font-weight:700;line-height:1;}
   .w-stat .l{font-size:11px;color:#aaa;margin-top:2px;}
 
   /* SETUP */
   #s-setup{align-items:center;justify-content:center;padding:40px;}
-  .setup-h{font-family:'Playfair Display',serif;font-size:32px;color:var(--tea);margin-bottom:6px;text-align:center;}
-  .setup-sub{font-size:13px;color:#aaa;margin-bottom:24px;text-align:center;}
-  .groups-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;width:100%;max-width:640px;margin-bottom:24px;}
-  .gc{background:white;border:1.5px solid var(--border);border-radius:8px;padding:12px 14px;}
+  .setup-h{font-family:'Playfair Display',serif;font-size:30px;color:var(--tea);margin-bottom:5px;text-align:center;}
+  .setup-sub{font-size:13px;color:#aaa;margin-bottom:20px;text-align:center;}
+  .groups-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;width:100%;max-width:620px;margin-bottom:20px;}
+  .gc{background:white;border:1.5px solid var(--border);border-radius:7px;padding:11px 13px;}
   .gc:focus-within{border-color:var(--leaf);}
   .gc label{font-size:9px;text-transform:uppercase;letter-spacing:.12em;color:#bbb;display:block;margin-bottom:3px;}
-  .gc input{width:100%;border:none;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;color:var(--dark);background:transparent;outline:none;}
+  .gc input{width:100%;border:none;font-family:'DM Sans',sans-serif;font-size:13.5px;font-weight:500;color:var(--dark);background:transparent;outline:none;}
   .gc input::placeholder{color:#ddd;}
 
-  /* GAME */
+  /* GAME LAYOUT */
   #s-game{flex-direction:row;}
-  .left-nav{width:64px;background:var(--soft);border-right:1.5px solid var(--border);display:flex;flex-direction:column;align-items:center;padding:12px 0;gap:6px;flex-shrink:0;}
-  .rdot{width:38px;height:38px;border-radius:50%;background:white;border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#bbb;cursor:pointer;transition:all .15s;}
+  .left-nav{width:60px;background:var(--soft);border-right:1.5px solid var(--border);display:flex;flex-direction:column;align-items:center;padding:10px 0;gap:5px;flex-shrink:0;}
+  .rdot{width:36px;height:36px;border-radius:50%;background:white;border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#bbb;cursor:pointer;transition:all .15s;}
   .rdot:hover{border-color:var(--leaf);color:var(--tea);}
   .rdot.active{background:var(--tea);color:var(--gold);border-color:var(--tea);}
+  .rdot.done{background:var(--mist);color:var(--leaf);border-color:var(--leaf);}
 
   .main-col{flex:1;display:flex;flex-direction:column;overflow:hidden;}
 
   /* TOP BAR */
-  .top-bar{display:flex;align-items:center;gap:12px;padding:10px 18px;border-bottom:1.5px solid var(--border);background:white;flex-shrink:0;}
-  .tb-title{font-family:'Playfair Display',serif;font-size:17px;color:var(--tea);flex:1;}
-  .timer-num{font-family:'Playfair Display',serif;font-size:32px;font-weight:900;color:var(--tea);min-width:80px;text-align:center;}
-  .timer-num.warn{color:#cc3333;animation:tp .5s infinite alternate;}
+  .top-bar{display:flex;align-items:center;gap:10px;padding:9px 16px;border-bottom:1.5px solid var(--border);background:white;flex-shrink:0;flex-wrap:wrap;}
+  .tb-title{font-family:'Playfair Display',serif;font-size:16px;color:var(--tea);}
+  .tb-phase{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;padding:3px 10px;border-radius:20px;white-space:nowrap;}
+  .ph-write{background:#e6f0ff;color:var(--blue);}
+  .ph-discuss{background:var(--mist);color:var(--tea);}
+  .ph-score{background:#fff7e6;color:#8a5a00;}
+  .ph-vote{background:#f5e6ff;color:var(--purple);}
+
+  /* TIMER */
+  .timer-wrap{display:flex;align-items:center;gap:6px;margin-left:auto;}
+  .timer-big{font-family:'Playfair Display',serif;font-size:28px;font-weight:900;color:var(--tea);min-width:70px;text-align:center;}
+  .timer-big.warn{color:#cc3333;animation:tp .5s infinite alternate;}
   @keyframes tp{from{opacity:1}to{opacity:.3}}
   .tps{display:flex;gap:3px;}
-  .tp-btn{padding:4px 7px;background:var(--soft);border:1px solid var(--border);border-radius:4px;font-size:11px;font-weight:600;color:#666;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .12s;}
-  .tp-btn:hover{background:var(--mist);border-color:var(--leaf);color:var(--tea);}
+  .tpb{padding:3px 6px;background:var(--soft);border:1px solid var(--border);border-radius:3px;font-size:10px;font-weight:600;color:#666;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .1s;}
+  .tpb:hover{background:var(--mist);border-color:var(--leaf);color:var(--tea);}
   .ta{display:flex;gap:3px;}
-  .ta button{padding:5px 9px;border:none;border-radius:4px;font-size:12px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .12s;}
+  .ta button{padding:4px 8px;border:none;border-radius:4px;font-size:11px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .12s;}
   .ta .go{background:var(--tea);color:var(--gold);}
   .ta .go:hover{background:var(--leaf);}
   .ta .oth{background:var(--soft);color:#888;border:1px solid var(--border);}
 
   /* BODY */
   .body-area{flex:1;display:flex;overflow:hidden;}
-  .feed{flex:1;padding:14px 18px;overflow-y:auto;display:flex;flex-direction:column;gap:12px;}
-  .sidebar{width:210px;border-left:1.5px solid var(--border);padding:12px;overflow-y:auto;background:var(--soft);display:flex;flex-direction:column;gap:12px;}
+
+  /* PRESENTING PANEL — shown during discuss phase */
+  .presenting-panel{display:none;flex-direction:column;gap:0;width:100%;}
+  .presenting-panel.active{display:flex;}
+
+  .now-presenting{background:var(--tea);color:white;padding:16px 24px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
+  .np-label{font-size:11px;text-transform:uppercase;letter-spacing:.14em;opacity:.6;margin-bottom:3px;}
+  .np-group{font-family:'Playfair Display',serif;font-size:28px;color:var(--gold);font-weight:700;}
+  .np-task{font-size:13px;opacity:.7;margin-top:2px;}
+  .np-nav{display:flex;gap:8px;align-items:center;}
+  .np-counter{font-size:13px;opacity:.6;}
+  .np-btn{padding:8px 18px;border:2px solid rgba(255,255,255,.3);background:transparent;color:white;border-radius:5px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:all .15s;}
+  .np-btn:hover{border-color:var(--gold);color:var(--gold);}
+  .np-btn.primary{background:var(--gold);color:var(--dark);border-color:var(--gold);}
+  .np-btn.primary:hover{background:#dbb85a;}
+
+  .discuss-body{flex:1;display:flex;overflow:hidden;}
+  .sub-feed{flex:1;padding:14px 16px;overflow-y:auto;display:flex;flex-direction:column;gap:10px;}
+  .score-sidebar{width:200px;border-left:1.5px solid var(--border);padding:12px;background:var(--soft);display:flex;flex-direction:column;gap:10px;overflow-y:auto;}
+
+  /* WRITE PHASE — feed only */
+  .write-panel{display:none;flex:1;overflow:hidden;}
+  .write-panel.active{display:flex;}
+  .write-feed{flex:1;padding:14px 16px;overflow-y:auto;display:flex;flex-direction:column;gap:10px;}
+  .write-sidebar{width:200px;border-left:1.5px solid var(--border);padding:12px;background:var(--soft);display:flex;flex-direction:column;gap:10px;overflow-y:auto;}
 
   /* ROUND CARD */
-  .round-info{background:white;border:1.5px solid var(--border);border-radius:8px;padding:16px;}
-  .ri-tag{font-size:9px;text-transform:uppercase;letter-spacing:.14em;font-weight:700;padding:2px 8px;border-radius:20px;display:inline-block;margin-bottom:6px;}
+  .round-info{background:white;border:1.5px solid var(--border);border-radius:8px;padding:14px 16px;}
+  .ri-tag{font-size:9px;text-transform:uppercase;letter-spacing:.14em;font-weight:700;padding:2px 8px;border-radius:20px;display:inline-block;margin-bottom:5px;}
   .tag-c{color:#8a5a00;background:#fff7e6;}
   .tag-f{color:var(--accent);background:#fff0f0;}
   .tag-h{color:#1a5a8a;background:#e6f0ff;}
   .tag-t{color:#5a1a8a;background:#f5e6ff;}
   .tag-v{color:var(--tea);background:var(--mist);}
-  .ri-title{font-family:'Playfair Display',serif;font-size:20px;color:var(--tea);margin-bottom:4px;}
-  .ri-desc{font-size:13px;color:#666;line-height:1.6;margin-bottom:10px;}
-  .ri-actions{display:flex;gap:6px;flex-wrap:wrap;}
+  .ri-title{font-family:'Playfair Display',serif;font-size:18px;color:var(--tea);margin-bottom:3px;}
+  .ri-desc{font-size:12.5px;color:#777;line-height:1.55;}
 
-  /* ACTION BUTTONS */
-  .btn{display:inline-block;padding:7px 16px;border:none;border-radius:5px;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;cursor:pointer;transition:all .15s;}
+  /* SUBMISSION CARDS */
+  .sub-count-bar{font-size:12px;color:#aaa;font-weight:600;display:flex;align-items:center;gap:10px;}
+  .sub-count-bar .progress{flex:1;height:4px;background:var(--border);border-radius:2px;overflow:hidden;}
+  .sub-count-bar .progress-fill{height:100%;background:var(--leaf);border-radius:2px;transition:width .3s;}
+
+  .sub-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:8px;}
+  .sub-card{background:white;border:1.5px solid var(--border);border-radius:7px;padding:12px;animation:pop .25s ease;}
+  @keyframes pop{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
+  .sub-card.active-presenter{border-color:var(--gold);background:#fffdf5;box-shadow:0 2px 12px rgba(201,168,76,.2);}
+  .sub-card.done-presenting{opacity:.55;}
+  .sc-grp{font-size:9px;text-transform:uppercase;letter-spacing:.1em;color:#bbb;margin-bottom:4px;}
+  .sc-body{font-size:12.5px;color:var(--dark);line-height:1.6;margin-bottom:7px;}
+  .sc-body .lbl{font-size:9px;color:#aaa;text-transform:uppercase;letter-spacing:.08em;display:block;margin-top:4px;}
+  .sc-body strong{color:var(--tea);}
+  .sc-hidden{display:flex;align-items:center;justify-content:space-between;padding:8px 0;font-size:12px;color:#bbb;font-style:italic;}
+
+  /* SCORE ROW ON CARD */
+  .sc-score-row{display:flex;align-items:center;gap:3px;padding-top:7px;border-top:1px solid var(--border);margin-top:4px;}
+  .sc-pts-val{font-family:'Playfair Display',serif;font-size:17px;color:var(--leaf);font-weight:700;margin-left:auto;}
+  .ptb{padding:3px 8px;border:1px solid var(--border);border-radius:3px;background:var(--soft);font-size:11px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;color:#555;transition:all .1s;}
+  .ptb:hover{background:var(--leaf);color:white;border-color:var(--leaf);}
+  .ptb.neg{color:#ccc;}
+  .ptb.neg:hover{background:var(--accent);color:white;border-color:var(--accent);}
+
+  /* EMPTY / WAITING */
+  .empty{display:flex;flex-direction:column;align-items:center;justify-content:center;flex:1;color:#ccc;gap:6px;text-align:center;padding:40px;}
+  .empty .ei{font-size:32px;}
+  .empty .ec{font-family:'Playfair Display',serif;font-size:44px;color:var(--tea);font-weight:700;}
+
+  /* SIDEBAR */
+  .s-lbl{font-size:9px;text-transform:uppercase;letter-spacing:.12em;color:#bbb;margin-bottom:6px;}
+  .score-list{display:flex;flex-direction:column;gap:3px;}
+  .slr{display:flex;align-items:center;gap:4px;padding:4px 0;border-bottom:1px solid var(--border);}
+  .slr:last-child{border-bottom:none;}
+  .slr-rank{font-size:10px;color:#bbb;width:14px;}
+  .slr-name{flex:1;font-size:11px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .slr-pts{font-family:'Playfair Display',serif;font-size:14px;color:var(--leaf);font-weight:700;min-width:20px;text-align:right;}
+  .slr-btns{display:flex;gap:2px;}
+  .spt{width:18px;height:18px;border:none;border-radius:3px;font-size:11px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-weight:700;transition:all .1s;}
+  .spt.p{background:var(--mist);color:var(--tea);}
+  .spt.p:hover{background:var(--leaf);color:white;}
+  .spt.m{background:#f5efef;color:#ccc;}
+  .spt.m:hover{background:#f0d8d8;color:var(--accent);}
+
+  /* BOTTOM BAR */
+  .bottom-bar{padding:8px 16px;border-top:1.5px solid var(--border);background:white;display:flex;gap:6px;align-items:center;flex-shrink:0;flex-wrap:wrap;}
+  .bb-hint{font-size:11.5px;color:#888;flex:1;line-height:1.4;}
+
+  /* BUTTONS */
+  .btn{display:inline-block;padding:6px 14px;border:none;border-radius:5px;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;cursor:pointer;transition:all .15s;}
   .btn-tea{background:var(--tea);color:var(--gold);}
   .btn-tea:hover{background:var(--leaf);}
   .btn-gold{background:var(--gold);color:var(--dark);}
   .btn-gold:hover{background:#dbb85a;}
   .btn-soft{background:white;color:#555;border:1.5px solid var(--border);}
   .btn-soft:hover{background:var(--mist);border-color:var(--leaf);color:var(--tea);}
-  .btn-lg{padding:10px 22px;font-size:14px;}
-  .btn-purple{background:#5a1a8a;color:white;}
+  .btn-lg{padding:10px 24px;font-size:14px;}
+  .btn-purple{background:var(--purple);color:white;}
   .btn-purple:hover{background:#7a2aaa;}
-
-  /* SUBMISSIONS */
-  .sub-count{font-size:12px;color:#aaa;font-weight:600;}
-  .sub-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px;}
-  .sub-card{background:white;border:1.5px solid var(--border);border-radius:8px;padding:13px;animation:popin .3s ease;}
-  @keyframes popin{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
-  .sub-card.revealed{border-color:var(--leaf);}
-  .sub-card.voted-top{border-color:var(--gold);background:#fffdf5;}
-  .sc-gname{font-size:9px;text-transform:uppercase;letter-spacing:.1em;color:#bbb;margin-bottom:5px;}
-  .sc-body{font-size:13px;color:var(--dark);line-height:1.6;margin-bottom:8px;}
-  .sc-body .label{font-size:10px;color:#aaa;text-transform:uppercase;letter-spacing:.08em;display:block;margin-bottom:1px;margin-top:5px;}
-  .sc-body strong{color:var(--tea);}
-  .sc-badge{font-size:10px;color:#aaa;margin-bottom:6px;}
-  .sc-badge.dupe{color:var(--accent);}
-  .sc-pts-row{display:flex;align-items:center;gap:4px;margin-top:6px;border-top:1px solid var(--border);padding-top:6px;}
-  .sc-pts-label{font-size:11px;color:#aaa;}
-  .sc-pts-val{font-family:'Playfair Display',serif;font-size:18px;color:var(--leaf);font-weight:700;margin-left:auto;}
-  .pt-btns{display:flex;gap:3px;}
-  .ptb{padding:3px 7px;border:1px solid var(--border);border-radius:3px;background:var(--soft);font-size:11px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;color:#555;transition:all .12s;}
-  .ptb:hover{background:var(--leaf);color:white;border-color:var(--leaf);}
-  .hidden-card{background:#f8f5f0;border:1.5px dashed var(--border);border-radius:8px;padding:13px;display:flex;align-items:center;justify-content:space-between;}
-  .hc-group{font-size:11px;color:#aaa;}
-  .hc-status{font-size:11px;color:var(--leaf);font-weight:600;}
-
-  /* WAITING EMPTY */
-  .empty-state{display:flex;flex-direction:column;align-items:center;justify-content:center;flex:1;color:#ccc;gap:8px;text-align:center;}
-  .empty-state .ei{font-size:36px;}
-  .empty-state .ec{font-family:'Playfair Display',serif;font-size:48px;color:var(--tea);font-weight:700;}
-  .empty-state p{font-size:13px;}
-
-  /* SIDEBAR */
-  .s-label{font-size:9px;text-transform:uppercase;letter-spacing:.12em;color:#bbb;margin-bottom:6px;}
-  .score-list{display:flex;flex-direction:column;gap:4px;}
-  .slr{display:flex;align-items:center;gap:5px;padding:5px 0;border-bottom:1px solid var(--border);}
-  .slr:last-child{border-bottom:none;}
-  .slr-name{flex:1;font-size:11px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-  .slr-pts{font-family:'Playfair Display',serif;font-size:15px;color:var(--leaf);font-weight:700;min-width:20px;text-align:right;}
-  .slr-btns{display:flex;gap:2px;}
-  .spt{width:19px;height:19px;border:none;border-radius:3px;font-size:11px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-weight:700;transition:all .12s;}
-  .spt.p{background:var(--mist);color:var(--tea);}
-  .spt.p:hover{background:var(--leaf);color:white;}
-  .spt.m{background:#f5efef;color:#ccc;}
-  .spt.m:hover{background:#f0d8d8;color:var(--accent);}
+  .btn-accent{background:var(--accent);color:white;}
+  .btn-accent:hover{background:#a34545;}
 
   /* SCOREBOARD */
-  #s-score{align-items:center;justify-content:center;padding:40px;}
-  .sb-title{font-family:'Playfair Display',serif;font-size:clamp(26px,4vw,44px);color:var(--tea);margin-bottom:24px;text-align:center;}
-  .sb-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;width:100%;max-width:820px;}
-  .sbc{background:white;border:1.5px solid var(--border);border-radius:10px;padding:18px;text-align:center;position:relative;}
-  .sbc.lead{border-color:var(--gold);background:linear-gradient(155deg,#fffdf5,#fff8e0);box-shadow:0 4px 18px rgba(201,168,76,.14);}
-  .sbc .crown{position:absolute;top:-12px;left:50%;transform:translateX(-50%);font-size:18px;}
-  .sbc .gn{font-family:'Playfair Display',serif;font-size:15px;color:var(--tea);margin-bottom:3px;word-break:break-word;}
-  .sbc .pts{font-family:'Playfair Display',serif;font-size:44px;font-weight:900;color:var(--leaf);line-height:1;}
+  #s-score{align-items:center;justify-content:center;padding:36px;}
+  .sb-title{font-family:'Playfair Display',serif;font-size:clamp(24px,4vw,42px);color:var(--tea);margin-bottom:22px;text-align:center;}
+  .sb-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:11px;width:100%;max-width:800px;}
+  .sbc{background:white;border:1.5px solid var(--border);border-radius:9px;padding:16px;text-align:center;position:relative;}
+  .sbc.lead{border-color:var(--gold);background:linear-gradient(155deg,#fffdf5,#fff8e0);box-shadow:0 4px 16px rgba(201,168,76,.13);}
+  .sbc .crown{position:absolute;top:-11px;left:50%;transform:translateX(-50%);font-size:17px;}
+  .sbc .gn{font-family:'Playfair Display',serif;font-size:14px;color:var(--tea);margin-bottom:3px;word-break:break-word;}
+  .sbc .pts{font-family:'Playfair Display',serif;font-size:40px;font-weight:900;color:var(--leaf);line-height:1;}
   .sbc.lead .pts{color:var(--gold);}
   .sbc .lbl{font-size:9px;color:#ccc;text-transform:uppercase;letter-spacing:.1em;}
 
   /* WINNER */
   #s-winner{align-items:center;justify-content:center;text-align:center;padding:40px;}
-  .wt{font-size:64px;margin-bottom:10px;}
+  .wt{font-size:60px;margin-bottom:10px;}
   .wl{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:#bbb;margin-bottom:8px;}
-  .wn{font-family:'Playfair Display',serif;font-size:clamp(44px,7vw,72px);color:var(--gold);font-weight:900;line-height:1;margin-bottom:4px;}
-  .wp{font-size:16px;color:#bbb;margin-bottom:36px;}
-  .podium{display:flex;gap:10px;justify-content:center;align-items:flex-end;margin-bottom:28px;}
+  .wn{font-family:'Playfair Display',serif;font-size:clamp(40px,7vw,68px);color:var(--gold);font-weight:900;line-height:1;margin-bottom:4px;}
+  .wp{font-size:15px;color:#bbb;margin-bottom:32px;}
+  .podium{display:flex;gap:10px;justify-content:center;align-items:flex-end;margin-bottom:24px;}
   .pod{text-align:center;}
-  .pod-bar{border-radius:5px 5px 0 0;min-width:90px;display:flex;flex-direction:column;justify-content:flex-start;align-items:center;padding:12px 8px 8px;background:#f0ece2;}
-  .pod-bar.p1{height:110px;background:linear-gradient(160deg,#fff8e0,#fdf0c0);border:2px solid var(--gold);}
-  .pod-bar.p2{height:82px;}
-  .pod-bar.p3{height:58px;}
-  .pod-medal{font-size:18px;}
-  .pod-pts{font-family:'Playfair Display',serif;font-size:20px;color:var(--gold);font-weight:700;}
+  .pod-bar{border-radius:5px 5px 0 0;min-width:88px;display:flex;flex-direction:column;justify-content:flex-start;align-items:center;padding:11px 8px 8px;background:#f0ece2;}
+  .pod-bar.p1{height:108px;background:linear-gradient(160deg,#fff8e0,#fdf0c0);border:2px solid var(--gold);}
+  .pod-bar.p2{height:80px;}
+  .pod-bar.p3{height:56px;}
+  .pod-medal{font-size:17px;}
+  .pod-pts{font-family:'Playfair Display',serif;font-size:19px;color:var(--gold);font-weight:700;}
   .pod-name{color:#aaa;font-size:10px;margin-top:4px;}
 
   /* NOTIF */
-  .notif{position:fixed;top:14px;left:50%;transform:translateX(-50%) translateY(-60px);background:var(--tea);color:var(--gold);padding:9px 20px;border-radius:6px;font-size:13px;font-weight:500;z-index:1000;transition:transform .3s;box-shadow:0 4px 14px rgba(0,0,0,.1);white-space:nowrap;}
+  .notif{position:fixed;top:12px;left:50%;transform:translateX(-50%) translateY(-60px);background:var(--tea);color:var(--gold);padding:8px 18px;border-radius:6px;font-size:12.5px;font-weight:500;z-index:1000;transition:transform .3s;box-shadow:0 4px 14px rgba(0,0,0,.1);white-space:nowrap;}
   .notif.show{transform:translateX(-50%) translateY(0);}
 
-  /* BOTTOM BAR */
-  .bottom-bar{padding:9px 18px;border-top:1.5px solid var(--border);background:white;display:flex;gap:6px;align-items:center;flex-shrink:0;}
+  /* AUTO-REVEAL COUNTDOWN */
+  .auto-reveal-bar{background:linear-gradient(90deg,var(--tea),var(--leaf));color:white;text-align:center;padding:6px;font-size:12px;font-weight:600;letter-spacing:.04em;flex-shrink:0;display:none;}
+  .auto-reveal-bar.active{display:block;}
 </style>
 </head>
 <body>
@@ -172,7 +211,7 @@
 <!-- WELCOME -->
 <div class="screen active" id="s-welcome">
   <div class="w-title">Sagacity Tea <span>Showdown</span></div>
-  <div class="w-sub">Instructor View</div>
+  <div class="w-sub">Instructor View · Live Game Controller</div>
   <div class="w-stats">
     <div class="w-stat"><div class="n">9</div><div class="l">Groups</div></div>
     <div class="w-stat"><div class="n">5</div><div class="l">Rounds</div></div>
@@ -184,7 +223,7 @@
 <!-- SETUP -->
 <div class="screen" id="s-setup">
   <div class="setup-h">Name Your 9 Groups</div>
-  <div class="setup-sub">Students will select their group on their laptops.</div>
+  <div class="setup-sub">Students pick their group on their laptops after you start.</div>
   <div class="groups-grid" id="groups-grid"></div>
   <button class="btn btn-gold btn-lg" onclick="saveAndStart()">Start Game →</button>
 </div>
@@ -193,35 +232,64 @@
 <div class="screen" id="s-game">
   <div class="left-nav" id="left-nav"></div>
   <div class="main-col">
+    <div class="auto-reveal-bar" id="auto-reveal-bar"></div>
     <div class="top-bar">
       <div class="tb-title" id="tb-title">Round 1 · Tea Tank</div>
-      <div class="tps">
-        <button class="tp-btn" onclick="setTimer(30)">30s</button>
-        <button class="tp-btn" onclick="setTimer(45)">45s</button>
-        <button class="tp-btn" onclick="setTimer(60)">1m</button>
-        <button class="tp-btn" onclick="setTimer(90)">90s</button>
-        <button class="tp-btn" onclick="setTimer(120)">2m</button>
-        <button class="tp-btn" onclick="setTimer(180)">3m</button>
+      <div class="tb-phase ph-write" id="tb-phase">✍ Write</div>
+      <div class="timer-wrap">
+        <div class="tps">
+          <button class="tpb" onclick="setTimer(60)">1m</button>
+          <button class="tpb" onclick="setTimer(120)">2m</button>
+          <button class="tpb" onclick="setTimer(180)">3m</button>
+          <button class="tpb" onclick="setTimer(300)">5m</button>
+        </div>
+        <div class="ta">
+          <button class="go" onclick="startTimer()">▶ Start</button>
+          <button class="oth" onclick="pauseTimer()">⏸</button>
+          <button class="oth" onclick="resetTimer()">↺</button>
+        </div>
+        <div class="timer-big" id="timer-num">—</div>
       </div>
-      <div class="ta">
-        <button class="go" onclick="startTimer()">▶ Start</button>
-        <button class="oth" onclick="pauseTimer()">⏸</button>
-        <button class="oth" onclick="resetTimer()">↺</button>
-      </div>
-      <div class="timer-num" id="timer-num">—</div>
-      <span id="sub-count" style="font-size:12px;color:#aaa;min-width:70px;text-align:right;"></span>
-      <button class="btn btn-soft" onclick="showScoreboard()">📊 Scores</button>
-      <button class="btn btn-soft" onclick="showScreen('s-winner');renderWinner()">🏆 Winner</button>
+      <span id="sub-count-top" style="font-size:11px;color:#aaa;"></span>
+      <button class="btn btn-soft" onclick="showScoreboard()">📊</button>
+      <button class="btn btn-soft" onclick="showScreen('s-winner');renderWinner()">🏆</button>
     </div>
-    <div class="body-area">
-      <div class="feed" id="feed"></div>
-      <div class="sidebar">
+
+    <!-- WRITE PHASE PANEL -->
+    <div class="write-panel active" id="write-panel">
+      <div class="write-feed" id="write-feed"></div>
+      <div class="write-sidebar">
+        <div class="s-lbl">Live Scores</div>
+        <div class="score-list" id="score-list-write"></div>
+      </div>
+    </div>
+
+    <!-- DISCUSS PHASE PANEL -->
+    <div class="presenting-panel" id="discuss-panel">
+      <div class="now-presenting" id="now-presenting">
         <div>
-          <div class="s-label">Live Scores</div>
-          <div class="score-list" id="score-list"></div>
+          <div class="np-label">Now Presenting</div>
+          <div class="np-group" id="np-group">—</div>
+          <div class="np-task" id="np-task">—</div>
+        </div>
+        <div class="np-nav">
+          <span class="np-counter" id="np-counter">1 / 9</span>
+          <button class="np-btn" onclick="prevPresenter()">← Prev</button>
+          <button class="np-btn primary" onclick="nextPresenter()">Next Group →</button>
+        </div>
+      </div>
+      <div class="discuss-body">
+        <div class="sub-feed" id="discuss-feed"></div>
+        <div class="score-sidebar">
+          <div class="s-lbl">Quick Score</div>
+          <div class="score-list" id="score-list-discuss"></div>
+          <div style="margin-top:auto;">
+            <button class="btn btn-soft" style="width:100%;font-size:11px;" onclick="showScoreboard()">📊 Scoreboard</button>
+          </div>
         </div>
       </div>
     </div>
+
     <div class="bottom-bar" id="bottom-bar"></div>
   </div>
 </div>
@@ -230,7 +298,7 @@
 <div class="screen" id="s-score">
   <div class="sb-title" id="sb-title">Scores</div>
   <div class="sb-grid" id="sb-grid"></div>
-  <div style="margin-top:20px;display:flex;gap:8px;">
+  <div style="margin-top:18px;display:flex;gap:8px;">
     <button class="btn btn-tea" onclick="showScreen('s-game')">← Back</button>
     <button class="btn btn-gold" onclick="showScreen('s-winner');renderWinner()">🏆 Winner</button>
   </div>
@@ -265,23 +333,36 @@ const db = getDatabase(app);
 // ── STATE ──
 let groups = Array.from({length:9},(_,i)=>({key:`g${i}`,name:`Group ${i+1}`,points:0}));
 let curRound = 0;
+let roundPhase = 'write'; // 'write' | 'discuss' | 'vote'
 let timerSec = 0, timerRunning = false, timerInterval = null;
-let allSubs = {}; // roundId -> { safeKey -> sub }
+let allSubs = {};
+let presenterIdx = 0;
+let presenterOrder = []; // group names in presentation order
 
 const ROUNDS = [
-  { id:'r1', num:1, name:'Tea Tank',        tag:'CONFLICT',         tagClass:'tag-c', timerSec:120,
-    desc:'Groups secretly pick a threat and write a 2-sentence argument. Reveal all at once, then clash.' },
-  { id:'r2', num:2, name:'Flip It',         tag:"DEVIL'S ADVOCATE", tagClass:'tag-f', timerSec:60,
-    desc:'Each group argues against their own recommendation. Score each submission 1–3 pts.' },
-  { id:'r3', num:3, name:'Hot Potato',      tag:'CHAIN REACTION',   tagClass:'tag-h', timerSec:45,
-    desc:'Send a question — groups add unique points. Duplicates are auto-flagged.' },
-  { id:'r4', num:4, name:'Numbers Changed', tag:'TWIST',            tagClass:'tag-t', timerSec:90,
-    desc:'Send a twist scenario. Groups calculate impact. Auto-scored on direction + accuracy.' },
-  { id:'r5', num:5, name:"Kate's Voicemail",tag:'LIVE PITCH',       tagClass:'tag-v', timerSec:30,
-    desc:'Groups type 30-sec voicemails. Reveal all, then students vote on the best one.' },
+  { id:'r1', num:1, name:'Tea Tank',         tag:'CONFLICT',         tagClass:'tag-c',
+    writeSec:300, discussTask:'Argue your threat — why is it the most dangerous for Kate right now?',
+    hidden:true, autoReveal:true,
+    desc:'Groups pick a threat and write a 2-sentence argument. Timer ends → auto-reveal → you cycle through groups to argue.' },
+  { id:'r2', num:2, name:'Flip It',           tag:"DEVIL'S ADVOCATE", tagClass:'tag-f',
+    writeSec:180, discussTask:'Read your counter-argument out loud. No hedging.',
+    hidden:false, autoReveal:false,
+    desc:'Groups argue against their own recommendation. Submissions appear as they come in. Timer ends → cycle through groups.' },
+  { id:'r3', num:3, name:'Hot Potato',        tag:'CHAIN REACTION',   tagClass:'tag-h',
+    writeSec:90,  discussTask:'Read your point. The next group must add something new or challenge it.',
+    hidden:false, autoReveal:false,
+    desc:'Send a question. Groups submit one unique point each. Go around the room — no repeating.' },
+  { id:'r4', num:4, name:'Numbers Changed',   tag:'TWIST',            tagClass:'tag-t',
+    writeSec:300, discussTask:'Walk through your calculation. What changed and by how much?',
+    hidden:false, autoReveal:false,
+    desc:'Reveal a twist. Groups calculate the new profit. Timer ends → call on groups to explain their math.' },
+  { id:'r5', num:5, name:"Kate's Voicemail",  tag:'LIVE PITCH',       tagClass:'tag-v',
+    writeSec:120, discussTask:'Read your voicemail out loud. 30 seconds. Go.',
+    hidden:true, autoReveal:true,
+    desc:'Groups write their voicemail. Timer ends → auto-reveal → each group reads theirs aloud → class votes.' },
 ];
 
-// ── SCREEN ──
+// ── SCREEN NAV ──
 window.showScreen = id => {
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
@@ -290,347 +371,429 @@ window.showScreen = id => {
 // ── SETUP ──
 function renderSetup(){
   document.getElementById('groups-grid').innerHTML = groups.map((g,i)=>`
-    <div class="gc">
-      <label>Group ${i+1}</label>
+    <div class="gc"><label>Group ${i+1}</label>
       <input type="text" value="${g.name}" placeholder="Team name…"
-             oninput="groups[${i}].name=this.value.trim()||'Group ${i+1}'" />
-    </div>`).join('');
+             oninput="groups[${i}].name=this.value.trim()||'Group ${i+1}'" /></div>`).join('');
 }
 
 window.saveAndStart = async () => {
   document.querySelectorAll('#groups-grid input').forEach((el,i)=>{
     if(el.value.trim()) groups[i].name = el.value.trim();
   });
-  // Reset Firebase
   await remove(ref(db,'submissions'));
   await remove(ref(db,'game'));
   const gObj = {};
-  groups.forEach((g,i) => { gObj[`g${i}`] = {name:g.name, points:0}; });
+  groups.forEach((g,i)=>{ gObj[`g${i}`]={name:g.name,points:0}; });
   await set(ref(db,'groups'), gObj);
-  await set(ref(db,'game'), {curRound:'r1', phase:'waiting', timerSec:0, timerRunning:false});
+  await set(ref(db,'game'),{curRound:'r1',phase:'write',timerSec:0,timerRunning:false});
   renderLeftNav();
-  renderScoreList();
+  renderScoreLists();
   listenToGroups();
   listenToSubs();
-  await loadRound(0);
+  await gotoRound(0);
   showScreen('s-game');
 };
 
 // ── LEFT NAV ──
 function renderLeftNav(){
   document.getElementById('left-nav').innerHTML = ROUNDS.map((r,i)=>`
-    <div class="rdot ${i===0?'active':''}" id="rdot-${i}" onclick="loadRound(${i})" title="Round ${r.num}: ${r.name}">${r.num}</div>`).join('');
+    <div class="rdot ${i===0?'active':''}" id="rdot-${i}" onclick="gotoRound(${i})" title="R${r.num}: ${r.name}">${r.num}</div>`).join('');
 }
 
-// ── LOAD ROUND ──
-window.loadRound = async (idx) => {
+// ── GOTO ROUND ──
+window.gotoRound = async (idx) => {
   curRound = idx;
+  roundPhase = 'write';
+  presenterIdx = 0;
+  presenterOrder = [];
   const r = ROUNDS[idx];
   document.getElementById('tb-title').textContent = `Round ${r.num} · ${r.name}`;
-  document.querySelectorAll('.rdot').forEach((d,i)=>d.classList.toggle('active',i===idx));
-  pauseTimer(); timerSec = r.timerSec; updateTimerDisplay();
-  await update(ref(db,'game'),{curRound:r.id, phase:'active', timerSec:r.timerSec, timerRunning:false, twist:null, potatoQ:null});
-  renderFeed();
+  document.querySelectorAll('.rdot').forEach((d,i)=>{
+    d.classList.toggle('active',i===idx);
+    d.classList.toggle('done',i<idx);
+  });
+  setPhase('write');
+  pauseTimer(); timerSec=r.writeSec; updateTimerDisplay();
+  await update(ref(db,'game'),{curRound:r.id,phase:'write',timerSec:r.writeSec,timerRunning:false,twist:null,potatoQ:null,potatoIdx:-1});
+  renderWriteFeed();
   renderBottomBar();
 };
 
-// ── LISTEN ──
-function listenToGroups(){
-  onValue(ref(db,'groups'), snap => {
-    if(!snap.exists()) return;
-    const data = snap.val();
-    Object.entries(data).forEach(([k,v],i)=>{
-      if(groups[i]) { groups[i].points = v.points||0; groups[i].name = v.name||groups[i].name; }
-    });
-    renderScoreList();
+// ── PHASE SWITCHING ──
+function setPhase(phase){
+  roundPhase = phase;
+  const writePanel = document.getElementById('write-panel');
+  const discussPanel = document.getElementById('discuss-panel');
+  const phaseTag = document.getElementById('tb-phase');
+
+  if(phase === 'write'){
+    writePanel.classList.add('active');
+    discussPanel.classList.remove('active');
+    phaseTag.textContent = '✍ Writing';
+    phaseTag.className = 'tb-phase ph-write';
+  } else if(phase === 'discuss'){
+    writePanel.classList.remove('active');
+    discussPanel.classList.add('active');
+    phaseTag.textContent = '💬 Discussion';
+    phaseTag.className = 'tb-phase ph-discuss';
+    buildPresenterOrder();
+    renderPresenterBanner();
+    renderDiscussFeed();
+    renderScoreLists();
+  } else if(phase === 'vote'){
+    phaseTag.textContent = '🗳 Voting';
+    phaseTag.className = 'tb-phase ph-vote';
+  }
+  update(ref(db,'game'),{phase});
+}
+
+// ── PRESENTER ORDER ──
+function buildPresenterOrder(){
+  const r = ROUNDS[curRound];
+  const subs = allSubs[r.id] || {};
+  // Order: submitted groups first (in submission order), then remaining
+  const submitted = Object.values(subs).sort((a,b)=>(a.timestamp||0)-(b.timestamp||0)).map(s=>s.group);
+  const notSubmitted = groups.map(g=>g.name).filter(n=>!submitted.includes(n));
+  presenterOrder = [...submitted, ...notSubmitted];
+  presenterIdx = 0;
+}
+
+function renderPresenterBanner(){
+  if(presenterOrder.length === 0) buildPresenterOrder();
+  const groupName = presenterOrder[presenterIdx] || '—';
+  const r = ROUNDS[curRound];
+  document.getElementById('np-group').textContent = groupName;
+  document.getElementById('np-task').textContent = r.discussTask;
+  document.getElementById('np-counter').textContent = `${presenterIdx+1} / ${presenterOrder.length}`;
+  // Highlight active card
+  document.querySelectorAll('.sub-card').forEach(c=>{
+    c.classList.remove('active-presenter');
+    if(c.dataset.group === groupName) c.classList.add('active-presenter');
   });
 }
 
-function listenToSubs(){
-  onValue(ref(db,'submissions'), snap => {
-    allSubs = snap.exists() ? snap.val() : {};
-    renderFeed();
-    updateSubCount();
-  });
-}
-
-// ── RENDER FEED ──
-function renderFeed(){
-  const r = ROUNDS[curRound];
-  const roundSubs = allSubs[r.id] || {};
-  const subList = Object.values(roundSubs);
-  const feed = document.getElementById('feed');
-
-  let html = `<div class="round-info">
-    <div class="ri-tag ${r.tagClass}">${r.tag}</div>
-    <div class="ri-title">${r.name}</div>
-    <div class="ri-desc">${r.desc}</div>
-  </div>`;
-
-  if(subList.length === 0){
-    html += `<div class="empty-state">
-      <div class="ei">⏳</div>
-      <div class="ec">0 / 9</div>
-      <p>Waiting for submissions…</p>
-    </div>`;
-  } else {
-    html += `<div class="sub-count">${subList.length} of 9 submitted</div>`;
-    // Show hidden cards separately
-    const hidden = subList.filter(s=>s.hidden);
-    const visible = subList.filter(s=>!s.hidden);
-
-    if(hidden.length > 0){
-      html += `<div style="display:flex;flex-wrap:wrap;gap:8px;">`;
-      hidden.forEach(s=>{
-        html += `<div class="hidden-card">
-          <span class="hc-group">🔒 ${s.group}</span>
-          <span class="hc-status">Hidden</span>
-        </div>`;
-      });
-      html += `</div>`;
-    }
-
-    if(visible.length > 0){
-      html += `<div class="sub-grid">`;
-      visible.forEach(s => { html += buildSubCard(s, r); });
-      html += `</div>`;
-    }
-  }
-
-  feed.innerHTML = html;
-}
-
-function buildSubCard(s, r){
-  let body = '';
-  const pts = s.points || 0;
-  const voteCount = s.votes ? Object.keys(s.votes).length : 0;
-
-  if(r.id === 'r1'){
-    body = `<div class="sc-body">
-      <span class="label">Threat</span><strong>${s.threat||''}</strong>
-      <span class="label">Argument</span>${s.argument||''}
-    </div>
-    ${voteCount>0?`<div style="font-size:11px;color:var(--gold);margin-bottom:4px;">👍 ${voteCount} vote${voteCount!==1?'s':''}</div>`:''}`;
-  } else if(r.id === 'r2'){
-    body = `<div class="sc-body">
-      <span class="label">Recommended</span><strong>${s.option||''}</strong>
-      <span class="label">Counter-argument</span>${s.counter||''}
-      ${s.evidence?`<span class="label">Case evidence</span><span style="color:var(--gold);">📌 ${s.evidence}</span>`:''}
-    </div>`;
-  } else if(r.id === 'r3'){
-    body = `<div class="sc-body">${s.point||''}</div>
-    ${s.duplicate?'<div class="sc-badge dupe">⚠ Possible duplicate — check manually</div>':''}`;
-  } else if(r.id === 'r4'){
-    const ca = s.autoScore || {};
-    body = `<div class="sc-body">
-      <span class="label">Direction</span><strong style="color:${ca.dirOk?'var(--leaf)':'var(--accent)'}">${s.direction||'—'} ${ca.dirOk!==undefined?(ca.dirOk?'✓':'✗'):''}</strong>
-      <span class="label">New profit</span><strong>$${s.newProfit||'—'}</strong> ${ca.profOk?'<span style="color:var(--leaf);font-size:11px;">✓ within range</span>':''}
-      <span class="label">Reasoning</span>${s.reasoning||'—'}
-    </div>`;
-  } else if(r.id === 'r5'){
-    body = `<div class="sc-body" style="font-style:italic;">"${s.voicemail||''}"</div>
-    ${voteCount>0?`<div style="font-size:11px;color:var(--gold);margin-bottom:4px;">👍 ${voteCount} vote${voteCount!==1?'s':''}</div>`:''}`;
-  }
-
-  const safeKey = s.group.replace(/\s/g,'_');
-
-  return `<div class="sub-card ${voteCount>=2?'voted-top':''}" id="card-${safeKey}">
-    <div class="sc-gname">${s.group}</div>
-    ${body}
-    <div class="sc-pts-row">
-      <span class="sc-pts-label">Points:</span>
-      <div class="pt-btns">
-        <button class="ptb" onclick="givePoints('${s.group}',${r.id},1)">+1</button>
-        <button class="ptb" onclick="givePoints('${s.group}','${r.id}',2)">+2</button>
-        <button class="ptb" onclick="givePoints('${s.group}','${r.id}',3)">+3</button>
-        <button class="ptb" onclick="givePoints('${s.group}','${r.id}',-1)" style="color:#aaa;">−</button>
-      </div>
-      <span class="sc-pts-val" id="spv-${safeKey}">${pts}</span>
-    </div>
-  </div>`;
-}
-
-// ── GIVE POINTS ──
-window.givePoints = async (groupName, roundId, delta) => {
-  const idx = groups.findIndex(g=>g.name===groupName);
-  if(idx<0) return;
-  const newPts = Math.max(0,(groups[idx].points||0)+delta);
-  groups[idx].points = newPts;
-  await update(ref(db,`groups/g${idx}`),{points:newPts});
-  // also update on submission
-  const safeKey = groupName.replace(/\s/g,'_');
-  const subRef = ref(db,`submissions/${ROUNDS[curRound].id}/${safeKey}`);
-  const snap = await get(subRef);
-  if(snap.exists()){
-    const cur = snap.val().points||0;
-    await update(subRef,{points:Math.max(0,cur+delta)});
-  }
-  showNotif(`${groupName}: ${newPts} pts total`);
+window.nextPresenter = () => {
+  if(presenterIdx < presenterOrder.length-1){ presenterIdx++; renderPresenterBanner(); }
+  else showNotif('All groups have presented!');
 };
-
-// ── REVEAL ALL ──
-window.revealAll = async () => {
-  const r = ROUNDS[curRound];
-  const roundSubs = allSubs[r.id] || {};
-  const updates = {};
-  Object.keys(roundSubs).forEach(key=>{
-    updates[`submissions/${r.id}/${key}/hidden`] = false;
-  });
-  if(Object.keys(updates).length === 0){ showNotif('No submissions yet'); return; }
-  // Use update at root level
-  const { getDatabase, ref: fbRef, update: fbUpdate } = await import("https://www.gstatic.com/firebasejs/11.0.0/firebase-database.js");
-  await update(ref(db,'/'), updates);
-  showNotif('All submissions revealed!');
+window.prevPresenter = () => {
+  if(presenterIdx > 0){ presenterIdx--; renderPresenterBanner(); }
 };
-
-// ── OPEN VOTING ──
-window.openVoting = async () => {
-  await revealAll();
-  const r = ROUNDS[curRound];
-  await update(ref(db,'game'),{phase:'voting', votingRound:r.id});
-  showNotif('Voting open! Students can now vote for the best answer.');
-};
-
-// ── LOCK ROUND ──
-window.lockRound = async () => {
-  await update(ref(db,'game'),{phase:'locked'});
-  showNotif('Round locked — no more submissions accepted');
-};
-
-// ── SEND POTATO Q ──
-window.sendPotatoQ = async (idx) => {
-  const qs = [
-    'Why have slotting fees become so important in CPG? Each group adds ONE new reason — or challenges the previous group\'s answer. No repeating. No passing.',
-    'What could Sagacity specifically do to reduce its slotting fees? Each group adds a new tactic — or explains why the last one won\'t work for Sagacity. No repeating.',
-    'Name one reason Kate should NOT go with the online option — or defend it against what was just said. No repeating. No passing.'
-  ];
-  await remove(ref(db,'submissions/r3'));
-  await update(ref(db,'game'),{phase:'potato', potatoQ:qs[idx], potatoIdx:idx, curRound:'r3'});
-  showNotif(`Question ${['A','B','C'][idx]} sent to students`);
-};
-
-// ── SEND TWIST ──
-window.sendTwist = async (idx) => {
-  const twists = [
-    { label:'Twist A', text:"Kate's coupon vendor calls. Real redemption rates run closer to 25%, not 12%. Same 100,000 coupons, same $1 face value. What happens to the broker plan's profit?", direction:'down', correctProfit:7447 },
-    { label:'Twist B', text:"Shields calls back. He can only guarantee 150 stores, not 300. Slotting fees and expected sales drop proportionally. Does the deal get better or worse — by roughly how much?", direction:'mixed', correctProfit:null },
-    { label:'Twist C', text:"Amazon offers to carry Sagacity but demands a 30% cut of retail price and controls the listed price. What does this do to the $110K online profit projection?", direction:'down', correctProfit:null },
-  ];
-  const t = twists[idx];
-  await remove(ref(db,'submissions/r4'));
-  await update(ref(db,'game'),{phase:'twist', twist:t, curRound:'r4', correctDirection:t.direction, correctProfit:t.correctProfit||0});
-  showNotif(`${t.label} revealed to students`);
-};
-
-// ── BOTTOM BAR ──
-function renderBottomBar(){
-  const r = ROUNDS[curRound];
-  const bar = document.getElementById('bottom-bar');
-  let html = '';
-
-  if(r.id==='r1'){
-    html = `<button class="btn btn-gold" onclick="revealAll()">📢 Reveal All Submissions</button>
-            <button class="btn btn-soft" onclick="openVoting()">🗳 Open Voting</button>`;
-  } else if(r.id==='r2'){
-    html = `<button class="btn btn-gold" onclick="lockRound()">🔒 Lock Round</button>
-            <span style="font-size:12px;color:#aaa;">Score each group with +1/+2/+3 buttons on their card</span>`;
-  } else if(r.id==='r3'){
-    html = `<span style="font-size:12px;color:#aaa;margin-right:4px;">Send question:</span>
-            <button class="btn btn-soft" onclick="sendPotatoQ(0)">A · Slotting fees</button>
-            <button class="btn btn-soft" onclick="sendPotatoQ(1)">B · Reduce SFs</button>
-            <button class="btn btn-soft" onclick="sendPotatoQ(2)">C · Against online</button>`;
-  } else if(r.id==='r4'){
-    html = `<span style="font-size:12px;color:#aaa;margin-right:4px;">Reveal twist:</span>
-            <button class="btn btn-purple" onclick="sendTwist(0)">🌀 A: 25% coupons</button>
-            <button class="btn btn-purple" onclick="sendTwist(1)">🌀 B: 150 stores</button>
-            <button class="btn btn-purple" onclick="sendTwist(2)">🌀 C: Amazon 30%</button>`;
-  } else if(r.id==='r5'){
-    html = `<button class="btn btn-gold" onclick="revealAll()">📢 Reveal All Voicemails</button>
-            <button class="btn btn-soft" onclick="openVoting()">🗳 Open Voting</button>`;
-  }
-
-  bar.innerHTML = html;
-}
 
 // ── TIMER ──
 window.setTimer = sec => { pauseTimer(); timerSec=sec; updateTimerDisplay(); update(ref(db,'game'),{timerSec:sec,timerRunning:false}); };
 window.startTimer = () => {
   if(timerRunning) return;
-  if(timerSec<=0) timerSec=ROUNDS[curRound].timerSec;
+  if(timerSec<=0) timerSec=ROUNDS[curRound].writeSec;
   timerRunning=true;
-  timerInterval=setInterval(()=>{
+  timerInterval=setInterval(async ()=>{
     timerSec=Math.max(0,timerSec-1);
     updateTimerDisplay();
     update(ref(db,'game'),{timerSec,timerRunning:true});
-    if(timerSec<=0){ pauseTimer(); showNotif("⏰ Time's up!"); }
+
+    // Countdown bar in last 5 seconds
+    if(timerSec<=5 && timerSec>0 && roundPhase==='write'){
+      const bar=document.getElementById('auto-reveal-bar');
+      bar.classList.add('active');
+      bar.textContent = `⏰ Time's up in ${timerSec}… Discussion starts automatically`;
+    }
+
+    if(timerSec<=0){
+      pauseTimer();
+      document.getElementById('auto-reveal-bar').classList.remove('active');
+      await onTimerEnd();
+    }
   },1000);
 };
 window.pauseTimer = () => { timerRunning=false; clearInterval(timerInterval); update(ref(db,'game'),{timerRunning:false}); };
-window.resetTimer = () => { pauseTimer(); timerSec=ROUNDS[curRound].timerSec; updateTimerDisplay(); };
+window.resetTimer = () => { pauseTimer(); timerSec=ROUNDS[curRound].writeSec; updateTimerDisplay(); document.getElementById('auto-reveal-bar').classList.remove('active'); };
+
 function updateTimerDisplay(){
   const el=document.getElementById('timer-num');
-  if(timerSec<=0){ el.textContent='—'; el.className='timer-num'; return; }
+  if(timerSec<=0){el.textContent='—';el.className='timer-big';return;}
   const m=Math.floor(timerSec/60),s=timerSec%60;
   el.textContent=`${m}:${String(s).padStart(2,'0')}`;
-  el.className='timer-num'+(timerSec<=10?' warn':'');
+  el.className='timer-big'+(timerSec<=10?' warn':'');
 }
 
-// ── SUB COUNT ──
-function updateSubCount(){
+// ── AUTO ACTION ON TIMER END ──
+async function onTimerEnd(){
+  const r = ROUNDS[curRound];
+  showNotif("⏰ Time's up — discussion starting!");
+
+  // Auto-reveal hidden rounds
+  if(r.autoReveal){
+    await revealAll();
+  }
+
+  // Switch to discuss phase
+  setPhase('discuss');
+
+  // For r5 open voting after reveal
+  if(r.id==='r5'){
+    await update(ref(db,'game'),{phase:'voting',votingRound:'r5'});
+  }
+}
+
+// ── REVEAL ALL ──
+window.revealAll = async () => {
+  const r = ROUNDS[curRound];
+  const roundSubs = allSubs[r.id] || {};
+  if(Object.keys(roundSubs).length===0){ showNotif('No submissions yet'); return; }
+  const updates={};
+  Object.keys(roundSubs).forEach(k=>{ updates[`submissions/${r.id}/${k}/hidden`]=false; });
+  await update(ref(db,'/'),updates);
+  showNotif('Submissions revealed!');
+};
+
+// ── OPEN VOTING ──
+window.openVoting = async () => {
+  await revealAll();
+  await update(ref(db,'game'),{phase:'voting',votingRound:ROUNDS[curRound].id});
+  setPhase('vote');
+  showNotif('Voting open — students can now vote');
+};
+
+// ── SEND POTATO Q ──
+window.sendPotatoQ = async (idx) => {
+  const qs=[
+    'Why have slotting fees become so important in CPG? Each group adds ONE new reason — or challenges the last group. No repeating.',
+    'What could Sagacity do to reduce its slotting fees? Add a new tactic — or explain why the last one won\'t work. No repeating.',
+    'Name one reason Kate should NOT go with the online option — or defend it against what was just said. No repeating.'
+  ];
+  await remove(ref(db,'submissions/r3'));
+  await update(ref(db,'game'),{phase:'potato',potatoQ:qs[idx],potatoIdx:idx,curRound:'r3',timerSec:90,timerRunning:false});
+  timerSec=90; updateTimerDisplay();
+  showNotif(`Question ${['A','B','C'][idx]} sent`);
+};
+
+// ── SEND TWIST ──
+window.sendTwist = async (idx) => {
+  const twists=[
+    {label:'Twist A',text:"Kate's coupon vendor calls. Real redemption rates run closer to 25%, not 12%. Same 100,000 coupons, same $1 face value. What happens to the broker plan's profit?",direction:'down',correctProfit:7447},
+    {label:'Twist B',text:"Shields calls back. He can only guarantee 150 stores, not 300. Slotting fees and expected cases drop proportionally. Does the deal get better or worse — and by how much?",direction:'mixed',correctProfit:null},
+    {label:'Twist C',text:"Amazon offers to carry Sagacity but demands a 30% cut of retail price. What does this do to the $110K online profit projection?",direction:'down',correctProfit:null},
+  ];
+  const t=twists[idx];
+  await remove(ref(db,'submissions/r4'));
+  await update(ref(db,'game'),{phase:'twist',twist:t,curRound:'r4',correctDirection:t.direction,correctProfit:t.correctProfit||0,timerSec:300,timerRunning:false});
+  timerSec=300; updateTimerDisplay();
+  showNotif(`${t.label} revealed — 5 min timer ready`);
+};
+
+// ── LISTEN ──
+function listenToGroups(){
+  onValue(ref(db,'groups'),snap=>{
+    if(!snap.exists()) return;
+    Object.entries(snap.val()).forEach(([k,v],i)=>{
+      if(groups[i]){groups[i].points=v.points||0;groups[i].name=v.name||groups[i].name;}
+    });
+    renderScoreLists();
+    if(roundPhase==='discuss') renderPresenterBanner();
+  });
+}
+
+function listenToSubs(){
+  onValue(ref(db,'submissions'),snap=>{
+    allSubs=snap.exists()?snap.val():{};
+    renderWriteFeed();
+    if(roundPhase==='discuss') renderDiscussFeed();
+    updateSubCount();
+  });
+}
+
+// ── RENDER WRITE FEED ──
+function renderWriteFeed(){
   const r=ROUNDS[curRound];
-  const count=Object.keys(allSubs[r.id]||{}).length;
-  document.getElementById('sub-count').textContent=`${count}/9 submitted`;
+  const subs=Object.values(allSubs[r.id]||{});
+  const feed=document.getElementById('write-feed');
+  let html=`<div class="round-info">
+    <div class="ri-tag ${r.tagClass}">${r.tag}</div>
+    <div class="ri-title">${r.name}</div>
+    <div class="ri-desc">${r.desc}</div>
+  </div>`;
+
+  if(subs.length===0){
+    html+=`<div class="empty"><div class="ei">⏳</div><div class="ec">0/9</div><p>Waiting for submissions…</p></div>`;
+  } else {
+    const pct=Math.round(subs.length/9*100);
+    html+=`<div class="sub-count-bar">${subs.length}/9 submitted
+      <div class="progress"><div class="progress-fill" style="width:${pct}%"></div></div>
+    </div>`;
+    const visible=subs.filter(s=>!s.hidden);
+    const hidden=subs.filter(s=>s.hidden);
+    if(hidden.length){
+      html+=`<div style="display:flex;gap:6px;flex-wrap:wrap;">
+        ${hidden.map(s=>`<div style="background:var(--soft);border:1.5px dashed var(--border);border-radius:6px;padding:7px 12px;font-size:12px;color:#bbb;">🔒 ${s.group}</div>`).join('')}
+      </div>`;
+    }
+    if(visible.length){
+      html+=`<div class="sub-grid">${visible.map(s=>buildCard(s,r,false)).join('')}</div>`;
+    }
+  }
+  feed.innerHTML=html;
 }
 
-// ── SCORE LIST ──
-function renderScoreList(){
+// ── RENDER DISCUSS FEED ──
+function renderDiscussFeed(){
+  const r=ROUNDS[curRound];
+  const subs=Object.values(allSubs[r.id]||{});
+  const feed=document.getElementById('discuss-feed');
+  if(subs.length===0){feed.innerHTML=`<div class="empty"><div class="ei">📭</div><p>No submissions</p></div>`;return;}
+  const currentGroup=presenterOrder[presenterIdx];
+  feed.innerHTML=`<div class="sub-grid">${subs.map(s=>buildCard(s,r,true,s.group===currentGroup)).join('')}</div>`;
+}
+
+// ── BUILD CARD ──
+function buildCard(s,r,showScore,isActive){
+  const pts=s.points||0;
+  const safeKey=s.group.replace(/\s/g,'_');
+  let body='';
+
+  if(r.id==='r1'){
+    body=`<div class="sc-body">
+      <span class="lbl">Threat</span><strong>${s.threat||''}</strong>
+      <span class="lbl">Argument</span>${s.argument||''}
+    </div>`;
+  } else if(r.id==='r2'){
+    body=`<div class="sc-body">
+      <span class="lbl">Recommended</span><strong>${s.option||''}</strong>
+      <span class="lbl">Counter</span>${s.counter||''}
+      ${s.evidence?`<span class="lbl">Evidence</span><span style="color:var(--gold)">📌 ${s.evidence}</span>`:''}
+    </div>`;
+  } else if(r.id==='r3'){
+    body=`<div class="sc-body">${s.point||''}${s.duplicate?'<br><span style="color:var(--accent);font-size:11px;">⚠ Possible duplicate</span>':''}</div>`;
+  } else if(r.id==='r4'){
+    const as=s.autoScore||{};
+    body=`<div class="sc-body">
+      <span class="lbl">Direction</span><strong style="color:${as.dirOk?'var(--leaf)':'var(--accent)'}">${s.direction||'—'} ${as.dirOk!==undefined?(as.dirOk?'✓':'✗'):''}</strong>
+      <span class="lbl">New profit</span>$${s.newProfit||'—'} ${as.profOk?'<span style="color:var(--leaf);font-size:10px;">✓</span>':''}
+      <span class="lbl">Reasoning</span>${s.reasoning||'—'}
+    </div>`;
+  } else if(r.id==='r5'){
+    body=`<div class="sc-body" style="font-style:italic;">"${s.voicemail||''}"</div>
+    ${s.votes?`<div style="font-size:10px;color:var(--gold);margin-top:2px;">👍 ${Object.keys(s.votes).length} votes</div>`:''}`;
+  }
+
+  const scoreRow = showScore ? `<div class="sc-score-row">
+    <div class="ptb-group" style="display:flex;gap:3px;">
+      <button class="ptb" onclick="givePoints('${s.group}','${r.id}',1)">+1</button>
+      <button class="ptb" onclick="givePoints('${s.group}','${r.id}',2)">+2</button>
+      <button class="ptb" onclick="givePoints('${s.group}','${r.id}',3)">+3</button>
+      <button class="ptb neg" onclick="givePoints('${s.group}','${r.id}',-1)">−</button>
+    </div>
+    <span class="sc-pts-val">${pts}</span>
+  </div>` : '';
+
+  return `<div class="sub-card ${isActive?'active-presenter':''}" data-group="${s.group}" id="card-${safeKey}">
+    <div class="sc-grp">${s.group}</div>
+    ${body}
+    ${scoreRow}
+  </div>`;
+}
+
+// ── GIVE POINTS ──
+window.givePoints = async (groupName,roundId,delta) => {
+  const idx=groups.findIndex(g=>g.name===groupName);
+  if(idx<0) return;
+  const newPts=Math.max(0,(groups[idx].points||0)+delta);
+  groups[idx].points=newPts;
+  await update(ref(db,`groups/g${idx}`),{points:newPts});
+  const safeKey=groupName.replace(/\s/g,'_');
+  const snap=await get(ref(db,`submissions/${roundId}/${safeKey}`));
+  if(snap.exists()) await update(ref(db,`submissions/${roundId}/${safeKey}`),{points:Math.max(0,(snap.val().points||0)+delta)});
+  showNotif(`${groupName}: ${newPts} pts`);
+};
+
+// ── SCORE LISTS ──
+function renderScoreLists(){
   const sorted=[...groups].sort((a,b)=>b.points-a.points);
-  document.getElementById('score-list').innerHTML=sorted.map((g,i)=>`
+  const html=sorted.map((g,i)=>`
     <div class="slr">
-      <span class="slr-name">${i===0&&g.points>0?'👑 ':''}${g.name}</span>
+      <span class="slr-rank">${i===0&&g.points>0?'👑':`${i+1}.`}</span>
+      <span class="slr-name">${g.name}</span>
       <div class="slr-btns">
         <button class="spt m" onclick="quickAdj('${g.name}',-1)">−</button>
         <button class="spt p" onclick="quickAdj('${g.name}',1)">+</button>
       </div>
       <span class="slr-pts">${g.points}</span>
     </div>`).join('');
+  document.getElementById('score-list-write').innerHTML=html;
+  document.getElementById('score-list-discuss').innerHTML=html;
 }
-window.quickAdj = (name,d) => givePoints(name, ROUNDS[curRound].id, d);
+window.quickAdj=(name,d)=>givePoints(name,ROUNDS[curRound].id,d);
+
+// ── BOTTOM BAR ──
+function renderBottomBar(){
+  const r=ROUNDS[curRound];
+  const bar=document.getElementById('bottom-bar');
+  let hint='', actions='';
+
+  if(r.id==='r1'){
+    hint='⏱ 5 min to write → timer auto-starts discussion → you cycle through groups to argue → score as they speak';
+    actions=`<button class="btn btn-tea" onclick="setPhase('discuss')">💬 Start Discussion Now</button>
+             <button class="btn btn-soft" onclick="openVoting()">🗳 Open Voting</button>`;
+  } else if(r.id==='r2'){
+    hint='⏱ 3 min to write → timer auto-starts discussion → call on each group → score as they speak';
+    actions=`<button class="btn btn-tea" onclick="setPhase('discuss')">💬 Start Discussion Now</button>`;
+  } else if(r.id==='r3'){
+    hint='Send a question → 90s per group → go around room → score each group as they answer';
+    actions=`<button class="btn btn-soft" onclick="sendPotatoQ(0)">Q-A: Why slotting fees?</button>
+             <button class="btn btn-soft" onclick="sendPotatoQ(1)">Q-B: Reduce SFs?</button>
+             <button class="btn btn-soft" onclick="sendPotatoQ(2)">Q-C: Against online?</button>
+             <button class="btn btn-tea" onclick="setPhase('discuss')">💬 Start Discussion</button>`;
+  } else if(r.id==='r4'){
+    hint='Reveal ONE twist → 5 min to calculate → timer auto-starts discussion → call on groups to explain math';
+    actions=`<button class="btn btn-purple" onclick="sendTwist(0)">🌀 A: Coupons 25%</button>
+             <button class="btn btn-purple" onclick="sendTwist(1)">🌀 B: 150 stores</button>
+             <button class="btn btn-purple" onclick="sendTwist(2)">🌀 C: Amazon 30%</button>
+             <button class="btn btn-tea" onclick="setPhase('discuss')">💬 Start Discussion Now</button>`;
+  } else if(r.id==='r5'){
+    hint='⏱ 2 min to write → timer auto-reveals and starts discussion → each group reads aloud → class votes';
+    actions=`<button class="btn btn-tea" onclick="revealAll().then(()=>setPhase(\'discuss\'))">📢 Reveal & Start Discussion</button>
+             <button class="btn btn-soft" onclick="openVoting()">🗳 Open Voting</button>`;
+  }
+
+  bar.innerHTML=`<span class="bb-hint">${hint}</span>${actions}`;
+}
+
+// ── SUB COUNT ──
+function updateSubCount(){
+  const r=ROUNDS[curRound];
+  const n=Object.keys(allSubs[r.id]||{}).length;
+  document.getElementById('sub-count-top').textContent=`${n}/9`;
+}
 
 // ── SCOREBOARD ──
-window.showScoreboard = () => {
+window.showScoreboard=()=>{
   const top=[...groups].sort((a,b)=>b.points-a.points)[0]?.points||0;
   document.getElementById('sb-title').textContent=`After Round ${curRound+1}`;
   document.getElementById('sb-grid').innerHTML=groups.map(g=>{
     const lead=g.points===top&&top>0;
     return `<div class="sbc ${lead?'lead':''}">
       ${lead?'<div class="crown">👑</div>':''}
-      <div class="gn">${g.name}</div>
-      <div class="pts">${g.points}</div>
-      <div class="lbl">points</div>
+      <div class="gn">${g.name}</div><div class="pts">${g.points}</div><div class="lbl">pts</div>
     </div>`;}).join('');
   showScreen('s-score');
 };
 
 // ── WINNER ──
-window.renderWinner = () => {
-  const sorted=[...groups].sort((a,b)=>b.points-a.points);
-  document.getElementById('win-name').textContent=sorted[0]?.name||'—';
-  document.getElementById('win-pts').textContent=`${sorted[0]?.points||0} points`;
+window.renderWinner=()=>{
+  const s=[...groups].sort((a,b)=>b.points-a.points);
+  document.getElementById('win-name').textContent=s[0]?.name||'—';
+  document.getElementById('win-pts').textContent=`${s[0]?.points||0} points`;
   const med=['🥇','🥈','🥉'],bc=['p1','p2','p3'];
-  document.getElementById('podium').innerHTML=sorted.slice(0,3).map((g,i)=>`
-    <div class="pod">
-      <div class="pod-bar ${bc[i]}"><div class="pod-medal">${med[i]}</div><div class="pod-pts">${g.points}</div></div>
-      <div class="pod-name">${g.name}</div>
-    </div>`).join('');
+  document.getElementById('podium').innerHTML=s.slice(0,3).map((g,i)=>`
+    <div class="pod"><div class="pod-bar ${bc[i]}"><div class="pod-medal">${med[i]}</div><div class="pod-pts">${g.points}</div></div>
+    <div class="pod-name">${g.name}</div></div>`).join('');
 };
 
 // ── NOTIF ──
 let nT;
-window.showNotif = msg => {
+window.showNotif=msg=>{
   const el=document.getElementById('notif');
-  el.textContent=msg; el.classList.add('show');
-  clearTimeout(nT); nT=setTimeout(()=>el.classList.remove('show'),2400);
+  el.textContent=msg;el.classList.add('show');
+  clearTimeout(nT);nT=setTimeout(()=>el.classList.remove('show'),2400);
 };
 
 // ── INIT ──
