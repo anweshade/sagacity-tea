@@ -468,11 +468,8 @@ async function onTimerEnd(){
     // Reveal anonymously + open voting
     await openAnonVote();
   } else if(r.id==='r4'){
-    // Auto-grade then show results
+    // Auto-grade handles phase switching and rendering internally
     await autoGradeR4();
-    setPhasePill('grade');
-    renderFeed();
-    renderBottomBar();
   } else {
     // r3: just show submissions
     setPhasePill('reveal');

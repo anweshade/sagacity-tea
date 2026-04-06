@@ -530,14 +530,14 @@ window.submitAnswer=async roundId=>{
     let autoPts=0;
     if(selDir===cDir) autoPts+=1;
     const pNum=parseFloat(profit);
-    const profOk=cProfit>0&&!isNaN(pNum)&&Math.abs(pNum-cProfit)/cProfit<0.20;
+    const profOk=cProfit>0&&!isNaN(pNum)&&Math.abs(pNum-cProfit)/cProfit<0.05;
     if(profOk) autoPts+=2;
     data={...data,direction:selDir,newProfit:profit,reasoning:reason,autoScore:{dirOk:selDir===cDir,profOk},points:autoPts};
     if(autoPts>0){const gs=await get(ref(db,`${sessionCode}/groups/${myGroupKey}`));await update(ref(db,`${sessionCode}/groups/${myGroupKey}`),{points:(gs.val()?.points||0)+autoPts});}
     preview=`Direction: ${selDir}\nNew profit: $${profit}\n\nReasoning: ${reason}`;
     document.getElementById('sub-note').textContent=autoPts>0?`Auto-scored: ${autoPts} point${autoPts!==1?'s':''} earned!`:'Submitted. Partial credit may apply.';
-    // Show grade screen
-    showGradeResult(autoPts, selDir===cDir, profOk);
+    // Show grade screen with correct answer details
+    showGradeResult(autoPts, selDir===cDir, profOk, cProfit, cDir, gd?.twist?.label||'');
   } else if(roundId==='r5'){
     const vm=document.getElementById('f-vm')?.value?.trim();
     if(!vm){showNotif('Please write your voicemail');return;}
@@ -554,13 +554,51 @@ window.submitAnswer=async roundId=>{
 };
 
 // ── GRADE RESULT ──
-function showGradeResult(pts, dirOk, profOk){
+function showGradeResult(pts, dirOk, profOk, cProfit, cDir, twistLabel){
   document.getElementById('grade-pts').textContent=pts||0;
-  document.getElementById('grade-icon').textContent=pts>=3?'🏆':pts>=1?'✅':'📉';
+  document.getElementById('grade-icon').textContent=pts>=3?'🏆':pts>=2?'✅':pts>=1?'〰️':'📉';
+
+  const low=cProfit?Math.round(cProfit*0.95).toLocaleString():'—';
+  const high=cProfit?Math.round(cProfit*1.05).toLocaleString():'—';
+  const correct=cProfit?('$'+cProfit.toLocaleString()):'—';
+
+  const calcA=`
+    <div style="background:#f0f7f0;border:2px solid var(--leaf);border-radius:10px;padding:16px 18px;margin-top:14px;text-align:left;font-size:14px;line-height:2;">
+      <div style="font-size:11px;text-transform:uppercase;letter-spacing:.12em;color:var(--leaf);font-weight:700;margin-bottom:8px;">✓ The correct calculation — Twist A</div>
+      New coupon cost = 25% × 100,000 × $1 = <strong>$25,000</strong><br>
+      Original coupon cost was $12,000<br>
+      Extra cost = $25,000 − $12,000 = <strong>$13,000</strong><br>
+      New profit = $20,447 − $13,000 = <strong>$7,447</strong><br>
+      <div style="margin-top:10px;padding-top:10px;border-top:1px solid #c8e6c9;color:#555;font-size:13px;">
+        Correct answer: <strong>$7,447</strong> · Accepted range: <strong>$${low} – $${high}</strong>
+      </div>
+    </div>`;
+
+  const calcB=`
+    <div style="background:#f0f7f0;border:2px solid var(--leaf);border-radius:10px;padding:16px 18px;margin-top:14px;text-align:left;font-size:14px;line-height:2;">
+      <div style="font-size:11px;text-transform:uppercase;letter-spacing:.12em;color:var(--leaf);font-weight:700;margin-bottom:8px;">✓ The correct calculation — Twist B</div>
+      150 stores = half of 300 → everything scales by 50%<br>
+      New cases = 9,100 ÷ 2 = <strong>4,550 cases</strong><br>
+      New gross sales = $233,233 ÷ 2 = <strong>$116,617</strong><br>
+      All costs also ÷ 2 → new total costs = <strong>$106,394</strong><br>
+      New profit = $116,617 − $106,394 = <strong>$10,223</strong><br>
+      <div style="margin-top:10px;padding-top:10px;border-top:1px solid #c8e6c9;color:#555;font-size:13px;">
+        Correct answer: <strong>$10,223</strong> · Accepted range: <strong>$${low} – $${high}</strong>
+      </div>
+    </div>`;
+
+  const calcHtml = twistLabel==='A' ? calcA : twistLabel==='B' ? calcB : '';
+
   document.getElementById('grade-detail').innerHTML=`
-    <strong>Direction (up/down):</strong> ${dirOk?'✓ Correct (+1 pt)':'✗ Incorrect (0 pts)'}<br>
-    <strong>Calculation (within 20%):</strong> ${profOk?'✓ Correct (+2 pts)':'✗ Not within range (0 pts)'}<br><br>
-    <span style="color:#aaa;">Your full reasoning is visible to the instructor. They may award additional points for correct logic even if the final number was off.</span>`;
+    <div style="display:flex;flex-direction:column;gap:8px;font-size:15px;">
+      <div><strong>Direction:</strong> ${dirOk?'✓ Correct — profit goes DOWN (+1 pt)':'✗ Incorrect — profit goes DOWN (0 pts)'}</div>
+      <div><strong>Calculation:</strong> ${profOk
+        ? '✓ Within accepted range (+2 pts)'
+        : `✗ Your answer was outside $${low}–$${high} (0 pts)`}
+      </div>
+    </div>
+    ${calcHtml}
+    <div style="margin-top:14px;font-size:13px;color:#aaa;">Your full reasoning is visible to the instructor, who may award additional points for correct logic.</div>`;
   showScreen('s-grade');
 }
 window.showGradeResult=showGradeResult;
