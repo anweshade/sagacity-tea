@@ -55,8 +55,7 @@
   @keyframes dp{0%,80%,100%{transform:scale(.8);opacity:.4}40%{transform:scale(1.2);opacity:1}}
 
   /* FORM */
-  #s-round{align-items:center;justify-content:flex-start;padding-top:40px;padding-bottom:40px;}
-  .form-wrap{width:100%;max-width:640px;}
+  #s-round{max-width:660px;width:100%;}
   .form-header{margin-bottom:20px;width:100%;}
   .form-tag{font-size:10px;text-transform:uppercase;letter-spacing:.14em;font-weight:700;padding:3px 11px;border-radius:20px;display:inline-block;margin-bottom:8px;}
   .tag-c{color:#8a5a00;background:#fff7e6;}
@@ -64,8 +63,8 @@
   .tag-h{color:#1a5a8a;background:#e6f0ff;}
   .tag-t{color:#5a1a8a;background:#f5e6ff;}
   .tag-v{color:var(--tea);background:var(--mist);}
-  .form-title{font-family:'Playfair Display',serif;font-size:clamp(22px,4vw,36px);color:var(--tea);margin-bottom:8px;line-height:1.2;}
-  .form-task{font-size:15px;color:#555;line-height:1.7;}
+  .form-title{font-family:'Playfair Display',serif;font-size:clamp(20px,4vw,34px);color:var(--tea);margin-bottom:6px;line-height:1.2;}
+  .form-task{font-size:14px;color:#555;line-height:1.7;}
 
   .timer-strip{display:flex;align-items:center;justify-content:space-between;background:white;border:2px solid var(--border);border-radius:9px;padding:10px 18px;margin-bottom:16px;width:100%;}
   .ts-label{font-size:11px;color:#aaa;text-transform:uppercase;letter-spacing:.08em;}
@@ -126,12 +125,11 @@
   .your-answer{background:white;border:2px solid var(--gold);border-radius:10px;padding:18px 22px;text-align:left;font-size:14px;color:#555;line-height:1.7;white-space:pre-wrap;width:100%;max-width:500px;}
 
   /* ANON VOTING */
-  #s-anon-vote{align-items:center;justify-content:flex-start;padding-top:36px;padding-bottom:36px;}
-  .vote-wrap{width:100%;max-width:680px;}
+  #s-anon-vote{max-width:680px;width:100%;}
   .vote-header{text-align:center;margin-bottom:20px;}
-  .vote-title{font-family:'Playfair Display',serif;font-size:clamp(22px,4vw,34px);color:var(--tea);margin-bottom:5px;}
+  .vote-title{font-family:'Playfair Display',serif;font-size:clamp(20px,4vw,32px);color:var(--tea);margin-bottom:5px;}
   .vote-sub{font-size:14px;color:#aaa;line-height:1.6;}
-  .vote-timer{font-family:'Playfair Display',serif;font-size:32px;font-weight:700;color:var(--tea);margin-top:8px;}
+  .vote-timer{font-family:'Playfair Display',serif;font-size:28px;font-weight:700;color:var(--tea);margin-top:6px;}
   .vote-timer.warn{color:#cc3333;animation:tpulse .5s infinite alternate;}
   .anon-cards{display:flex;flex-direction:column;gap:10px;width:100%;}
   .anon-card{background:white;border:2px solid var(--border);border-radius:10px;padding:16px 20px;cursor:pointer;transition:all .14s;}
@@ -141,6 +139,7 @@
   .anon-card .ac-assigned{font-size:13px;font-weight:600;color:var(--tea);margin-bottom:5px;}
   .anon-card .ac-body{font-size:14px;color:var(--dark);line-height:1.65;}
   .voted-badge{display:inline-block;margin-top:8px;font-size:11px;color:var(--gold);font-weight:600;}
+  .already-voted{text-align:center;font-size:14px;color:#aaa;padding:20px;}
 
   /* GRADE RESULT */
   #s-grade{text-align:center;}
@@ -197,7 +196,7 @@
 
 <!-- ACTIVE FORM -->
 <div class="screen" id="s-round">
-  <div class="form-wrap">
+  <div style="width:100%;max-width:660px;">
     <div class="form-header">
       <div class="form-tag" id="f-tag">ROUND</div>
       <div class="form-title" id="f-title">—</div>
@@ -222,14 +221,12 @@
 
 <!-- ANONYMOUS VOTING -->
 <div class="screen" id="s-anon-vote">
-  <div class="vote-wrap">
-    <div class="vote-header">
-      <div class="vote-title" id="vote-title">Vote for the Best Argument</div>
-      <div class="vote-sub" id="vote-sub">Read all arguments carefully. Vote for the most convincing one. You cannot vote for your own group.</div>
-      <div class="vote-timer" id="vote-timer">—</div>
-    </div>
-    <div class="anon-cards" id="anon-cards"></div>
+  <div class="vote-header">
+    <div class="vote-title" id="vote-title">Vote for the Best Argument</div>
+    <div class="vote-sub" id="vote-sub">Read all arguments carefully. Vote for the most convincing one.<br>You cannot vote for your own group.</div>
+    <div class="vote-timer" id="vote-timer">—</div>
   </div>
+  <div class="anon-cards" id="anon-cards"></div>
 </div>
 
 <!-- DISCUSS -->
@@ -572,74 +569,39 @@ async function loadAnonVote(state){
   if(!snap.exists()){showScreen('s-submitted');return;}
   const subs=Object.values(snap.val());
 
-  // Check if already voted in Firebase (prevents page-refresh revoting)
-  const voteSnap=await get(ref(db,`${sessionCode}/votes/${roundId}/${myGroupKey}`));
-  if(voteSnap.exists()){
-    hasVoted=true;
-    // Still show voting screen but all cards disabled
-  }
-
   const isR1=roundId==='r1', isR2=roundId==='r2', isR5=roundId==='r5';
   document.getElementById('vote-title').textContent=
     isR5?'Vote for the Best Voicemail':
     isR1?'Vote for the Most Convincing Threat Argument':
     'Vote for the Most Compelling Counter-Argument';
   document.getElementById('vote-sub').textContent=
-    'Read all carefully. Vote for the most convincing one. You cannot vote for your own group.';
+    'Read all carefully. Vote for the one you find most convincing. You cannot vote for your own group — you won\'t know which is yours.';
 
   const cards=document.getElementById('anon-cards');
-
-  // Use a stable seed based on roundId so order never changes after page load
-  // Sort by a hash of group name + roundId — stable, not random on re-render
-  const stableSorted=[...subs].sort((a,b)=>{
-    const hashA = (a.group+roundId).split('').reduce((acc,c)=>acc+c.charCodeAt(0),0);
-    const hashB = (b.group+roundId).split('').reduce((acc,c)=>acc+c.charCodeAt(0),0);
-    return hashA - hashB;
-  });
-
-  cards.innerHTML=stableSorted.map((s,i)=>{
-    const isOwn = s.group === myGroup;
-    const alreadyVoted = hasVoted;
-    const ownStyle = isOwn ? 'opacity:0.4;cursor:not-allowed;border-color:#ddd;' : '';
-    const ownLabel = isOwn ? '<div style="font-size:11px;color:#bbb;margin-top:6px;">← Your submission</div>' : '';
-    const clickHandler = isOwn || alreadyVoted ? '' : `onclick="castAnonVote('${roundId}','${s.group}',${i})"`;
-    return `
-    <div class="anon-card ${alreadyVoted && !isOwn ? 'voted-locked' : ''}" id="av-${i}" ${clickHandler} style="${ownStyle}">
+  // Shuffle so position doesn't bias voting
+  const shuffled=[...subs].sort(()=>Math.random()-.5);
+  cards.innerHTML=shuffled.map((s,i)=>`
+    <div class="anon-card" id="av-${i}" onclick="castAnonVote('${roundId}','${s.group}',${i})">
       <div class="ac-label">Argument ${i+1}</div>
       ${isR1?`<div class="ac-assigned">${s.assigned||''}</div><div class="ac-body">${s.argument||''}</div>`:''}
       ${isR2?`<div class="ac-assigned">Against: ${s.assigned||''}</div><div class="ac-body">${s.counter||''}</div>`:''}
       ${isR5?`<div class="ac-body" style="font-style:italic;">"${s.voicemail||''}"</div>`:''}
-      ${ownLabel}
-    </div>`;
-  }).join('');
+    </div>`).join('');
 
   showScreen('s-anon-vote');
 }
 
 window.castAnonVote=async(roundId,groupName,cardIdx)=>{
   if(hasVoted){showNotif('Already voted!');return;}
-  if(groupName===myGroup){showNotif('You cannot vote for your own group');return;}
   hasVoted=true;
-
   const safeKey=groupName.replace(/\s/g,'_');
-  // Increment vote count on the submission
+  // Increment vote count
   const snap=await get(ref(db,`${sessionCode}/submissions/${roundId}/${safeKey}/votes`));
   const curVotes=snap.exists()?snap.val():0;
   await update(ref(db,`${sessionCode}/submissions/${roundId}/${safeKey}`),{votes:curVotes+1});
-
-  // Record this group has voted (prevents double-voting on refresh)
-  await set(ref(db,`${sessionCode}/votes/${roundId}/${myGroupKey}`),{votedFor:safeKey,ts:Date.now()});
-
-  // Update UI
-  document.querySelectorAll('.anon-card').forEach(c=>{
-    c.onclick=null;
-    c.style.cursor='default';
-  });
-  const votedCard=document.getElementById(`av-${cardIdx}`);
-  if(votedCard){
-    votedCard.classList.add('voted');
-    votedCard.innerHTML+=`<div class="voted-badge">✓ Your vote</div>`;
-  }
+  document.querySelectorAll('.anon-card').forEach(c=>c.classList.remove('voted'));
+  document.getElementById(`av-${cardIdx}`)?.classList.add('voted');
+  document.getElementById(`av-${cardIdx}`).innerHTML+=`<div class="voted-badge">✓ Your vote</div>`;
   showNotif('Vote cast! 👍');
 };
 

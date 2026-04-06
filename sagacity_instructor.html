@@ -54,24 +54,24 @@
   .main-col{flex:1;display:flex;flex-direction:column;overflow:hidden;}
 
   /* TOP BAR */
-  .top-bar{display:flex;align-items:center;gap:8px;padding:10px 16px;border-bottom:1.5px solid var(--border);background:white;flex-shrink:0;flex-wrap:wrap;}
-  .tb-title{font-family:'Playfair Display',serif;font-size:22px;color:var(--tea);flex:1;}
-  .phase-pill{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;padding:5px 12px;border-radius:20px;white-space:nowrap;}
+  .top-bar{display:flex;align-items:center;gap:8px;padding:8px 14px;border-bottom:1.5px solid var(--border);background:white;flex-shrink:0;flex-wrap:wrap;}
+  .tb-title{font-family:'Playfair Display',serif;font-size:15px;color:var(--tea);flex:1;}
+  .phase-pill{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;padding:3px 9px;border-radius:20px;white-space:nowrap;}
   .pp-write{background:#e6f0ff;color:#1a5a8a;}
   .pp-vote{background:#fff7e6;color:#8a5a00;}
   .pp-reveal{background:var(--mist);color:var(--tea);}
   .pp-discuss{background:#f5e6ff;color:var(--purple);}
   .pp-grade{background:#fff0f0;color:var(--accent);}
 
-  .timer-wrap{display:flex;align-items:center;gap:6px;}
-  .timer-big{font-family:'Playfair Display',serif;font-size:36px;font-weight:900;color:var(--tea);min-width:80px;text-align:center;}
+  .timer-wrap{display:flex;align-items:center;gap:4px;}
+  .timer-big{font-family:'Playfair Display',serif;font-size:26px;font-weight:900;color:var(--tea);min-width:64px;text-align:center;}
   .timer-big.warn{color:#cc3333;animation:tp .5s infinite alternate;}
   @keyframes tp{from{opacity:1}to{opacity:.3}}
-  .tps{display:flex;gap:3px;}
-  .tpb{padding:5px 8px;background:var(--soft);border:1px solid var(--border);border-radius:4px;font-size:12px;font-weight:600;color:#666;cursor:pointer;font-family:'DM Sans',sans-serif;}
+  .tps{display:flex;gap:2px;}
+  .tpb{padding:3px 5px;background:var(--soft);border:1px solid var(--border);border-radius:3px;font-size:10px;font-weight:600;color:#666;cursor:pointer;font-family:'DM Sans',sans-serif;}
   .tpb:hover{background:var(--mist);border-color:var(--leaf);color:var(--tea);}
-  .ta{display:flex;gap:3px;}
-  .ta button{padding:5px 10px;border:none;border-radius:4px;font-size:13px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;}
+  .ta{display:flex;gap:2px;}
+  .ta button{padding:3px 7px;border:none;border-radius:3px;font-size:11px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;}
   .ta .go{background:var(--tea);color:var(--gold);}
   .ta .go:hover{background:var(--leaf);}
   .ta .oth{background:var(--soft);color:#888;border:1px solid var(--border);}
@@ -82,43 +82,40 @@
   .sidebar{width:180px;border-left:1.5px solid var(--border);padding:10px;background:var(--soft);display:flex;flex-direction:column;gap:10px;overflow-y:auto;flex-shrink:0;}
 
   /* BOTTOM BAR */
-  .bottom-bar{padding:10px 16px;border-top:1.5px solid var(--border);background:white;display:flex;gap:8px;align-items:center;flex-shrink:0;flex-wrap:wrap;min-height:52px;}
-  .bb-hint{font-size:14px;color:#777;flex:1;line-height:1.4;}
+  .bottom-bar{padding:7px 14px;border-top:1.5px solid var(--border);background:white;display:flex;gap:6px;align-items:center;flex-shrink:0;flex-wrap:wrap;min-height:44px;}
+  .bb-hint{font-size:11px;color:#999;flex:1;line-height:1.4;}
 
   /* ROUND INFO */
-  .round-info{background:white;border:1.5px solid var(--border);border-radius:8px;padding:14px 16px;}
-  .ri-tag{font-size:11px;text-transform:uppercase;letter-spacing:.14em;font-weight:700;padding:3px 10px;border-radius:20px;display:inline-block;margin-bottom:5px;}
+  .round-info{background:white;border:1.5px solid var(--border);border-radius:8px;padding:12px 14px;}
+  .ri-tag{font-size:9px;text-transform:uppercase;letter-spacing:.14em;font-weight:700;padding:2px 8px;border-radius:20px;display:inline-block;margin-bottom:4px;}
   .tag-c{color:#8a5a00;background:#fff7e6;}
   .tag-f{color:var(--accent);background:#fff0f0;}
   .tag-h{color:#1a5a8a;background:#e6f0ff;}
   .tag-t{color:#5a1a8a;background:#f5e6ff;}
   .tag-v{color:var(--tea);background:var(--mist);}
-  .ri-title{font-family:'Playfair Display',serif;font-size:22px;color:var(--tea);margin-bottom:4px;}
-  .ri-desc{font-size:15px;color:#777;line-height:1.5;}
+  .ri-title{font-family:'Playfair Display',serif;font-size:17px;color:var(--tea);margin-bottom:2px;}
+  .ri-desc{font-size:12px;color:#777;line-height:1.5;}
 
   /* PROGRESS */
-  .prog-bar{font-size:13px;color:#aaa;font-weight:600;display:flex;align-items:center;gap:8px;}
-  .prog{flex:1;height:6px;background:var(--border);border-radius:3px;overflow:hidden;}
-  .prog-fill{height:100%;background:var(--leaf);border-radius:3px;transition:width .3s;}
+  .prog-bar{font-size:11px;color:#aaa;font-weight:600;display:flex;align-items:center;gap:8px;}
+  .prog{flex:1;height:4px;background:var(--border);border-radius:2px;overflow:hidden;}
+  .prog-fill{height:100%;background:var(--leaf);border-radius:2px;transition:width .3s;}
 
   /* CARDS */
-  .card-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px;}
-  .card{background:white;border:1.5px solid var(--border);border-radius:8px;padding:14px;animation:pop .2s ease;}
+  .card-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px;}
+  .card{background:white;border:1.5px solid var(--border);border-radius:7px;padding:10px;animation:pop .2s ease;}
   @keyframes pop{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
   .card.top-vote{border-color:var(--gold);background:#fffdf5;box-shadow:0 2px 10px rgba(201,168,76,.2);}
   .card.presenting{border-color:var(--purple);background:#f9f5ff;}
-  .card-label{font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:#bbb;margin-bottom:4px;}
-  .card-assigned{font-size:13px;font-weight:600;color:var(--tea);margin-bottom:5px;}
-  .card-body{font-size:14px;color:#333;line-height:1.6;margin-bottom:6px;}
-  .card-body .lbl{font-size:10px;color:#bbb;text-transform:uppercase;display:block;margin-top:5px;}
-  .card-votes{font-size:13px;color:var(--gold);font-weight:600;margin-bottom:4px;}
-  .card-group{font-size:12px;color:#aaa;font-style:italic;}
-  .card-hidden{background:#f8f5f0;border:1.5px dashed var(--border);border-radius:8px;padding:12px;display:flex;align-items:center;justify-content:space-between;}
-  .ch-name{font-size:13px;color:#aaa;font-weight:500;}
-  .ch-lock{font-size:12px;color:#bbb;}
-  .score-row{display:flex;align-items:center;gap:3px;padding-top:7px;border-top:1px solid var(--border);}
-  .sc-pts{font-family:'Playfair Display',serif;font-size:17px;color:var(--leaf);font-weight:700;margin-left:auto;}
-  .ptb{padding:4px 8px;border:1px solid var(--border);border-radius:3px;background:var(--soft);font-size:12px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;color:#555;}
+  .card-label{font-size:9px;text-transform:uppercase;letter-spacing:.1em;color:#bbb;margin-bottom:3px;}
+  .card-assigned{font-size:11px;font-weight:600;color:var(--tea);margin-bottom:4px;}
+  .card-body{font-size:12px;color:#333;line-height:1.55;margin-bottom:6px;}
+  .card-body .lbl{font-size:9px;color:#bbb;text-transform:uppercase;display:block;margin-top:4px;}
+  .card-votes{font-size:11px;color:var(--gold);font-weight:600;margin-bottom:4px;}
+  .card-group{font-size:10px;color:#aaa;font-style:italic;}
+  .score-row{display:flex;align-items:center;gap:3px;padding-top:6px;border-top:1px solid var(--border);}
+  .sc-pts{font-family:'Playfair Display',serif;font-size:15px;color:var(--leaf);font-weight:700;margin-left:auto;}
+  .ptb{padding:2px 6px;border:1px solid var(--border);border-radius:3px;background:var(--soft);font-size:11px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;color:#555;}
   .ptb:hover{background:var(--leaf);color:white;border-color:var(--leaf);}
   .ptb.neg{color:#ccc;}
   .ptb.neg:hover{background:var(--accent);color:white;border-color:var(--accent);}
@@ -140,28 +137,28 @@
   .empty .ec{font-family:'Playfair Display',serif;font-size:36px;color:var(--tea);font-weight:700;}
 
   /* SIDEBAR */
-  .s-lbl{font-size:11px;text-transform:uppercase;letter-spacing:.12em;color:#bbb;margin-bottom:6px;}
-  .score-list{display:flex;flex-direction:column;gap:3px;}
-  .slr{display:flex;align-items:center;gap:4px;padding:5px 0;border-bottom:1px solid var(--border);}
+  .s-lbl{font-size:9px;text-transform:uppercase;letter-spacing:.12em;color:#bbb;margin-bottom:5px;}
+  .score-list{display:flex;flex-direction:column;gap:2px;}
+  .slr{display:flex;align-items:center;gap:3px;padding:3px 0;border-bottom:1px solid var(--border);}
   .slr:last-child{border-bottom:none;}
-  .slr-name{flex:1;font-size:13px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-  .slr-pts{font-family:'Playfair Display',serif;font-size:17px;color:var(--leaf);font-weight:700;min-width:22px;text-align:right;}
+  .slr-name{flex:1;font-size:10px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .slr-pts{font-family:'Playfair Display',serif;font-size:13px;color:var(--leaf);font-weight:700;min-width:18px;text-align:right;}
   .slr-btns{display:flex;gap:2px;}
-  .spt{width:20px;height:20px;border:none;border-radius:3px;font-size:13px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-weight:700;}
+  .spt{width:16px;height:16px;border:none;border-radius:2px;font-size:10px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-weight:700;}
   .spt.p{background:var(--mist);color:var(--tea);}
   .spt.p:hover{background:var(--leaf);color:white;}
   .spt.m{background:#f5efef;color:#ccc;}
   .spt.m:hover{background:#f0d8d8;color:var(--accent);}
 
   /* BUTTONS */
-  .btn{display:inline-block;padding:8px 16px;border:none;border-radius:5px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;cursor:pointer;transition:all .14s;}
+  .btn{display:inline-block;padding:6px 13px;border:none;border-radius:5px;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;cursor:pointer;transition:all .14s;}
   .btn-tea{background:var(--tea);color:var(--gold);}
   .btn-tea:hover{background:var(--leaf);}
   .btn-gold{background:var(--gold);color:var(--dark);}
   .btn-gold:hover{background:#dbb85a;}
   .btn-soft{background:white;color:#555;border:1.5px solid var(--border);}
   .btn-soft:hover{background:var(--mist);border-color:var(--leaf);color:var(--tea);}
-  .btn-lg{padding:12px 28px;font-size:15px;}
+  .btn-lg{padding:11px 26px;font-size:14px;}
   .btn-purple{background:var(--purple);color:white;}
   .btn-purple:hover{background:#7a2aaa;}
   .btn-red{background:var(--accent);color:white;}
@@ -636,16 +633,16 @@ function renderFeed(){
 
   if(r.id==='r1'||r.id==='r2'){
     if(roundPhase==='write'){
-      // Show only who submitted — NO content visible, grouped by topic
+      // Group by assigned topic, show without content (just who submitted)
       const byTopic={};
       subs.forEach(s=>{const t=s.assigned||'?';if(!byTopic[t])byTopic[t]=[];byTopic[t].push(s);});
       Object.entries(byTopic).forEach(([topic,tsubs])=>{
         const clash=tsubs.length>1;
         html+=`<div class="section-head">${r.id==='r1'?'Threat':'Option'}: <strong style="color:var(--tea);margin-left:4px;">${topic}</strong>${clash?'<span class="clash-badge">⚔ Clash</span>':''}</div>`;
-        html+=`<div style="display:flex;gap:8px;flex-wrap:wrap;">${tsubs.map(s=>`
-          <div class="card-hidden">
-            <span class="ch-name">🔒 ${s.group}</span>
-            <span class="ch-lock">Hidden until reveal</span>
+        html+=`<div class="card-grid">${tsubs.map(s=>`
+          <div class="card">
+            <div class="card-label">Submitted</div>
+            <div class="card-group">${s.group}</div>
           </div>`).join('')}</div>`;
       });
     } else {
@@ -676,26 +673,17 @@ function renderFeed(){
       }).join('')}</div>`;
     }
   } else if(r.id==='r3'){
-    if(roundPhase==='write'){
-      // Hide all points until discussion starts
-      html+=`<div style="display:flex;gap:8px;flex-wrap:wrap;">${subs.map(s=>`
-        <div class="card-hidden">
-          <span class="ch-name">🔒 ${s.group}</span>
-          <span class="ch-lock">Hidden until discussion</span>
-        </div>`).join('')}</div>`;
-    } else {
-      html+=`<div class="card-grid">${subs.map(s=>`
-        <div class="card ${s.group===presenterOrder[presenterIdx]?'presenting':''}">
-          <div class="card-label">${s.group}</div>
-          <div class="card-body">${s.point||''}${s.duplicate?'<br><span style="color:var(--accent);font-size:11px;">⚠ Possible duplicate</span>':''}</div>
-          <div class="score-row">
-            <button class="ptb" onclick="givePoints('${s.group}','${r.id}',1)">+1</button>
-            <button class="ptb" onclick="givePoints('${s.group}','${r.id}',2)">+2</button>
-            <button class="ptb neg" onclick="givePoints('${s.group}','${r.id}',-1)">−</button>
-            <span class="sc-pts">${s.points||0}</span>
-          </div>
-        </div>`).join('')}</div>`;
-    }
+    html+=`<div class="card-grid">${subs.map(s=>`
+      <div class="card ${s.group===presenterOrder[presenterIdx]?'presenting':''}">
+        <div class="card-label">${s.group}</div>
+        <div class="card-body">${s.point||''}${s.duplicate?'<br><span style="color:var(--accent);font-size:10px;">⚠ Possible duplicate</span>':''}</div>
+        <div class="score-row">
+          <button class="ptb" onclick="givePoints('${s.group}','${r.id}',1)">+1</button>
+          <button class="ptb" onclick="givePoints('${s.group}','${r.id}',2)">+2</button>
+          <button class="ptb neg" onclick="givePoints('${s.group}','${r.id}',-1)">−</button>
+          <span class="sc-pts">${s.points||0}</span>
+        </div>
+      </div>`).join('')}</div>`;
   } else if(r.id==='r4'){
     const sorted=subs.sort((a,b)=>(b.points||0)-(a.points||0));
     html+=`<div class="card-grid">${sorted.map((s,i)=>{
@@ -717,32 +705,23 @@ function renderFeed(){
     }).join('')}</div>`;
   } else if(r.id==='r5'){
     const showNames=roundPhase==='reveal'||roundPhase==='discuss';
-    if(roundPhase==='write'){
-      // Hide content — just show who submitted
-      html+=`<div style="display:flex;gap:8px;flex-wrap:wrap;">${subs.map(s=>`
-        <div class="card-hidden">
-          <span class="ch-name">🔒 ${s.group}</span>
-          <span class="ch-lock">Hidden until reveal</span>
-        </div>`).join('')}</div>`;
-    } else {
-      const sorted=subs.sort((a,b)=>(b.votes||0)-(a.votes||0));
-      html+=`<div class="card-grid">${sorted.map((s,i)=>{
-        const votes=s.votes||0;
-        const isPresenting=showNames&&s.group===presenterOrder[presenterIdx];
-        return `<div class="card ${votes>0&&i===0?'top-vote':''} ${isPresenting?'presenting':''}">
-          ${votes>0?`<div class="card-votes">👍 ${votes} vote${votes!==1?'s':''} ${i===0?'<span class="top-badge">TOP</span>':''}</div>`:''}
-          <div class="card-body" style="font-style:italic;">"${s.voicemail||''}"</div>
-          ${showNames?`<div class="card-group">— ${s.group}</div>`:'<div class="card-group" style="color:#ddd;">— anonymous</div>'}
-          <div class="score-row">
-            <button class="ptb" onclick="givePoints('${s.group}','${r.id}',1)">+1</button>
-            <button class="ptb" onclick="givePoints('${s.group}','${r.id}',2)">+2</button>
-            <button class="ptb" onclick="givePoints('${s.group}','${r.id}',3)">+3</button>
-            <button class="ptb neg" onclick="givePoints('${s.group}','${r.id}',-1)">−</button>
-            <span class="sc-pts">${s.points||0}</span>
-          </div>
-        </div>`;
-      }).join('')}</div>`;
-    }
+    const sorted=subs.sort((a,b)=>(b.votes||0)-(a.votes||0));
+    html+=`<div class="card-grid">${sorted.map((s,i)=>{
+      const votes=s.votes||0;
+      const isPresenting=showNames&&s.group===presenterOrder[presenterIdx];
+      return `<div class="card ${votes>0&&i===0?'top-vote':''} ${isPresenting?'presenting':''}">
+        ${votes>0?`<div class="card-votes">👍 ${votes} vote${votes!==1?'s':''} ${i===0?'<span class="top-badge">TOP</span>':''}</div>`:''}
+        <div class="card-body" style="font-style:italic;">"${s.voicemail||''}"</div>
+        ${showNames?`<div class="card-group">— ${s.group}</div>`:'<div class="card-group" style="color:#ddd;">— anonymous</div>'}
+        <div class="score-row">
+          <button class="ptb" onclick="givePoints('${s.group}','${r.id}',1)">+1</button>
+          <button class="ptb" onclick="givePoints('${s.group}','${r.id}',2)">+2</button>
+          <button class="ptb" onclick="givePoints('${s.group}','${r.id}',3)">+3</button>
+          <button class="ptb neg" onclick="givePoints('${s.group}','${r.id}',-1)">−</button>
+          <span class="sc-pts">${s.points||0}</span>
+        </div>
+      </div>`;
+    }).join('')}</div>`;
   }
 
   feed.innerHTML=html;
