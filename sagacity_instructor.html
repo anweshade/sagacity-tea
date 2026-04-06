@@ -86,36 +86,39 @@
   .bb-hint{font-size:11px;color:#999;flex:1;line-height:1.4;}
 
   /* ROUND INFO */
-  .round-info{background:white;border:1.5px solid var(--border);border-radius:8px;padding:12px 14px;}
-  .ri-tag{font-size:9px;text-transform:uppercase;letter-spacing:.14em;font-weight:700;padding:2px 8px;border-radius:20px;display:inline-block;margin-bottom:4px;}
+  .round-info{background:white;border:1.5px solid var(--border);border-radius:8px;padding:14px 16px;}
+  .ri-tag{font-size:11px;text-transform:uppercase;letter-spacing:.14em;font-weight:700;padding:3px 10px;border-radius:20px;display:inline-block;margin-bottom:5px;}
   .tag-c{color:#8a5a00;background:#fff7e6;}
   .tag-f{color:var(--accent);background:#fff0f0;}
   .tag-h{color:#1a5a8a;background:#e6f0ff;}
   .tag-t{color:#5a1a8a;background:#f5e6ff;}
   .tag-v{color:var(--tea);background:var(--mist);}
-  .ri-title{font-family:'Playfair Display',serif;font-size:17px;color:var(--tea);margin-bottom:2px;}
-  .ri-desc{font-size:12px;color:#777;line-height:1.5;}
+  .ri-title{font-family:'Playfair Display',serif;font-size:22px;color:var(--tea);margin-bottom:4px;}
+  .ri-desc{font-size:15px;color:#777;line-height:1.5;}
 
   /* PROGRESS */
-  .prog-bar{font-size:11px;color:#aaa;font-weight:600;display:flex;align-items:center;gap:8px;}
-  .prog{flex:1;height:4px;background:var(--border);border-radius:2px;overflow:hidden;}
-  .prog-fill{height:100%;background:var(--leaf);border-radius:2px;transition:width .3s;}
+  .prog-bar{font-size:13px;color:#aaa;font-weight:600;display:flex;align-items:center;gap:8px;}
+  .prog{flex:1;height:6px;background:var(--border);border-radius:3px;overflow:hidden;}
+  .prog-fill{height:100%;background:var(--leaf);border-radius:3px;transition:width .3s;}
 
   /* CARDS */
-  .card-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px;}
-  .card{background:white;border:1.5px solid var(--border);border-radius:7px;padding:10px;animation:pop .2s ease;}
+  .card-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px;}
+  .card{background:white;border:1.5px solid var(--border);border-radius:8px;padding:14px;animation:pop .2s ease;}
   @keyframes pop{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
   .card.top-vote{border-color:var(--gold);background:#fffdf5;box-shadow:0 2px 10px rgba(201,168,76,.2);}
   .card.presenting{border-color:var(--purple);background:#f9f5ff;}
-  .card-label{font-size:9px;text-transform:uppercase;letter-spacing:.1em;color:#bbb;margin-bottom:3px;}
-  .card-assigned{font-size:11px;font-weight:600;color:var(--tea);margin-bottom:4px;}
-  .card-body{font-size:12px;color:#333;line-height:1.55;margin-bottom:6px;}
-  .card-body .lbl{font-size:9px;color:#bbb;text-transform:uppercase;display:block;margin-top:4px;}
-  .card-votes{font-size:11px;color:var(--gold);font-weight:600;margin-bottom:4px;}
-  .card-group{font-size:10px;color:#aaa;font-style:italic;}
-  .score-row{display:flex;align-items:center;gap:3px;padding-top:6px;border-top:1px solid var(--border);}
-  .sc-pts{font-family:'Playfair Display',serif;font-size:15px;color:var(--leaf);font-weight:700;margin-left:auto;}
-  .ptb{padding:2px 6px;border:1px solid var(--border);border-radius:3px;background:var(--soft);font-size:11px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;color:#555;}
+  .card-label{font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:#bbb;margin-bottom:4px;}
+  .card-assigned{font-size:13px;font-weight:600;color:var(--tea);margin-bottom:5px;}
+  .card-body{font-size:14px;color:#333;line-height:1.6;margin-bottom:6px;}
+  .card-body .lbl{font-size:10px;color:#bbb;text-transform:uppercase;display:block;margin-top:5px;}
+  .card-votes{font-size:13px;color:var(--gold);font-weight:600;margin-bottom:4px;}
+  .card-group{font-size:12px;color:#aaa;font-style:italic;}
+  .card-hidden{background:#f8f5f0;border:1.5px dashed var(--border);border-radius:8px;padding:12px;display:flex;align-items:center;justify-content:space-between;}
+  .ch-name{font-size:13px;color:#aaa;font-weight:500;}
+  .ch-lock{font-size:12px;color:#bbb;}
+  .score-row{display:flex;align-items:center;gap:3px;padding-top:7px;border-top:1px solid var(--border);}
+  .sc-pts{font-family:'Playfair Display',serif;font-size:17px;color:var(--leaf);font-weight:700;margin-left:auto;}
+  .ptb{padding:4px 8px;border:1px solid var(--border);border-radius:3px;background:var(--soft);font-size:12px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;color:#555;}
   .ptb:hover{background:var(--leaf);color:white;border-color:var(--leaf);}
   .ptb.neg{color:#ccc;}
   .ptb.neg:hover{background:var(--accent);color:white;border-color:var(--accent);}
@@ -633,16 +636,16 @@ function renderFeed(){
 
   if(r.id==='r1'||r.id==='r2'){
     if(roundPhase==='write'){
-      // Group by assigned topic, show without content (just who submitted)
+      // Show only who submitted — NO content visible, grouped by topic
       const byTopic={};
       subs.forEach(s=>{const t=s.assigned||'?';if(!byTopic[t])byTopic[t]=[];byTopic[t].push(s);});
       Object.entries(byTopic).forEach(([topic,tsubs])=>{
         const clash=tsubs.length>1;
         html+=`<div class="section-head">${r.id==='r1'?'Threat':'Option'}: <strong style="color:var(--tea);margin-left:4px;">${topic}</strong>${clash?'<span class="clash-badge">⚔ Clash</span>':''}</div>`;
-        html+=`<div class="card-grid">${tsubs.map(s=>`
-          <div class="card">
-            <div class="card-label">Submitted</div>
-            <div class="card-group">${s.group}</div>
+        html+=`<div style="display:flex;gap:8px;flex-wrap:wrap;">${tsubs.map(s=>`
+          <div class="card-hidden">
+            <span class="ch-name">🔒 ${s.group}</span>
+            <span class="ch-lock">Hidden until reveal</span>
           </div>`).join('')}</div>`;
       });
     } else {
@@ -705,23 +708,32 @@ function renderFeed(){
     }).join('')}</div>`;
   } else if(r.id==='r5'){
     const showNames=roundPhase==='reveal'||roundPhase==='discuss';
-    const sorted=subs.sort((a,b)=>(b.votes||0)-(a.votes||0));
-    html+=`<div class="card-grid">${sorted.map((s,i)=>{
-      const votes=s.votes||0;
-      const isPresenting=showNames&&s.group===presenterOrder[presenterIdx];
-      return `<div class="card ${votes>0&&i===0?'top-vote':''} ${isPresenting?'presenting':''}">
-        ${votes>0?`<div class="card-votes">👍 ${votes} vote${votes!==1?'s':''} ${i===0?'<span class="top-badge">TOP</span>':''}</div>`:''}
-        <div class="card-body" style="font-style:italic;">"${s.voicemail||''}"</div>
-        ${showNames?`<div class="card-group">— ${s.group}</div>`:'<div class="card-group" style="color:#ddd;">— anonymous</div>'}
-        <div class="score-row">
-          <button class="ptb" onclick="givePoints('${s.group}','${r.id}',1)">+1</button>
-          <button class="ptb" onclick="givePoints('${s.group}','${r.id}',2)">+2</button>
-          <button class="ptb" onclick="givePoints('${s.group}','${r.id}',3)">+3</button>
-          <button class="ptb neg" onclick="givePoints('${s.group}','${r.id}',-1)">−</button>
-          <span class="sc-pts">${s.points||0}</span>
-        </div>
-      </div>`;
-    }).join('')}</div>`;
+    if(roundPhase==='write'){
+      // Hide content — just show who submitted
+      html+=`<div style="display:flex;gap:8px;flex-wrap:wrap;">${subs.map(s=>`
+        <div class="card-hidden">
+          <span class="ch-name">🔒 ${s.group}</span>
+          <span class="ch-lock">Hidden until reveal</span>
+        </div>`).join('')}</div>`;
+    } else {
+      const sorted=subs.sort((a,b)=>(b.votes||0)-(a.votes||0));
+      html+=`<div class="card-grid">${sorted.map((s,i)=>{
+        const votes=s.votes||0;
+        const isPresenting=showNames&&s.group===presenterOrder[presenterIdx];
+        return `<div class="card ${votes>0&&i===0?'top-vote':''} ${isPresenting?'presenting':''}">
+          ${votes>0?`<div class="card-votes">👍 ${votes} vote${votes!==1?'s':''} ${i===0?'<span class="top-badge">TOP</span>':''}</div>`:''}
+          <div class="card-body" style="font-style:italic;">"${s.voicemail||''}"</div>
+          ${showNames?`<div class="card-group">— ${s.group}</div>`:'<div class="card-group" style="color:#ddd;">— anonymous</div>'}
+          <div class="score-row">
+            <button class="ptb" onclick="givePoints('${s.group}','${r.id}',1)">+1</button>
+            <button class="ptb" onclick="givePoints('${s.group}','${r.id}',2)">+2</button>
+            <button class="ptb" onclick="givePoints('${s.group}','${r.id}',3)">+3</button>
+            <button class="ptb neg" onclick="givePoints('${s.group}','${r.id}',-1)">−</button>
+            <span class="sc-pts">${s.points||0}</span>
+          </div>
+        </div>`;
+      }).join('')}</div>`;
+    }
   }
 
   feed.innerHTML=html;
