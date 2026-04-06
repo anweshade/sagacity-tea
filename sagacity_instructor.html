@@ -468,8 +468,9 @@ async function onTimerEnd(){
     // Reveal anonymously + open voting
     await openAnonVote();
   } else if(r.id==='r4'){
-    // Auto-grade handles phase switching and rendering internally
-    await autoGradeR4();
+    // Timer ends — just switch to reveal phase, show the Reveal & Grade button
+    setPhasePill('reveal');
+    renderFeed(); renderBottomBar();
   } else {
     // r3: just show submissions
     setPhasePill('reveal');
@@ -688,12 +689,12 @@ function renderFeed(){
         </div>`).join('')}</div>`;
     }
   } else if(r.id==='r4'){
-    if(roundPhase==='write'){
-      // Hide all answers until auto-grade fires
+    if(roundPhase==='write'||roundPhase==='reveal'){
+      // Hide all answers until you click Reveal & Grade
       html+=`<div style="display:flex;gap:8px;flex-wrap:wrap;">${subs.map(s=>`
         <div class="card-hidden">
           <span class="ch-name">🔒 ${s.group}</span>
-          <span class="ch-lock">Hidden until graded</span>
+          <span class="ch-lock">${roundPhase==='reveal'?'Click Reveal & Grade to show':'Hidden until graded'}</span>
         </div>`).join('')}</div>`;
     } else {
       const sorted=subs.sort((a,b)=>(b.points||0)-(a.points||0));
@@ -786,10 +787,12 @@ function renderBottomBar(){
                <button class="btn btn-soft" onclick="sendPotatoQ(2)">New Q-C</button>`;
     }
   } else if(r.id==='r4'){
-    if(roundPhase==='write'){
-      hint='Reveal ONE twist → groups calculate for 4 min → auto-graded on submit → only 2 groups present: highest and lowest scorer.';
+    if(roundPhase==='write'||roundPhase==='reveal'){
+      const n=Object.keys(allSubs['r4']||{}).length;
+      hint='Reveal ONE twist → groups calculate for 4 min → click Reveal & Grade All when ready.';
       actions=`<button class="btn btn-purple" onclick="sendTwist(0)">🌀 A: Coupons 25%</button>
-               <button class="btn btn-purple" onclick="sendTwist(1)">🌀 B: 150 stores</button>`;
+               <button class="btn btn-purple" onclick="sendTwist(1)">🌀 B: 150 stores</button>
+               <button class="btn btn-gold" onclick="revealAndGradeR4()">📊 Reveal & Grade All (${n}/9)</button>`;
     } else {
       const labels=['🏆 Highest scorer','📉 Lowest scorer'];
       hint=`${labels[presenterIdx]||''}: ${presenterOrder[presenterIdx]||'—'} · 2 min to walk through their calculation`;
@@ -811,6 +814,46 @@ function renderBottomBar(){
 
   bar.innerHTML=`<span class="bb-hint">${hint}</span>${actions}`;
 }
+
+window.revealAndGradeR4=async()=>{
+  // Grade all current submissions
+  const r=ROUNDS[curRound];
+  const gameSnap=await get(ref(db,`${sessionCode}/game`));
+  const gd=gameSnap.val();
+  const cDir=gd?.correctDirection||'down', cProfit=gd?.correctProfit||0;
+  const subs=allSubs[r.id]||{};
+  let bestGroup=null, bestPts=-1, worstGroup=null, worstPts=999;
+  for(const [key,s] of Object.entries(subs)){
+    let pts=0;
+    if((s.direction||'').toLowerCase()===cDir) pts+=1;
+    const pNum=parseFloat(s.newProfit);
+    if(cProfit>0&&!isNaN(pNum)&&Math.abs(pNum-cProfit)/cProfit<0.05) pts+=2;
+    await update(ref(db,`${sessionCode}/submissions/${r.id}/${key}`),{
+      points:pts,
+      autoScore:{
+        dirOk:(s.direction||'').toLowerCase()===cDir,
+        profOk:cProfit>0&&!isNaN(pNum)&&Math.abs(pNum-cProfit)/cProfit<0.05
+      }
+    });
+    const idx=groups.findIndex(g=>g.name===s.group);
+    if(idx>=0){
+      groups[idx].points=Math.max(0,(groups[idx].points||0)+pts);
+      await update(ref(db,`${sessionCode}/groups/g${idx}`),{points:groups[idx].points});
+    }
+    if(pts>bestPts){bestPts=pts;bestGroup=s.group;}
+    if(pts<=worstPts){worstPts=pts;worstGroup=s.group;}
+  }
+  presenterOrder=[bestGroup,worstGroup].filter(Boolean);
+  presenterIdx=0;
+  // Force phase to discuss so cards are visible
+  roundPhase='discuss';
+  document.getElementById('phase-pill').textContent='💬 Discussion';
+  document.getElementById('phase-pill').className='phase-pill pp-discuss';
+  await update(ref(db,`${sessionCode}/game`),{screen:'discuss',phase:'discuss'});
+  // Wait a tick for allSubs to refresh, then render
+  setTimeout(()=>{ renderFeed(); renderBottomBar(); renderScoreList(); setTimer(120); },400);
+  showNotif('Graded! Showing all submissions.');
+};
 
 window.startDiscuss3=async()=>{
   const subs=Object.values(allSubs['r3']||{}).sort((a,b)=>(a.timestamp||0)-(b.timestamp||0));
